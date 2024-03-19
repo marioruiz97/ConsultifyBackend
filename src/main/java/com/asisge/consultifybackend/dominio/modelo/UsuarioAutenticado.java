@@ -29,4 +29,20 @@ public class UsuarioAutenticado {
     public void limpiarContrasena() {
         this.contrasena = null;
     }
+
+    public boolean validarUsuarioAutenticado() {
+        boolean valido = this.validarContrasena();
+        if (valido) valido = this.nombreUsuario != null &&
+                this.contrasena != null &&
+                this.creadoEn != null &&
+                this.creadoPor != null &&
+                this.ultimoInicio != null &&
+                this.activo != null &&
+                this.verificado != null;
+        return valido;
+    }
+
+    private boolean validarContrasena() {
+        return this.contrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$");
+    }
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Long>, RepositorioUsuario {
@@ -19,36 +18,54 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     // Métodos de JPA
     Optional<EntidadUsuario> findByIdentificacion(String identificacion);
 
+    Optional<EntidadUsuario> findByCorreo(String correo);
 
     // Métodos propios
     @Override
     default UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado) {
-        // TODO: construir
-        throw new UnsupportedOperationException("Método no implementado");
+        EntidadUsuario nuevoUsuario = this.save(ConvertidorUsuario.aEntidad(usuarioAutenticado.getUsuario(), usuarioAutenticado));
+        return ConvertidorUsuario.aDominio(nuevoUsuario, usuarioAutenticado.getCreadoPor());
+    }
+
+    @Override
+    default UsuarioAutenticado editarInformacionBasica(Usuario aGuardar) {
+        EntidadUsuario existente = findById(aGuardar.getIdUsuario()).orElseThrow(EntityNotFoundException::new);
+        existente.setNombres(aGuardar.getNombres());
+        existente.setApellidos(aGuardar.getApellidos());
+        existente.setTelefono(aGuardar.getTelefono());
+        existente.setCorreo(aGuardar.getCorreo());
+        return ConvertidorUsuario.aDominio(this.save(existente), existente.getCreadoPor().toString());
     }
 
     @Override
     default List<Usuario> buscarTodos() {
-        return this.findAll().stream().map(ConvertidorUsuario::aDominio).collect(Collectors.toList());
+        return this.findAll().stream().map(ConvertidorUsuario::aDominio).toList();
     }
 
     @Override
     default List<UsuarioAutenticado> buscarTodosUsuariosAutenticados() {
-        return this.findAll().stream().map(entidad -> ConvertidorUsuario.aDominio(entidad, "creadoPor")).collect(Collectors.toList());
+        return this.findAll().stream().map(entidad -> ConvertidorUsuario.aDominio(entidad, "creadoPor")).toList();
     }
 
     @Override
     default UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion) {
         EntidadUsuario entidad = this.findByIdentificacion(identificacion).orElse(null);
         if (entidad == null)
-            throw new EntityNotFoundException("No se encontró el usuario con identificacion" + identificacion);
+            throw new EntityNotFoundException("No se encontró el usuario con identificacion " + identificacion);
         return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
     }
 
     @Override
     default UsuarioAutenticado buscarUsuarioPorCorreo(String correo) {
-        // TODO: construir
-        throw new UnsupportedOperationException("Método no implementado");
+        EntidadUsuario entidad = this.findByCorreo(correo).orElse(null);
+        if (entidad == null)
+            throw new EntityNotFoundException("No se encontró el usuario con correo " + correo);
+        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+    }
+
+    @Override
+    default Usuario buscarUsuarioPorId(Long idUsuario) {
+        return ConvertidorUsuario.aDominio(this.findById(idUsuario).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override

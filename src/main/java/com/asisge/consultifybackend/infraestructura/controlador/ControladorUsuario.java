@@ -1,18 +1,19 @@
 package com.asisge.consultifybackend.infraestructura.controlador;
 
+import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
+import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
 import com.asisge.consultifybackend.aplicacion.manejador.ManejadorServicioUsuario;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios/")
+@RequestMapping("/usuarios")
 public class ControladorUsuario {
 
     private final ManejadorServicioUsuario manejadorServicioUsuario;
@@ -27,13 +28,24 @@ public class ControladorUsuario {
         return manejadorServicioUsuario.buscarTodos();
     }
 
-    @GetMapping("autenticados/")
+    @GetMapping("/autenticados")
     public List<UsuarioAutenticado> buscarUsuariosAutenticados() {
         return manejadorServicioUsuario.buscarTodosAutenticados();
     }
 
-    @GetMapping("{identificacion}")
+    @GetMapping("/{identificacion}")
     public UsuarioAutenticado obternerPorIdentificacion(@PathVariable("identificacion") String identificacion) {
         return manejadorServicioUsuario.buscarUsuarioPorIdentificacion(identificacion);
     }
+
+    @PostMapping()
+    public ResponseEntity<UsuarioAutenticado> crearUsuario(@RequestBody NuevoUsuarioAutenticadoDto nuevoUsuario) {
+        return new ResponseEntity<>(manejadorServicioUsuario.crearUsuarioAutenticado(nuevoUsuario), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioAutenticado> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody UsuarioBasicoDto editarUsuario) {
+        return new ResponseEntity<>(manejadorServicioUsuario.editarInformacionBasica(idUsuario, editarUsuario), HttpStatus.CREATED);
+    }
+
 }

@@ -24,4 +24,20 @@ public class NuevoUsuarioAutenticadoDto {
     private LocalDateTime ultimoInicio;
     private Boolean activo;
     private Boolean verificado;
+
+    public boolean validarDto() {
+        return this.identificacion != null &&
+                this.nombres != null &&
+                this.apellidos != null &&
+                this.telefono != null &&
+                this.correo != null &&
+                this.nombreUsuario != null &&
+                this.contrasena != null &&
+                this.creadoEn != null &&
+                this.creadoPor != null &&
+                this.ultimoInicio != null &&
+                this.activo != null &&
+                this.verificado != null;
+    }
+
 }

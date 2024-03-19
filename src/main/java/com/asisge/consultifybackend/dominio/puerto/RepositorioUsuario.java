@@ -21,5 +21,7 @@ public interface RepositorioUsuario {
 
     void cambiarContrasena(UsuarioAutenticado usuarioAutenticado);
 
+    Usuario buscarUsuarioPorId(Long idUsuario);
 
+    UsuarioAutenticado editarInformacionBasica(Usuario aGuardar);
 }

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class EntidadUsuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private
     Long idUsuario;
 
@@ -77,7 +77,7 @@ public class EntidadUsuario {
     private String correo;
 
     // propiedades de autenticacion del usuario
-    @Column(nullable = false, unique = true,length = 16)
+    @Column(nullable = false, unique = true, length = 16)
     @NotBlank
     private String nombreUsuario;
 
