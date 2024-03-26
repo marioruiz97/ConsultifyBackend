@@ -62,8 +62,7 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public UsuarioAutenticado editarInformacionBasica(Long idUsuario, UsuarioBasicoDto editarUsuario) {
         validarCamposDto(editarUsuario);
         Usuario existente = validarUsuarioExistente(idUsuario, editarUsuario.getIdentificacion());
-        Usuario aGuardar = new Usuario(idUsuario, existente.getIdentificacion(), editarUsuario.getNombres(), editarUsuario.getApellidos(), editarUsuario.getTelefono(),
-                existente.getCorreo());
+        Usuario aGuardar = mapeadorUsuario.aNuevoUsuario(existente, editarUsuario);
         validarUsuario(aGuardar);
         return devolverUsuarioSinClave(repositorioUsuario.editarInformacionBasica(aGuardar));
     }
@@ -94,13 +93,11 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     @Override
     public UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
         validarCamposDto(usuarioDto);
-        UsuarioAutenticado autenticado = validarUsuarioAutenticadoExistente(idUsuario, usuarioDto.getIdentificacion(), usuarioDto.getCorreo());
-        Usuario existente = autenticado.getUsuario();
+        Usuario existente = validarUsuarioExistente(idUsuario, usuarioDto.getIdentificacion());
         existente.cambiarCorreo(usuarioDto.getCorreo());
         validarUsuario(existente);
         return devolverUsuarioSinClave(repositorioUsuario.editarCorreo(existente));
         // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
-
     }
 
     private void validarUsuario(Usuario existente) {

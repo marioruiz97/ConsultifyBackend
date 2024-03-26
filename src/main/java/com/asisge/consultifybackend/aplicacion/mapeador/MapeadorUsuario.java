@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.aplicacion.mapeador;
 
 import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
+import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 import org.springframework.stereotype.Component;
@@ -29,4 +30,8 @@ public class MapeadorUsuario {
         return usuarioAutenticado;
     }
 
+    public Usuario aNuevoUsuario(Usuario existente, UsuarioBasicoDto usuarioDto) {
+        return new Usuario(existente.getIdUsuario(), existente.getIdentificacion(), usuarioDto.getNombres(),
+                usuarioDto.getApellidos(), usuarioDto.getTelefono(), existente.getCorreo());
+    }
 }
