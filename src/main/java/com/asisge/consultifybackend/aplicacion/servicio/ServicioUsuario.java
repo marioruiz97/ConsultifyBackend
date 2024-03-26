@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.aplicacion.servicio;
 
 import com.asisge.consultifybackend.aplicacion.dto.CambioContrasenaDto;
+import com.asisge.consultifybackend.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
@@ -24,6 +25,7 @@ public interface ServicioUsuario {
 
     void eliminarUsuario(String identificacion);
 
-    void cambiarContrasena(CambioContrasenaDto usuarioAutenticado);
+    void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioAutenticado);
 
+    UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
 }

@@ -14,6 +14,14 @@ public class Usuario {
     private String telefono;
     private String correo;
 
+    public Usuario(String identificacion, String nombres, String apellidos, String telefono, String correo) {
+        this.identificacion = identificacion;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.correo = correo;
+    }
+
     public boolean validarUsuario() {
         boolean valido = this.validarContacto();
         if (valido) valido = this.identificacion != null &&
@@ -29,4 +37,7 @@ public class Usuario {
                 this.correo.matches("^[a-zA-Z\\d._%+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$");
     }
 
+    public void cambiarCorreo(String correo) {
+        this.correo = correo;
+    }
 }

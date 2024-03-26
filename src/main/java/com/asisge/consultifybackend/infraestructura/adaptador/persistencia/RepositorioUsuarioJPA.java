@@ -33,8 +33,25 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
         existente.setNombres(aGuardar.getNombres());
         existente.setApellidos(aGuardar.getApellidos());
         existente.setTelefono(aGuardar.getTelefono());
-        existente.setCorreo(aGuardar.getCorreo());
         return ConvertidorUsuario.aDominio(this.save(existente), existente.getCreadoPor().toString());
+    }
+
+    @Override
+    default UsuarioAutenticado editarCorreo(Usuario existente) {
+        EntidadUsuario actual = findById(existente.getIdUsuario()).orElseThrow(EntityNotFoundException::new);
+        actual.setCorreo(existente.getCorreo());
+        actual.setVerificado(Boolean.FALSE);
+        return ConvertidorUsuario.aDominio(this.save(actual), actual.getCreadoPor().toString());
+    }
+
+    @Override
+    default void eliminarUsuario(String identificacion) {
+        // TODO: construir
+    }
+
+    @Override
+    default void cambiarContrasena(UsuarioAutenticado usuarioAutenticado) {
+        this.save(ConvertidorUsuario.aEntidad(usuarioAutenticado.getUsuario(), usuarioAutenticado));
     }
 
     @Override
@@ -68,13 +85,4 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
         return ConvertidorUsuario.aDominio(this.findById(idUsuario).orElseThrow(EntityNotFoundException::new));
     }
 
-    @Override
-    default void eliminarUsuario(String identificacion) {
-        // TODO: construir
-    }
-
-    @Override
-    default void cambiarContrasena(UsuarioAutenticado usuarioAutenticado) {
-        // TODO: construir
-    }
 }

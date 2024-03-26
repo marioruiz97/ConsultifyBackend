@@ -1,5 +1,7 @@
 package com.asisge.consultifybackend.infraestructura.controlador;
 
+import com.asisge.consultifybackend.aplicacion.dto.CambioContrasenaDto;
+import com.asisge.consultifybackend.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
 import com.asisge.consultifybackend.aplicacion.manejador.ManejadorServicioUsuario;
@@ -46,6 +48,17 @@ public class ControladorUsuario {
     @PatchMapping("/{idUsuario}")
     public ResponseEntity<UsuarioAutenticado> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody UsuarioBasicoDto editarUsuario) {
         return new ResponseEntity<>(manejadorServicioUsuario.editarInformacionBasica(idUsuario, editarUsuario), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/perfil/correo/{idUsuario}")
+    public ResponseEntity<UsuarioAutenticado> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
+        return new ResponseEntity<>(manejadorServicioUsuario.cambiarCorreoElectronico(idUsuario, usuarioDto), HttpStatus.OK);
+    }
+
+    @PatchMapping("/perfil/contrasena/{idUsuario}")
+    public ResponseEntity<UsuarioAutenticado> cambiarContrasena(@PathVariable Long idUsuario, @RequestBody CambioContrasenaDto usuarioDto) {
+        manejadorServicioUsuario.cambiarContrasena(idUsuario, usuarioDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -24,4 +24,6 @@ public interface RepositorioUsuario {
     Usuario buscarUsuarioPorId(Long idUsuario);
 
     UsuarioAutenticado editarInformacionBasica(Usuario aGuardar);
+
+    UsuarioAutenticado editarCorreo(Usuario existente);
 }

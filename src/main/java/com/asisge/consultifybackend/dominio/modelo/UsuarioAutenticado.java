@@ -3,6 +3,7 @@ package com.asisge.consultifybackend.dominio.modelo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class UsuarioAutenticado {
     private String creadoPor;
     private LocalDateTime ultimoInicio;
     private Boolean activo;
+    @Setter
     private Boolean verificado;
 
     public void cambiarContrasena(String nuevaContrasena) {
