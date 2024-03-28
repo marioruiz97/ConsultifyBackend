@@ -100,6 +100,22 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
     }
 
+    @Override
+    public CambioEstadoDto cambiarEstado(Long idUsuario, boolean activar, String identificacion) {
+        UsuarioAutenticado usuario = repositorioUsuario.buscarUsuarioPorIdentificacion(identificacion);
+        CambioEstadoDto resultado = new CambioEstadoDto(idUsuario, identificacion, usuario.getActivo());
+        if (!usuario.getActivo().equals(activar)) {
+            if (activar) {
+                usuario.cambiarContrasena(generarContrasenaSegura());
+                // TODO si el cambio es para activar el usuario nuevamente, se debe enviar correo de verificacion y generar nueva clave
+            }
+            UsuarioAutenticado nuevoUsuario = repositorioUsuario.cambiarEstado(usuario, activar);
+            resultado.setActivo(nuevoUsuario.getActivo());
+        }
+        // TODO cuando el usuario da de baja su propio perfil, se debe finalizar la sesion
+        return resultado;
+    }
+
     private void validarUsuario(Usuario existente) {
         if (!existente.validarUsuario())
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);

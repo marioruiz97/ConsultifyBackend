@@ -1,19 +1,12 @@
 package com.asisge.consultifybackend.aplicacion.servicio;
 
-import com.asisge.consultifybackend.aplicacion.dto.CambioContrasenaDto;
-import com.asisge.consultifybackend.aplicacion.dto.CambioCorreoDto;
-import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
-import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
+import com.asisge.consultifybackend.aplicacion.dto.*;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 
 import java.util.List;
 
 public interface ServicioUsuario {
-
-    UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto usuarioAutenticado);
-
-    UsuarioAutenticado editarInformacionBasica(Long idUsuario, UsuarioBasicoDto editarUsuario);
 
     List<Usuario> buscarTodos();
 
@@ -23,9 +16,15 @@ public interface ServicioUsuario {
 
     UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
 
+    UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto usuarioAutenticado);
+
+    UsuarioAutenticado editarInformacionBasica(Long idUsuario, UsuarioBasicoDto editarUsuario);
+
     void eliminarUsuario(String identificacion);
 
     void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioAutenticado);
 
     UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
+
+    CambioEstadoDto cambiarEstado(Long idUsuario, boolean activo, String identificacion);
 }

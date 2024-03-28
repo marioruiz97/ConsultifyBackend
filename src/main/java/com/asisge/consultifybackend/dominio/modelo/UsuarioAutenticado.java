@@ -17,6 +17,7 @@ public class UsuarioAutenticado {
     private LocalDateTime creadoEn;
     private String creadoPor;
     private LocalDateTime ultimoInicio;
+    @Setter
     private Boolean activo;
     @Setter
     private Boolean verificado;

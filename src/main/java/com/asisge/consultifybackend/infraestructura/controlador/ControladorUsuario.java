@@ -1,9 +1,6 @@
 package com.asisge.consultifybackend.infraestructura.controlador;
 
-import com.asisge.consultifybackend.aplicacion.dto.CambioContrasenaDto;
-import com.asisge.consultifybackend.aplicacion.dto.CambioCorreoDto;
-import com.asisge.consultifybackend.aplicacion.dto.NuevoUsuarioAutenticadoDto;
-import com.asisge.consultifybackend.aplicacion.dto.UsuarioBasicoDto;
+import com.asisge.consultifybackend.aplicacion.dto.*;
 import com.asisge.consultifybackend.aplicacion.manejador.ManejadorServicioUsuario;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
@@ -59,6 +56,12 @@ public class ControladorUsuario {
     public ResponseEntity<UsuarioAutenticado> cambiarContrasena(@PathVariable Long idUsuario, @RequestBody CambioContrasenaDto usuarioDto) {
         manejadorServicioUsuario.cambiarContrasena(idUsuario, usuarioDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/estado/{idUsuario}")
+    public ResponseEntity<CambioEstadoDto> cambiarEstado(@PathVariable Long idUsuario, @RequestBody CambioEstadoDto estadoDto) {
+        CambioEstadoDto nuevoEstado = manejadorServicioUsuario.cambiarEstado(idUsuario, estadoDto.getActivo(), estadoDto.getIdentificacion());
+        return new ResponseEntity<>(nuevoEstado, HttpStatus.OK);
     }
 
 }

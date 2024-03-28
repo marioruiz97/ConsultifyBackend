@@ -7,23 +7,25 @@ import java.util.List;
 
 public interface RepositorioUsuario {
 
-    UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado);
-
     List<Usuario> buscarTodos();
 
     List<UsuarioAutenticado> buscarTodosUsuariosAutenticados();
+
+    Usuario buscarUsuarioPorId(Long idUsuario);
 
     UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion);
 
     UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
 
+    UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado);
+
     void eliminarUsuario(String identificacion);
 
     void cambiarContrasena(UsuarioAutenticado usuarioAutenticado);
 
-    Usuario buscarUsuarioPorId(Long idUsuario);
-
     UsuarioAutenticado editarInformacionBasica(Usuario aGuardar);
 
     UsuarioAutenticado editarCorreo(Usuario existente);
+
+    UsuarioAutenticado cambiarEstado(UsuarioAutenticado usuario, boolean activo);
 }

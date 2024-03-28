@@ -45,6 +45,13 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     }
 
     @Override
+    default UsuarioAutenticado cambiarEstado(UsuarioAutenticado usuario, boolean activo) {
+        EntidadUsuario aGuardar = ConvertidorUsuario.aEntidad(usuario.getUsuario(), usuario);
+        aGuardar.setActivo(activo);
+        return ConvertidorUsuario.aDominio(this.save(aGuardar), aGuardar.getCreadoPor().toString());
+    }
+
+    @Override
     default void eliminarUsuario(String identificacion) {
         // TODO: construir
     }
