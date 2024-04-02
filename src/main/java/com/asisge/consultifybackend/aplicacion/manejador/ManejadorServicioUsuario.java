@@ -9,6 +9,7 @@ import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.dominio.puerto.RepositorioUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +20,14 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public ManejadorServicioUsuario(RepositorioUsuario repositorioUsuario, MapeadorUsuario mapeadorUsuario) {
+    public ManejadorServicioUsuario(RepositorioUsuario repositorioUsuario, MapeadorUsuario mapeadorUsuario, PasswordEncoder passwordEncoder) {
         this.repositorioUsuario = repositorioUsuario;
         this.mapeadorUsuario = mapeadorUsuario;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -51,8 +55,9 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuarioDto) {
         validarCamposDto(nuevoUsuarioDto);
         UsuarioAutenticado usuarioAGuardar = mapeadorUsuario.aNuevoUsuarioAutenticado(nuevoUsuarioDto);
-        usuarioAGuardar.cambiarContrasena(generarContrasenaSegura());
+        usuarioAGuardar.cambiarContrasena("contSENA12*"); // TODO cambiar a generador de contrasenas
         if (usuarioAGuardar.validarUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
+            usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);

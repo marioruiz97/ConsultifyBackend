@@ -20,6 +20,8 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
 
     Optional<EntidadUsuario> findByCorreo(String correo);
 
+    Optional<EntidadUsuario> findByCorreoOrNombreUsuario(String correo, String nombreUsuario);
+
     // Métodos propios
     @Override
     default UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado) {
@@ -85,6 +87,12 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
         if (entidad == null)
             throw new EntityNotFoundException("No se encontró el usuario con correo " + correo);
         return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+    }
+
+    @Override
+    default UsuarioAutenticado buscarPorCorreoOUsername(String correoOUsername) {
+        EntidadUsuario entidad = findByCorreoOrNombreUsuario(correoOUsername, correoOUsername).orElse(null);
+        return ConvertidorUsuario.aDominio(entidad, "1");
     }
 
     @Override

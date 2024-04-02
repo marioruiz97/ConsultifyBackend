@@ -25,7 +25,8 @@ public class MapeadorUsuario {
             final Usuario usuario = new Usuario(nuevoUsuario.getIdentificacion(), nuevoUsuario.getNombres(), nuevoUsuario.getApellidos(),
                     nuevoUsuario.getTelefono(), nuevoUsuario.getCorreo());
             usuarioAutenticado = new UsuarioAutenticado(usuario, nuevoUsuario.getNombreUsuario(), DUMMY_PASSWORD, LocalDateTime.now(),
-                    nuevoUsuario.getCreadoPor(), LocalDateTime.now(), Boolean.FALSE, Boolean.FALSE);
+                    nuevoUsuario.getCreadoPor(), LocalDateTime.now(), Boolean.TRUE, Boolean.TRUE, nuevoUsuario.getRol());
+            // TODO cambiar a Boolean.FALSE
         }
         return usuarioAutenticado;
     }

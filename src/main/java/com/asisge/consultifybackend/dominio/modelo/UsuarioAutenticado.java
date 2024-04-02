@@ -22,6 +22,8 @@ public class UsuarioAutenticado {
     @Setter
     private Boolean verificado;
 
+    private Rol rol;
+
     public void cambiarContrasena(String nuevaContrasena) {
         if (!nuevaContrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$")) {
             throw new IllegalArgumentException("La contraseña no cumple con el formato requerido");
@@ -41,11 +43,16 @@ public class UsuarioAutenticado {
                 this.creadoPor != null &&
                 this.ultimoInicio != null &&
                 this.activo != null &&
-                this.verificado != null;
+                this.verificado != null &&
+                this.rol != null;
         return valido;
     }
 
     private boolean validarContrasena() {
         return this.contrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$");
+    }
+
+    public void guardarClaveEncriptada(String contrasena) {
+        if (contrasena.length() > 16) this.contrasena = contrasena;
     }
 }
