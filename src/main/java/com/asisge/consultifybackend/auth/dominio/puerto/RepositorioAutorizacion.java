@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.dominio.puerto;
+package com.asisge.consultifybackend.auth.dominio.puerto;
 
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 

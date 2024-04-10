@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.infraestructura.controlador;
+package com.asisge.consultifybackend.auth.infraestructura.controlador;
 
-import com.asisge.consultifybackend.aplicacion.manejador.ManejadorServicioAutorizacion;
+import com.asisge.consultifybackend.auth.aplicacion.manejador.ManejadorServicioAutorizacion;
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

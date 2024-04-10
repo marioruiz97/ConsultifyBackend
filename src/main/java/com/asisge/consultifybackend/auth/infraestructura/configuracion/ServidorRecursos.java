@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.infraestructura.configuracion;
+package com.asisge.consultifybackend.auth.infraestructura.configuracion;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -1,7 +1,7 @@
-package com.asisge.consultifybackend.infraestructura.adaptador.persistencia;
+package com.asisge.consultifybackend.auth.infraestructura.adaptador.persistencia;
 
 import com.asisge.consultifybackend.dominio.modelo.Usuario;
-import com.asisge.consultifybackend.dominio.puerto.RepositorioAutorizacion;
+import com.asisge.consultifybackend.auth.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.infraestructura.adaptador.convertidor.ConvertidorUsuario;
 import com.asisge.consultifybackend.infraestructura.adaptador.entidad.EntidadUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
