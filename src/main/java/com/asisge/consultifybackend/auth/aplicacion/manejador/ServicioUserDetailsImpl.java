@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.auth.infraestructura.configuracion;
+package com.asisge.consultifybackend.auth.aplicacion.manejador;
 
 import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.dominio.puerto.RepositorioUsuario;

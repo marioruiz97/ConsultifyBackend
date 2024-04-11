@@ -1,7 +1,9 @@
 package com.asisge.consultifybackend.auth.dominio.puerto;
 
-import com.asisge.consultifybackend.dominio.modelo.Usuario;
+import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
 
 public interface RepositorioAutorizacion {
-    Usuario buscarPorCorreo(String correo);
+    UsuarioAutenticado buscarPorCorreo(String correo);
+
+    UsuarioAutenticado buscarPorNombreUsuarioOCorreo(String usuarioOCorreo);
 }
