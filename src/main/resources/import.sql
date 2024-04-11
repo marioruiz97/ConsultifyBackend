@@ -1,0 +1,1 @@
+INSERT INTO usuarios (id_usuario, identificacion, nombres, apellidos, telefono, correo, nombre_usuario, contrasena, creado_en, creado_por, ultimo_inicio, activo, verificado, rol)VALUES(1, '1017251545', 'Mario', 'Ruiz','3015465076', 'marioarb97@gmail.com','admin','$2a$04$cUZCY5l9YZ71Bso93ElWA.eWcr71vRqFG1sMFoLi0d16kXfw0Dl5S', CURRENT_DATE, 1, CURRENT_DATE, 1, 1, 'ADMIN');

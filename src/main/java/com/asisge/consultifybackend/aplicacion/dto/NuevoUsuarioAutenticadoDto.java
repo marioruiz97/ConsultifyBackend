@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.aplicacion.dto;
 
+import com.asisge.consultifybackend.dominio.modelo.Rol;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class NuevoUsuarioAutenticadoDto implements Dto {
     private String correo;
     private String nombreUsuario;
     private String creadoPor;
+    private Rol rol;
 
     @Override
     public boolean validarDto() {
@@ -26,7 +28,8 @@ public class NuevoUsuarioAutenticadoDto implements Dto {
                 this.telefono != null &&
                 this.correo != null &&
                 this.nombreUsuario != null &&
-                this.creadoPor != null;
+                this.creadoPor != null &&
+                this.rol != null;
     }
 
 }

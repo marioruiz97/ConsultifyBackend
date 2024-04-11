@@ -1,7 +1,11 @@
 package com.asisge.consultifybackend.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.dominio.modelo.Rol;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -63,17 +67,16 @@ public class EntidadUsuario {
     /**
      * La expresión regular se desglosa de la siguiente manera:
      * ^ indica el inicio de la cadena.
-     * [a-zA-Z0-9._%+-]+ coincide con uno o más caracteres alfanuméricos, puntos, guiones bajos, porcentajes, signos más y signos menos en la parte local del correo electrónico.
-     *
-     * @ coincide con el símbolo '@', que separa la parte local del dominio.
-     * [a-zA-Z0-9.-]+ coincide con uno o más caracteres alfanuméricos, puntos y guiones en la parte de dominio del correo electrónico.
-     * \. coincide con un punto literal, que separa el dominio de nivel superior (TLD) del resto del dominio.
-     * [a-zA-Z]{2,} coincide con dos o más caracteres alfabéticos en el TLD.
+     * <p>[\w\.]+ coincide con uno o más caracteres alfanuméricos, puntos, guiones bajos, porcentajes, signos más y signos menos en la parte local del correo electrónico.</p>
+     * <p>@ coincide con el símbolo '@', que separa la parte local del dominio.</p>
+     * <p>([\w-]+) coincide con uno o más caracteres alfanuméricos, puntos y guiones en la parte de dominio del correo electrónico.</p>
+     * <p>\. coincide con un punto literal, que separa el dominio de nivel superior (TLD) del resto del dominio.</p>
+     * <p>[\w-]{2,} coincide con dos o más caracteres alfabéticos en el TLD.</p>
      * $ indica el final de la cadena.
      */
     @NotBlank
     @NotNull
-    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
+    @Email(regexp = "^[\\w\\.]+@([\\w-]+)\\.+[\\w-]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
     private String correo;
 
     // propiedades de autenticacion del usuario
@@ -81,20 +84,8 @@ public class EntidadUsuario {
     @NotBlank
     private String nombreUsuario;
 
-    /**
-     * La expresión regular se desglosa de la siguiente manera:
-     * ^ indica el inicio de la cadena.
-     * (?=.*[A-Z]) verifica que la contraseña contenga al menos una letra mayúscula.
-     * (?=.*[a-z]) verifica que la contraseña contenga al menos una letra minúscula.
-     * (?=.*\d) verifica que la contraseña contenga al menos un dígito.
-     * (?=.*[@$!%*?&]) verifica que la contraseña contenga al menos un carácter especial de la lista proporcionada (@, $, !, %, *, ?, &).
-     * [A-Za-z\d@$!%*?&]{8,} coincide con caracteres alfanuméricos y especiales, con un mínimo de 8 caracteres de longitud.
-     * $ indica el final de la cadena.
-     */
     @NotBlank
     @NotNull
-    @Size(min = 8, max = 16)
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$")
     private String contrasena;
 
     @Column(nullable = false, updatable = false)
@@ -113,5 +104,9 @@ public class EntidadUsuario {
 
     @NotNull
     private Boolean verificado;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
 
 }

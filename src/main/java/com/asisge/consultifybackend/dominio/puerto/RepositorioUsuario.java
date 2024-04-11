@@ -17,6 +17,8 @@ public interface RepositorioUsuario {
 
     UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
 
+    UsuarioAutenticado buscarPorCorreoOUsername(String correoOUsername);
+
     UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado);
 
     void eliminarUsuario(String identificacion);

@@ -24,7 +24,7 @@ public final class ConvertidorUsuario {
         UsuarioAutenticado usuarioAutenticado = null;
         if (entidad != null) {
             usuarioAutenticado = new UsuarioAutenticado(nuevoUsuario, entidad.getNombreUsuario(), entidad.getContrasena(), entidad.getCreadoEn(), creadoPor,
-                    entidad.getUltimoInicio(), entidad.getActivo(), entidad.getVerificado());
+                    entidad.getUltimoInicio(), entidad.getActivo(), entidad.getVerificado(), entidad.getRol());
         }
         return usuarioAutenticado;
     }
@@ -44,6 +44,7 @@ public final class ConvertidorUsuario {
         entidad.setUltimoInicio(auth.getUltimoInicio());
         entidad.setActivo(auth.getActivo());
         entidad.setVerificado(auth.getVerificado());
+        entidad.setRol(auth.getRol());
 
         return entidad;
     }
