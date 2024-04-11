@@ -52,8 +52,11 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         Map<String, Object> extraClaims = new HashMap<>();
         Usuario usuario = usuarioAutenticado.getUsuario();
 
+        extraClaims.put("id_usuario", usuario.getIdUsuario());
         extraClaims.put("nombre", usuario.getNombres() + " " + usuario.getApellidos());
         extraClaims.put("rol", usuarioAutenticado.getRol().name());
+        extraClaims.put("correo", usuario.getCorreo());
+        extraClaims.put("activo", usuarioAutenticado.getActivo());
 
         return extraClaims;
     }
