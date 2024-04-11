@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.auth.aplicacion.manejador;
 
 
-import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

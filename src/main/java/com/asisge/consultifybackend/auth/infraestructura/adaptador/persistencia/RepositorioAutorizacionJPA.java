@@ -1,9 +1,9 @@
 package com.asisge.consultifybackend.auth.infraestructura.adaptador.persistencia;
 
 import com.asisge.consultifybackend.auth.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
-import com.asisge.consultifybackend.infraestructura.adaptador.convertidor.ConvertidorUsuario;
-import com.asisge.consultifybackend.infraestructura.adaptador.entidad.EntidadUsuario;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
+import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

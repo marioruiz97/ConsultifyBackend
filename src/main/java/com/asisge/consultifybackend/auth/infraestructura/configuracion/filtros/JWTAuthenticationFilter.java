@@ -2,7 +2,7 @@ package com.asisge.consultifybackend.auth.infraestructura.configuracion.filtros;
 
 import com.asisge.consultifybackend.auth.aplicacion.manejador.ServicioJWT;
 import com.asisge.consultifybackend.auth.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
