@@ -15,12 +15,10 @@ import org.springframework.stereotype.Component;
 public class SecurityBeansInjector {
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityBeansInjector(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityBeansInjector(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -29,7 +27,7 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
