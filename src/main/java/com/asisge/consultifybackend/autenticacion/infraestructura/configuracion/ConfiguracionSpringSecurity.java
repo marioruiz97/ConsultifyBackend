@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.auth.infraestructura.configuracion;
+package com.asisge.consultifybackend.autenticacion.infraestructura.configuracion;
 
-import com.asisge.consultifybackend.auth.infraestructura.configuracion.filtros.JWTAuthenticationFilter;
+import com.asisge.consultifybackend.autenticacion.infraestructura.configuracion.filtros.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

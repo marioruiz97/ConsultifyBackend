@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.auth.infraestructura.adaptador.persistencia;
+package com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.persistencia;
 
-import com.asisge.consultifybackend.auth.dominio.puerto.RepositorioAutorizacion;
+import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;

@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.auth.aplicacion.dto;
+package com.asisge.consultifybackend.autenticacion.aplicacion.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

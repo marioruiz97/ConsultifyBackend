@@ -1,9 +1,9 @@
-package com.asisge.consultifybackend.auth.aplicacion.manejador;
+package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 
-import com.asisge.consultifybackend.auth.aplicacion.dto.AuthenticationRequest;
-import com.asisge.consultifybackend.auth.aplicacion.dto.AuthenticationResponse;
-import com.asisge.consultifybackend.auth.aplicacion.servicio.ServicioAutenticacion;
-import com.asisge.consultifybackend.auth.dominio.puerto.RepositorioAutorizacion;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationRequest;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationResponse;
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
+import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import jakarta.persistence.EntityNotFoundException;
