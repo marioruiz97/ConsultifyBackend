@@ -38,6 +38,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
          */
     }
 
+    @Override
     public AuthenticationResponse iniciarSesion(AuthenticationRequest authRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 authRequest.getNombreUsuario(), authRequest.getContrasena()
