@@ -13,6 +13,8 @@ public interface RepositorioUsuario {
 
     Usuario buscarUsuarioPorId(Long idUsuario);
 
+    UsuarioAutenticado buscarUsuarioPorIdUsuario(Long idUsuario);
+
     UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion);
 
     UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
@@ -30,4 +32,5 @@ public interface RepositorioUsuario {
     UsuarioAutenticado editarCorreo(Usuario existente);
 
     UsuarioAutenticado cambiarEstado(UsuarioAutenticado usuario, boolean activo);
+
 }

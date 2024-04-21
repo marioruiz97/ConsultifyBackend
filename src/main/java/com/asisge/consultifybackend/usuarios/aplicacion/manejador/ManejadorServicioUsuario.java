@@ -10,6 +10,7 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +77,14 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     @Override
     public void eliminarUsuario(String identificacion) {
         repositorioUsuario.eliminarUsuario(identificacion);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Override
+    public Boolean adminDesactivaUsuario(Long idUsuario) {
+        UsuarioAutenticado cuenta = this.repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
+        cuenta = this.repositorioUsuario.cambiarEstado(cuenta, Boolean.FALSE);
+        return cuenta.getActivo();
     }
 
     @Override

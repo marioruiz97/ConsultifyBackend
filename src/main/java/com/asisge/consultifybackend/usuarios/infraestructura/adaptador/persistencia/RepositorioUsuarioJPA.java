@@ -100,4 +100,10 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
         return ConvertidorUsuario.aDominio(this.findById(idUsuario).orElseThrow(EntityNotFoundException::new));
     }
 
+    @Override
+    default UsuarioAutenticado buscarUsuarioPorIdUsuario(Long idUsuario) {
+        EntidadUsuario usuario = this.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario en base de datos"));
+        return ConvertidorUsuario.aDominio(usuario, usuario.getCreadoPor().toString());
+    }
 }

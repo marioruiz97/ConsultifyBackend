@@ -2,11 +2,12 @@ package com.asisge.consultifybackend.usuarios.infraestructura.controlador;
 
 
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.*;
-import com.asisge.consultifybackend.usuarios.aplicacion.manejador.ManejadorServicioUsuario;
+import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class ControladorUsuario {
 
-    private final ManejadorServicioUsuario manejadorServicioUsuario;
+    private final ServicioUsuario manejadorServicioUsuario;
 
     @Autowired
-    public ControladorUsuario(ManejadorServicioUsuario manejadorServicioUsuario) {
+    public ControladorUsuario(ServicioUsuario manejadorServicioUsuario) {
         this.manejadorServicioUsuario = manejadorServicioUsuario;
     }
 
@@ -58,6 +59,12 @@ public class ControladorUsuario {
     public ResponseEntity<CambioEstadoDto> cambiarEstado(@PathVariable Long idUsuario, @RequestBody CambioEstadoDto estadoDto) {
         CambioEstadoDto nuevoEstado = manejadorServicioUsuario.cambiarEstado(idUsuario, estadoDto.getActivo(), estadoDto.getIdentificacion());
         return new ResponseEntity<>(nuevoEstado, HttpStatus.OK);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{idUsuario}")
+    public Boolean desactivarUsuario(@PathVariable Long idUsuario) {
+        return manejadorServicioUsuario.adminDesactivaUsuario(idUsuario);
     }
 
 }
