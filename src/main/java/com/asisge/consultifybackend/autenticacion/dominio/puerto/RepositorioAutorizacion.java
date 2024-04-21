@@ -6,4 +6,6 @@ public interface RepositorioAutorizacion {
     UsuarioAutenticado buscarPorCorreo(String correo);
 
     UsuarioAutenticado buscarPorNombreUsuarioOCorreo(String usuarioOCorreo);
+
+    UsuarioAutenticado buscarPorIdUsuario(Long idUsuario);
 }

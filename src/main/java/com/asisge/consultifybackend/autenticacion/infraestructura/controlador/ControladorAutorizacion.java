@@ -2,7 +2,7 @@ package com.asisge.consultifybackend.autenticacion.infraestructura.controlador;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationRequest;
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationResponse;
-import com.asisge.consultifybackend.autenticacion.aplicacion.manejador.ManejadorServicioAutenticacion;
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class ControladorAutorizacion {
 
-    private final ManejadorServicioAutenticacion servicioAutenticacion;
+    private final ServicioAutenticacion servicioAutenticacion;
 
     @Autowired
-    public ControladorAutorizacion(ManejadorServicioAutenticacion servicioAutenticacion) {
+    public ControladorAutorizacion(ServicioAutenticacion servicioAutenticacion) {
         this.servicioAutenticacion = servicioAutenticacion;
     }
 

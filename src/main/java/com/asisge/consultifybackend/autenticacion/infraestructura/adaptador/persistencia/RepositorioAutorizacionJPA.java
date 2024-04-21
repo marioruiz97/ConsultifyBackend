@@ -32,4 +32,9 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
         return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
     }
 
+    @Override
+    default UsuarioAutenticado buscarPorIdUsuario(Long idUsuario) {
+        EntidadUsuario entidad = findById(idUsuario).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario"));
+        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+    }
 }
