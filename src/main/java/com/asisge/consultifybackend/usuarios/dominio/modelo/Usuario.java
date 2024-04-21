@@ -9,13 +9,15 @@ public class Usuario {
 
     private Long idUsuario;
     private String identificacion;
+    private TipoDocumento tipoDocumento;
     private String nombres;
     private String apellidos;
     private String telefono;
     private String correo;
 
-    public Usuario(String identificacion, String nombres, String apellidos, String telefono, String correo) {
+    public Usuario(String identificacion, TipoDocumento tipoDocumento, String nombres, String apellidos, String telefono, String correo) {
         this.identificacion = identificacion;
+        this.tipoDocumento = tipoDocumento;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -25,6 +27,7 @@ public class Usuario {
     public boolean validarUsuario() {
         boolean valido = this.validarContacto();
         if (valido) valido = this.identificacion != null &&
+                this.tipoDocumento != null &&
                 this.nombres != null &&
                 this.apellidos != null &&
                 this.telefono != null &&

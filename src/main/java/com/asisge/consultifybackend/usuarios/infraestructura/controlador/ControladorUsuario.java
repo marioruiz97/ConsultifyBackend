@@ -3,7 +3,6 @@ package com.asisge.consultifybackend.usuarios.infraestructura.controlador;
 
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.*;
 import com.asisge.consultifybackend.usuarios.aplicacion.manejador.ManejadorServicioUsuario;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +23,10 @@ public class ControladorUsuario {
     }
 
     @GetMapping
-    public List<Usuario> buscarUsuarios() {
+    public List<UsuarioListaDto> buscarUsuarios() {
         return manejadorServicioUsuario.buscarTodos();
     }
 
-    @GetMapping("/autenticados")
-    public List<UsuarioAutenticado> buscarUsuariosAutenticados() {
-        return manejadorServicioUsuario.buscarTodosAutenticados();
-    }
 
     @GetMapping("/{identificacion}")
     public UsuarioAutenticado obternerPorIdentificacion(@PathVariable("identificacion") String identificacion) {

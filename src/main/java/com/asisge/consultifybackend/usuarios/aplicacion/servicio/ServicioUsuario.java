@@ -1,14 +1,13 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.servicio;
 
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.*;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 
 import java.util.List;
 
 public interface ServicioUsuario {
 
-    List<Usuario> buscarTodos();
+    List<UsuarioListaDto> buscarTodos();
 
     List<UsuarioAutenticado> buscarTodosAutenticados();
 

@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.TipoDocumento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,10 @@ public class EntidadUsuario {
     @NotBlank
     private
     String identificacion;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumento;
 
     @NotBlank
     @NotNull
