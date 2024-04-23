@@ -34,12 +34,12 @@ public class UsuarioAutenticado {
         this.contrasena = null;
     }
 
-    public boolean validarUsuarioAutenticado() {
+    public boolean validarCrearUsuarioAutenticado() {
         boolean valido = this.validarContrasena();
         if (valido) valido = this.nombreUsuario != null &&
                 this.contrasena != null &&
                 this.creadoEn != null &&
-                this.creadoPor != null &&
+                //this.creadoPor != null &&
                 this.ultimoInicio != null &&
                 this.activo != null &&
                 this.verificado != null &&
@@ -49,6 +49,16 @@ public class UsuarioAutenticado {
 
     private boolean validarContrasena() {
         return this.contrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$");
+    }
+
+    public boolean validarEditarUsuarioAutenticado() {
+        return this.nombreUsuario != null &&
+                this.creadoEn != null &&
+                this.creadoPor != null &&
+                this.ultimoInicio != null &&
+                this.activo != null &&
+                this.verificado != null &&
+                this.rol != null;
     }
 
     public void guardarClaveEncriptada(String contrasena) {

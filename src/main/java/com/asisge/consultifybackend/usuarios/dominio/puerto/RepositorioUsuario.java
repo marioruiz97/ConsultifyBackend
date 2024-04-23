@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface RepositorioUsuario {
 
-    List<Usuario> buscarTodos();
-
     List<UsuarioAutenticado> buscarTodosUsuariosAutenticados();
 
     Usuario buscarUsuarioPorId(Long idUsuario);
@@ -17,17 +15,13 @@ public interface RepositorioUsuario {
 
     UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion);
 
-    UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
-
     UsuarioAutenticado buscarPorCorreoOUsername(String correoOUsername);
 
     UsuarioAutenticado crearUsuarioAutenticado(UsuarioAutenticado usuarioAutenticado);
 
-    void eliminarUsuario(String identificacion);
-
     void cambiarContrasena(UsuarioAutenticado usuarioAutenticado);
 
-    UsuarioAutenticado editarInformacionBasica(Usuario aGuardar);
+    UsuarioAutenticado editarInformacionUsuario(UsuarioAutenticado aGuardar);
 
     UsuarioAutenticado editarCorreo(Usuario existente);
 

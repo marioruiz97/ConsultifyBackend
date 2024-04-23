@@ -9,17 +9,11 @@ public interface ServicioUsuario {
 
     List<UsuarioListaDto> buscarTodos();
 
-    List<UsuarioAutenticado> buscarTodosAutenticados();
-
-    UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion);
-
-    UsuarioAutenticado buscarUsuarioPorCorreo(String correo);
+    UsuarioAutenticado buscarUsuarioPorId(Long idUsuario);
 
     UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto usuarioAutenticado);
 
-    UsuarioAutenticado editarInformacionBasica(Long idUsuario, UsuarioBasicoDto editarUsuario);
-
-    void eliminarUsuario(String identificacion);
+    UsuarioAutenticado editarInformacionBasica(Long idUsuario, NuevoUsuarioAutenticadoDto editarUsuario);
 
     void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioAutenticado);
 
@@ -29,5 +23,4 @@ public interface ServicioUsuario {
 
     Boolean adminDesactivaUsuario(Long idUsuario);
 
-    UsuarioAutenticado buscarUsuarioPorId(Long idUsuario);
 }

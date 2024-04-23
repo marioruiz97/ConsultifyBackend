@@ -31,7 +31,6 @@ public class NuevoUsuarioAutenticadoDto implements Dto {
                 this.telefono != null &&
                 this.correo != null &&
                 this.nombreUsuario != null &&
-                this.creadoPor != null &&
                 this.rol != null;
     }
 

@@ -41,7 +41,7 @@ public class ControladorUsuario {
     }
 
     @PatchMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioAutenticado> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody UsuarioBasicoDto editarUsuario) {
+    public ResponseEntity<UsuarioAutenticado> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody NuevoUsuarioAutenticadoDto editarUsuario) {
         return new ResponseEntity<>(manejadorServicioUsuario.editarInformacionBasica(idUsuario, editarUsuario), HttpStatus.CREATED);
     }
 

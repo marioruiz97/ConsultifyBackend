@@ -1,7 +1,6 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.mapeador;
 
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioBasicoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
@@ -30,11 +29,6 @@ public class MapeadorUsuario {
                 autenticado.getCreadoPor());
     }
 
-    public UsuarioAutenticado aUsuarioAutenticadoDto(UsuarioAutenticado auth) {
-        if (auth != null) auth.limpiarContrasena();
-        return auth;
-    }
-
     public UsuarioAutenticado aNuevoUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuario) {
         UsuarioAutenticado usuarioAutenticado = null;
         if (nuevoUsuario != null) {
@@ -61,14 +55,31 @@ public class MapeadorUsuario {
         return usuarioAutenticado;
     }
 
-    public Usuario aNuevoUsuario(Usuario existente, UsuarioBasicoDto usuarioDto) {
-        return new Usuario(
-                existente.getIdUsuario(),
-                existente.getIdentificacion(),
-                existente.getTipoDocumento(),
-                usuarioDto.getNombres(),
-                usuarioDto.getApellidos(),
-                usuarioDto.getTelefono(),
-                existente.getCorreo());
+
+    public UsuarioAutenticado aEditarUsuarioAutenticado(UsuarioAutenticado existente, NuevoUsuarioAutenticadoDto editarUsuario) {
+        UsuarioAutenticado usuario = null;
+        if (editarUsuario != null) {
+            final Usuario infoUsuario = new Usuario(
+                    existente.getUsuario().getIdUsuario(),
+                    editarUsuario.getIdentificacion(),
+                    editarUsuario.getTipoDocumento(),
+                    editarUsuario.getNombres(),
+                    editarUsuario.getApellidos(),
+                    editarUsuario.getTelefono(),
+                    editarUsuario.getCorreo()
+            );
+            usuario = new UsuarioAutenticado(
+                    infoUsuario,
+                    editarUsuario.getNombreUsuario(),
+                    existente.getContrasena(),
+                    existente.getCreadoEn(),
+                    existente.getCreadoPor(),
+                    existente.getUltimoInicio(),
+                    existente.getActivo(),
+                    existente.getVerificado(),
+                    editarUsuario.getRol()
+            );
+        }
+        return usuario;
     }
 }

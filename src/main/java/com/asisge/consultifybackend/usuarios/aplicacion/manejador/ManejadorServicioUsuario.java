@@ -11,6 +11,8 @@ import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,50 +40,48 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     }
 
     @Override
-    public List<UsuarioAutenticado> buscarTodosAutenticados() {
-        return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioAutenticadoDto).toList();
-    }
-
-    @Override
     public UsuarioAutenticado buscarUsuarioPorId(Long idUsuario) {
-        return mapeadorUsuario.aUsuarioAutenticadoDto(repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario));
+        return devolverUsuarioSinClave(repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario));
     }
 
-    @Override
-    public UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion) {
-        return mapeadorUsuario.aUsuarioAutenticadoDto(repositorioUsuario.buscarUsuarioPorIdentificacion(identificacion));
-    }
-
-    @Override
-    public UsuarioAutenticado buscarUsuarioPorCorreo(String correo) {
-        return repositorioUsuario.buscarUsuarioPorCorreo(correo);
-    }
 
     // TODO despues de que el sistema crea el usuario, debe enviar un correo eléctronico con un token de verificacion donde el nuevo usuario podrá asignar su nueva contraseña y activar su cuenta
     @Override
     public UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuarioDto) {
+        System.out.println(getCurrentUser());
         validarCamposDto(nuevoUsuarioDto);
         UsuarioAutenticado usuarioAGuardar = mapeadorUsuario.aNuevoUsuarioAutenticado(nuevoUsuarioDto);
         usuarioAGuardar.cambiarContrasena("contSENA12*"); // TODO cambiar a generador de contrasenas
-        if (usuarioAGuardar.validarUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
+        if (usuarioAGuardar.validarCrearUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
             usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
     }
 
-    @Override
-    public UsuarioAutenticado editarInformacionBasica(Long idUsuario, UsuarioBasicoDto editarUsuario) {
-        validarCamposDto(editarUsuario);
-        Usuario existente = validarUsuarioExistente(idUsuario, editarUsuario.getIdentificacion());
-        Usuario aGuardar = mapeadorUsuario.aNuevoUsuario(existente, editarUsuario);
-        validarUsuario(aGuardar);
-        return devolverUsuarioSinClave(repositorioUsuario.editarInformacionBasica(aGuardar));
+    public String getCurrentUser() {
+        // Obtén la autenticación actual del contexto de seguridad
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica si la autenticación es nula o no está autenticada
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "Usuario no autenticado";
+        }
+
+        // Obtén el nombre de usuario del principal de autenticación
+        String username = authentication.getName();
+
+        return "Usuario actual: " + username;
     }
 
     @Override
-    public void eliminarUsuario(String identificacion) {
-        repositorioUsuario.eliminarUsuario(identificacion);
+    public UsuarioAutenticado editarInformacionBasica(Long idUsuario, NuevoUsuarioAutenticadoDto editarUsuario) {
+        validarCamposDto(editarUsuario);
+        UsuarioAutenticado existente = repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
+        UsuarioAutenticado aGuardar = mapeadorUsuario.aEditarUsuarioAutenticado(existente, editarUsuario);
+        if (!aGuardar.validarEditarUsuarioAutenticado() && !aGuardar.getUsuario().validarUsuario())
+            throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
+        return devolverUsuarioSinClave(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 
     @Secured("ROLE_ADMIN")
@@ -103,7 +103,7 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             throw new IllegalArgumentException("La nueva contrasena no puede ser igual a la anterior, por favor verifique los datos");
 
         existente.cambiarContrasena(usuarioDto.getContrasena());
-        if (existente.validarUsuarioAutenticado() && existente.getUsuario().validarUsuario()) {
+        if (existente.validarCrearUsuarioAutenticado() && existente.getUsuario().validarUsuario()) {
             repositorioUsuario.cambiarContrasena(existente);
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
@@ -152,7 +152,7 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         Usuario usuario = repositorioUsuario.buscarUsuarioPorId(idUsuario);
         if (!usuario.getIdentificacion().equals(identificacion) || !usuario.getCorreo().equals(correo))
             throw new EntityNotFoundException("La identificación o el correo del usuario ingresado no corresponde a los datos en base de datos. Por favor verifíquelos");
-        return repositorioUsuario.buscarUsuarioPorIdentificacion(identificacion);
+        return repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
     }
 
     private void validarCamposDto(Dto dto) {

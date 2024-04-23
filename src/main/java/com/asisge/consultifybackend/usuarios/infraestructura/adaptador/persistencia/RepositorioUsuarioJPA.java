@@ -18,8 +18,6 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     // Métodos de JPA
     Optional<EntidadUsuario> findByIdentificacion(String identificacion);
 
-    Optional<EntidadUsuario> findByCorreo(String correo);
-
     Optional<EntidadUsuario> findByCorreoOrNombreUsuario(String correo, String nombreUsuario);
 
     // Métodos propios
@@ -30,12 +28,13 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     }
 
     @Override
-    default UsuarioAutenticado editarInformacionBasica(Usuario aGuardar) {
-        EntidadUsuario existente = findById(aGuardar.getIdUsuario()).orElseThrow(() -> new EntityNotFoundException("No se a encontrado el usuario en base de datos"));
-        existente.setNombres(aGuardar.getNombres());
-        existente.setApellidos(aGuardar.getApellidos());
-        existente.setTelefono(aGuardar.getTelefono());
-        return ConvertidorUsuario.aDominio(this.save(existente), existente.getCreadoPor().toString());
+    default UsuarioAutenticado editarInformacionUsuario(UsuarioAutenticado cuenta) {
+        Usuario usuario = cuenta.getUsuario();
+        EntidadUsuario existente = findById(usuario.getIdUsuario())
+                .orElseThrow(() -> new EntityNotFoundException("No se a encontrado el usuario en base de datos"));
+        EntidadUsuario aGuardar = ConvertidorUsuario.aEntidad(usuario, cuenta);
+        aGuardar.setCreadoPor(existente.getCreadoPor());
+        return ConvertidorUsuario.aDominio(this.save(aGuardar), aGuardar.getCreadoPor().toString());
     }
 
     @Override
@@ -54,18 +53,8 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     }
 
     @Override
-    default void eliminarUsuario(String identificacion) {
-        // TODO: construir
-    }
-
-    @Override
     default void cambiarContrasena(UsuarioAutenticado usuarioAutenticado) {
         this.save(ConvertidorUsuario.aEntidad(usuarioAutenticado.getUsuario(), usuarioAutenticado));
-    }
-
-    @Override
-    default List<Usuario> buscarTodos() {
-        return this.findAll().stream().map(ConvertidorUsuario::aDominio).toList();
     }
 
     @Override
@@ -78,14 +67,6 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
         EntidadUsuario entidad = this.findByIdentificacion(identificacion).orElse(null);
         if (entidad == null)
             throw new EntityNotFoundException("No se encontró el usuario con identificacion " + identificacion);
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
-    }
-
-    @Override
-    default UsuarioAutenticado buscarUsuarioPorCorreo(String correo) {
-        EntidadUsuario entidad = this.findByCorreo(correo).orElse(null);
-        if (entidad == null)
-            throw new EntityNotFoundException("No se encontró el usuario con correo " + correo);
         return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
     }
 
