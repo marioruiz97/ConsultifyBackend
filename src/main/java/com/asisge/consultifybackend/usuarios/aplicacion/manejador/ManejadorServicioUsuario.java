@@ -34,12 +34,17 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
 
     @Override
     public List<UsuarioListaDto> buscarTodos() {
-        return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(MapeadorUsuario::aUsuarioLista).toList();
+        return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioLista).toList();
     }
 
     @Override
     public List<UsuarioAutenticado> buscarTodosAutenticados() {
         return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioAutenticadoDto).toList();
+    }
+
+    @Override
+    public UsuarioAutenticado buscarUsuarioPorId(Long idUsuario) {
+        return mapeadorUsuario.aUsuarioAutenticadoDto(repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario));
     }
 
     @Override

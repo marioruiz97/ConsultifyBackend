@@ -28,4 +28,6 @@ public interface ServicioUsuario {
     CambioEstadoDto cambiarEstado(Long idUsuario, boolean activo, String identificacion);
 
     Boolean adminDesactivaUsuario(Long idUsuario);
+
+    UsuarioAutenticado buscarUsuarioPorId(Long idUsuario);
 }

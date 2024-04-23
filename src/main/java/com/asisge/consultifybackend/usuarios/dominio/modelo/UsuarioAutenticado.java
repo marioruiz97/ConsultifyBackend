@@ -21,7 +21,6 @@ public class UsuarioAutenticado {
     private Boolean activo;
     @Setter
     private Boolean verificado;
-
     private Rol rol;
 
     public void cambiarContrasena(String nuevaContrasena) {

@@ -15,7 +15,7 @@ public class MapeadorUsuario {
 
     private static final String DUMMY_PASSWORD = "DUMMYpass1*";
 
-    public static UsuarioListaDto aUsuarioLista(UsuarioAutenticado autenticado) {
+    public UsuarioListaDto aUsuarioLista(UsuarioAutenticado autenticado) {
         Usuario usuario = autenticado.getUsuario();
         return new UsuarioListaDto(
                 usuario.getIdUsuario(),

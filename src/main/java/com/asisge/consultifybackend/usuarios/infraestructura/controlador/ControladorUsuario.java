@@ -29,10 +29,11 @@ public class ControladorUsuario {
     }
 
 
-    @GetMapping("/{identificacion}")
-    public UsuarioAutenticado obternerPorIdentificacion(@PathVariable("identificacion") String identificacion) {
-        return manejadorServicioUsuario.buscarUsuarioPorIdentificacion(identificacion);
+    @GetMapping("/{idUsuario}")
+    public UsuarioAutenticado obternerPorId(@PathVariable Long idUsuario) {
+        return manejadorServicioUsuario.buscarUsuarioPorId(idUsuario);
     }
+
 
     @PostMapping()
     public ResponseEntity<UsuarioAutenticado> crearUsuario(@RequestBody NuevoUsuarioAutenticadoDto nuevoUsuario) {
