@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -40,7 +41,14 @@ public class ConfiguracionSpringSecurity {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sessionConfigurer -> sessionConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated());
+
+        // config para que muestre la consola H2
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
     }
