@@ -23,6 +23,7 @@ public class MapeadorUsuario {
                 usuario.getNombres(),
                 usuario.getApellidos(),
                 usuario.getTelefono(),
+                autenticado.getNombreUsuario(),
                 usuario.getCorreo(),
                 autenticado.getActivo(),
                 autenticado.getRol(),

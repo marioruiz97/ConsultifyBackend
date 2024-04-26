@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 public class EntidadUsuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private
     Long idUsuario;
 
@@ -82,6 +82,7 @@ public class EntidadUsuario {
     @NotBlank
     @NotNull
     @Email(regexp = "^[\\w\\.]+@([\\w-]+)\\.+[\\w-]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
+    @Column(nullable = false, unique = true)
     private String correo;
 
     // propiedades de autenticacion del usuario

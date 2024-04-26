@@ -15,6 +15,7 @@ public class UsuarioListaDto {
     private String nombres;
     private String apellidos;
     private String telefono;
+    private String nombreUsuario;
     private String correo;
     private Boolean estado;
     private Rol rol;
