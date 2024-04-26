@@ -11,8 +11,6 @@ import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +46,6 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     // TODO despues de que el sistema crea el usuario, debe enviar un correo eléctronico con un token de verificacion donde el nuevo usuario podrá asignar su nueva contraseña y activar su cuenta
     @Override
     public UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuarioDto) {
-        System.out.println(getCurrentUser());
         validarCamposDto(nuevoUsuarioDto);
         UsuarioAutenticado usuarioAGuardar = mapeadorUsuario.aNuevoUsuarioAutenticado(nuevoUsuarioDto);
         usuarioAGuardar.cambiarContrasena("contSENA12*"); // TODO cambiar a generador de contrasenas
@@ -57,21 +54,6 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
-    }
-
-    public String getCurrentUser() {
-        // Obtén la autenticación actual del contexto de seguridad
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Verifica si la autenticación es nula o no está autenticada
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "Usuario no autenticado";
-        }
-
-        // Obtén el nombre de usuario del principal de autenticación
-        String username = authentication.getName();
-
-        return "Usuario actual: " + username;
     }
 
     @Override
@@ -98,16 +80,16 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         UsuarioAutenticado existente = validarUsuarioAutenticadoExistente(idUsuario, usuarioDto.getIdentificacion(), usuarioDto.getCorreo());
 
         if (!existente.getContrasena().equals(usuarioDto.getContrasenaActual()))
-            throw new IllegalArgumentException("La contrasena ingresada no corresponde con los datos guardados en base de datos, por favor verifiquelos");
+            throw new IllegalArgumentException("La contraseña ingresada no corresponde con los datos guardados en base de datos, por favor verifiquelos");
         if (existente.getContrasena().equals(usuarioDto.getContrasena()))
-            throw new IllegalArgumentException("La nueva contrasena no puede ser igual a la anterior, por favor verifique los datos");
+            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior, por favor verifique los datos");
 
         existente.cambiarContrasena(usuarioDto.getContrasena());
         if (existente.validarCrearUsuarioAutenticado() && existente.getUsuario().validarUsuario()) {
+            existente.guardarClaveEncriptada(existente.getContrasena());
             repositorioUsuario.cambiarContrasena(existente);
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
-        // TODO finalizar sesion (hacer el token actual invalido)
     }
 
     @Override
@@ -120,20 +102,22 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
     }
 
+    @Secured("ROLE_ADMIN")
     @Override
-    public CambioEstadoDto cambiarEstado(Long idUsuario, boolean activar, String identificacion) {
-        UsuarioAutenticado usuario = repositorioUsuario.buscarUsuarioPorIdentificacion(identificacion);
-        CambioEstadoDto resultado = new CambioEstadoDto(idUsuario, identificacion, usuario.getActivo());
+    public boolean cambiarEstado(Long idUsuario, boolean activar) {
+        UsuarioAutenticado usuario = repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
+        Boolean nuevoEstado = activar;
         if (!usuario.getActivo().equals(activar)) {
             if (activar) {
-                usuario.cambiarContrasena(generarContrasenaSegura());
+                String nuevaContrasena = generarContrasenaSegura();
+                usuario.cambiarContrasena(nuevaContrasena);
+                usuario.guardarClaveEncriptada(passwordEncoder.encode(nuevaContrasena));
                 // TODO si el cambio es para activar el usuario nuevamente, se debe enviar correo de verificacion y generar nueva clave
             }
             UsuarioAutenticado nuevoUsuario = repositorioUsuario.cambiarEstado(usuario, activar);
-            resultado.setActivo(nuevoUsuario.getActivo());
+            nuevoEstado = nuevoUsuario.getActivo();
         }
-        // TODO cuando el usuario da de baja su propio perfil, se debe finalizar la sesion
-        return resultado;
+        return nuevoEstado;
     }
 
     private void validarUsuario(Usuario existente) {

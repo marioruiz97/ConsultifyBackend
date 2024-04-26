@@ -10,12 +10,11 @@ import lombok.Setter;
 public class CambioEstadoDto implements Dto {
 
     private Long idUsuario;
-    private String identificacion;
     private Boolean activo;
 
     @Override
     public boolean validarDto() {
-        return this.identificacion != null &&
+        return this.idUsuario != null &&
                 this.activo != null;
     }
 }

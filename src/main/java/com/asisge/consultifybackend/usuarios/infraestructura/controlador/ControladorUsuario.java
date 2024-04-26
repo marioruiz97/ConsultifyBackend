@@ -56,10 +56,11 @@ public class ControladorUsuario {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Secured("ROLE_ADMIN")
     @PatchMapping("/estado/{idUsuario}")
-    public ResponseEntity<CambioEstadoDto> cambiarEstado(@PathVariable Long idUsuario, @RequestBody CambioEstadoDto estadoDto) {
-        CambioEstadoDto nuevoEstado = manejadorServicioUsuario.cambiarEstado(idUsuario, estadoDto.getActivo(), estadoDto.getIdentificacion());
-        return new ResponseEntity<>(nuevoEstado, HttpStatus.OK);
+    public ResponseEntity<Boolean> cambiarEstado(@PathVariable Long idUsuario, @RequestBody CambioEstadoDto estadoDto) {
+        Boolean nuevoEstado = manejadorServicioUsuario.cambiarEstado(idUsuario, estadoDto.getActivo());
+        return ResponseEntity.ok(nuevoEstado);
     }
 
     @Secured("ROLE_ADMIN")

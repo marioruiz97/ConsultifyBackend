@@ -19,7 +19,7 @@ public interface ServicioUsuario {
 
     UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
 
-    CambioEstadoDto cambiarEstado(Long idUsuario, boolean activo, String identificacion);
+    boolean cambiarEstado(Long idUsuario, boolean activo);
 
     Boolean adminDesactivaUsuario(Long idUsuario);
 
