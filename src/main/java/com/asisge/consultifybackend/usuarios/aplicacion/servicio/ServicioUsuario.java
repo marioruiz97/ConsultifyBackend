@@ -15,10 +15,6 @@ public interface ServicioUsuario {
 
     UsuarioAutenticado editarInformacionBasica(Long idUsuario, NuevoUsuarioAutenticadoDto editarUsuario);
 
-    void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioAutenticado);
-
-    UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
-
     boolean cambiarEstado(Long idUsuario, boolean activo);
 
     Boolean adminDesactivaUsuario(Long idUsuario);

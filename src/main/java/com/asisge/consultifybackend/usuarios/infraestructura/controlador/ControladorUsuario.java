@@ -28,12 +28,10 @@ public class ControladorUsuario {
         return manejadorServicioUsuario.buscarTodos();
     }
 
-
     @GetMapping("/{idUsuario}")
     public UsuarioAutenticado obternerPorId(@PathVariable Long idUsuario) {
         return manejadorServicioUsuario.buscarUsuarioPorId(idUsuario);
     }
-
 
     @PostMapping()
     public ResponseEntity<UsuarioAutenticado> crearUsuario(@RequestBody NuevoUsuarioAutenticadoDto nuevoUsuario) {
@@ -43,17 +41,6 @@ public class ControladorUsuario {
     @PatchMapping("/{idUsuario}")
     public ResponseEntity<UsuarioAutenticado> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody NuevoUsuarioAutenticadoDto editarUsuario) {
         return new ResponseEntity<>(manejadorServicioUsuario.editarInformacionBasica(idUsuario, editarUsuario), HttpStatus.CREATED);
-    }
-
-    @PatchMapping("/perfil/correo/{idUsuario}")
-    public ResponseEntity<UsuarioAutenticado> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
-        return new ResponseEntity<>(manejadorServicioUsuario.cambiarCorreoElectronico(idUsuario, usuarioDto), HttpStatus.OK);
-    }
-
-    @PatchMapping("/perfil/contrasena/{idUsuario}")
-    public ResponseEntity<UsuarioAutenticado> cambiarContrasena(@PathVariable Long idUsuario, @RequestBody CambioContrasenaDto usuarioDto) {
-        manejadorServicioUsuario.cambiarContrasena(idUsuario, usuarioDto);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Secured("ROLE_ADMIN")

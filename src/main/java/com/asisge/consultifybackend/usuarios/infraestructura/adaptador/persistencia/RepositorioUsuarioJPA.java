@@ -16,8 +16,6 @@ import java.util.Optional;
 public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Long>, RepositorioUsuario {
 
     // Métodos de JPA
-    Optional<EntidadUsuario> findByIdentificacion(String identificacion);
-
     Optional<EntidadUsuario> findByCorreoOrNombreUsuario(String correo, String nombreUsuario);
 
     // Métodos propios
@@ -38,23 +36,10 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     }
 
     @Override
-    default UsuarioAutenticado editarCorreo(Usuario existente) {
-        EntidadUsuario actual = findById(existente.getIdUsuario()).orElseThrow(EntityNotFoundException::new);
-        actual.setCorreo(existente.getCorreo());
-        actual.setVerificado(Boolean.FALSE);
-        return ConvertidorUsuario.aDominio(this.save(actual), actual.getCreadoPor().toString());
-    }
-
-    @Override
     default UsuarioAutenticado cambiarEstado(UsuarioAutenticado usuario, boolean activo) {
         EntidadUsuario aGuardar = ConvertidorUsuario.aEntidad(usuario.getUsuario(), usuario);
         aGuardar.setActivo(activo);
         return ConvertidorUsuario.aDominio(this.save(aGuardar), aGuardar.getCreadoPor().toString());
-    }
-
-    @Override
-    default void cambiarContrasena(UsuarioAutenticado usuarioAutenticado) {
-        this.save(ConvertidorUsuario.aEntidad(usuarioAutenticado.getUsuario(), usuarioAutenticado));
     }
 
     @Override
@@ -63,22 +48,9 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     }
 
     @Override
-    default UsuarioAutenticado buscarUsuarioPorIdentificacion(String identificacion) {
-        EntidadUsuario entidad = this.findByIdentificacion(identificacion).orElse(null);
-        if (entidad == null)
-            throw new EntityNotFoundException("No se encontró el usuario con identificacion " + identificacion);
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
-    }
-
-    @Override
     default UsuarioAutenticado buscarPorCorreoOUsername(String correoOUsername) {
         EntidadUsuario entidad = findByCorreoOrNombreUsuario(correoOUsername, correoOUsername).orElse(null);
         return ConvertidorUsuario.aDominio(entidad, "1");
-    }
-
-    @Override
-    default Usuario buscarUsuarioPorId(Long idUsuario) {
-        return ConvertidorUsuario.aDominio(this.findById(idUsuario).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override

@@ -1,14 +1,14 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.*;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.GeneradorContrasena;
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,34 +74,6 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         return cuenta.getActivo();
     }
 
-    @Override
-    public void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioDto) {
-        validarCamposDto(usuarioDto);
-        UsuarioAutenticado existente = validarUsuarioAutenticadoExistente(idUsuario, usuarioDto.getIdentificacion(), usuarioDto.getCorreo());
-
-        if (!existente.getContrasena().equals(usuarioDto.getContrasenaActual()))
-            throw new IllegalArgumentException("La contraseña ingresada no corresponde con los datos guardados en base de datos, por favor verifiquelos");
-        if (existente.getContrasena().equals(usuarioDto.getContrasena()))
-            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior, por favor verifique los datos");
-
-        existente.cambiarContrasena(usuarioDto.getContrasena());
-        if (existente.validarCrearUsuarioAutenticado() && existente.getUsuario().validarUsuario()) {
-            existente.guardarClaveEncriptada(existente.getContrasena());
-            repositorioUsuario.cambiarContrasena(existente);
-        } else
-            throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
-    }
-
-    @Override
-    public UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
-        validarCamposDto(usuarioDto);
-        Usuario existente = validarUsuarioExistente(idUsuario, usuarioDto.getIdentificacion());
-        existente.cambiarCorreo(usuarioDto.getCorreo());
-        validarUsuario(existente);
-        return devolverUsuarioSinClave(repositorioUsuario.editarCorreo(existente));
-        // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
-    }
-
     @Secured("ROLE_ADMIN")
     @Override
     public boolean cambiarEstado(Long idUsuario, boolean activar) {
@@ -118,25 +90,6 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             nuevoEstado = nuevoUsuario.getActivo();
         }
         return nuevoEstado;
-    }
-
-    private void validarUsuario(Usuario existente) {
-        if (!existente.validarUsuario())
-            throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
-    }
-
-    private Usuario validarUsuarioExistente(Long idUsuario, String identificacion) {
-        Usuario existente = repositorioUsuario.buscarUsuarioPorId(idUsuario);
-        if (!existente.getIdentificacion().equals(identificacion))
-            throw new EntityNotFoundException("La identificación del usuario ingresado no corresponde a los datos en base de datos. Por favor verifíquelos");
-        return existente;
-    }
-
-    private UsuarioAutenticado validarUsuarioAutenticadoExistente(Long idUsuario, String identificacion, String correo) {
-        Usuario usuario = repositorioUsuario.buscarUsuarioPorId(idUsuario);
-        if (!usuario.getIdentificacion().equals(identificacion) || !usuario.getCorreo().equals(correo))
-            throw new EntityNotFoundException("La identificación o el correo del usuario ingresado no corresponde a los datos en base de datos. Por favor verifíquelos");
-        return repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
     }
 
     private void validarCamposDto(Dto dto) {

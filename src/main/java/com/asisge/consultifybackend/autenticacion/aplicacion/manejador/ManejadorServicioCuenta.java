@@ -3,19 +3,30 @@ package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioContrasenaDto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioCorreoDto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ManejadorServicioCuenta implements ServicioCuenta {
 
+    public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
+
     private final RepositorioAutorizacion repositorioAutorizacion;
+    private final PasswordEncoder passwordEncoder;
+    private final RepositorioUsuario repositorioUsuario;
 
     @Autowired
-    public ManejadorServicioCuenta(RepositorioAutorizacion repositorioAutorizacion) {
+    public ManejadorServicioCuenta(RepositorioAutorizacion repositorioAutorizacion, RepositorioUsuario repositorioUsuario, PasswordEncoder passwordEncoder) {
         this.repositorioAutorizacion = repositorioAutorizacion;
+        this.passwordEncoder = passwordEncoder;
+        this.repositorioUsuario = repositorioUsuario;
     }
 
     @Override
@@ -33,5 +44,50 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
                 cuenta.getCreadoPor(),
                 cuenta.getRol()
         );
+    }
+
+    @Override
+    public Boolean desactivarMiUsuario(Long idUsuario) {
+        UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
+        cuenta = repositorioUsuario.cambiarEstado(cuenta, Boolean.FALSE);
+        return cuenta.getActivo();
+    }
+
+    @Override
+    public void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioDto) {
+        validarCamposDto(usuarioDto);
+        UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreo());
+
+        if (!existente.getContrasena().equals(usuarioDto.getContrasenaActual()))
+            throw new IllegalArgumentException("La contraseña actual proporcionada no coincide con la almacenada en la base de datos.");
+        if (existente.getContrasena().equals(usuarioDto.getContrasena()))
+            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior, por favor verifique los datos");
+
+        existente.cambiarContrasena(usuarioDto.getContrasena());
+        existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
+        repositorioAutorizacion.cambiarContrasena(existente);
+    }
+
+    @Override
+    public UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
+        validarCamposDto(usuarioDto);
+        UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreoActual());
+        Usuario usuario = cuenta.getUsuario();
+        usuario.cambiarCorreo(usuarioDto.getCorreoNuevo());
+        validarUsuario(usuario);
+        cuenta = repositorioAutorizacion.editarCorreo(usuario);
+        cuenta.limpiarContrasena();
+        return cuenta;
+        // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
+    }
+
+    private void validarCamposDto(Dto dto) {
+        if (!dto.validarDto())
+            throw new IllegalArgumentException("Por favor valide los datos obligatorios del usuario DTO");
+    }
+
+    private void validarUsuario(Usuario existente) {
+        if (!existente.validarUsuario())
+            throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
     }
 }
