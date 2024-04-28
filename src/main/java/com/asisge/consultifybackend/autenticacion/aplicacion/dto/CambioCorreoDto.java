@@ -1,6 +1,7 @@
-package com.asisge.consultifybackend.usuarios.aplicacion.dto;
+package com.asisge.consultifybackend.autenticacion.aplicacion.dto;
 
 
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

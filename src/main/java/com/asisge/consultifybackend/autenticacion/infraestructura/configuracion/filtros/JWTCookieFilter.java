@@ -33,6 +33,7 @@ public class JWTCookieFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        filterChain.doFilter(request, response);
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtService.validarTokenJwt(jwt)) {
@@ -50,8 +51,6 @@ public class JWTCookieFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private String parseJwt(HttpServletRequest request) {

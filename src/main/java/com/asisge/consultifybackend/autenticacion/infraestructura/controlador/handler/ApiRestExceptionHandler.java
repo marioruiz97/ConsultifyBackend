@@ -49,7 +49,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class})
     protected ResponseEntity<Object> handleIllegalException(RuntimeException ex, WebRequest request) {
-        ApiError error = ApiError.conMensajeGenerico(ex, HttpStatus.BAD_REQUEST);
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 

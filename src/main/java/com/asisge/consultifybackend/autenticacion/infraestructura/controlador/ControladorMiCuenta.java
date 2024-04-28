@@ -1,9 +1,10 @@
 package com.asisge.consultifybackend.autenticacion.infraestructura.controlador;
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ActualizarMisDatosDto;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioContrasenaDto;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioContrasenaDto;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class ControladorMiCuenta {
         return manejadorCuenta.buscarPorIdUsuario(idUsuario);
     }
 
+    @PatchMapping("/{idUsuario}")
+    public ResponseEntity<MisDatos> editarInformacionBasica(@PathVariable Long idUsuario, @RequestBody ActualizarMisDatosDto editarUsuario) {
+        return new ResponseEntity<>(manejadorCuenta.editarMiInformacionBasica(idUsuario, editarUsuario), HttpStatus.CREATED);
+    }
+
     @PatchMapping("/correo/{idUsuario}")
     public ResponseEntity<UsuarioAutenticado> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
         usuarioDto.setIdUsuario(idUsuario);
@@ -33,17 +39,16 @@ public class ControladorMiCuenta {
     }
 
     @PatchMapping("/contrasena/{idUsuario}")
-    public ResponseEntity<UsuarioAutenticado> cambiarContrasena(@PathVariable Long idUsuario, @RequestBody CambioContrasenaDto usuarioDto) {
+    public ResponseEntity<Boolean> cambiarContrasena(@PathVariable Long idUsuario, @RequestBody CambioContrasenaDto usuarioDto) {
         usuarioDto.setIdUsuario(idUsuario);
         manejadorCuenta.cambiarContrasena(idUsuario, usuarioDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idUsuario}")
     public Boolean desactivarUsuario(@PathVariable Long idUsuario) {
         return manejadorCuenta.desactivarMiUsuario(idUsuario);
     }
-
 
 
 }

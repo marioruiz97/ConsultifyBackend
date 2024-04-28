@@ -1,10 +1,12 @@
 package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ActualizarMisDatosDto;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioContrasenaDto;
+import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioCorreoDto;
+import com.asisge.consultifybackend.autenticacion.aplicacion.mapeador.MapeadorCuenta;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioContrasenaDto;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
@@ -21,29 +23,33 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioUsuario repositorioUsuario;
+    private final MapeadorCuenta mapeadorCuenta;
 
     @Autowired
-    public ManejadorServicioCuenta(RepositorioAutorizacion repositorioAutorizacion, RepositorioUsuario repositorioUsuario, PasswordEncoder passwordEncoder) {
+    public ManejadorServicioCuenta(RepositorioAutorizacion repositorioAutorizacion,
+                                   RepositorioUsuario repositorioUsuario,
+                                   PasswordEncoder passwordEncoder,
+                                   MapeadorCuenta mapeadorCuenta) {
         this.repositorioAutorizacion = repositorioAutorizacion;
         this.passwordEncoder = passwordEncoder;
         this.repositorioUsuario = repositorioUsuario;
+        this.mapeadorCuenta = mapeadorCuenta;
     }
 
     @Override
     public MisDatos buscarPorIdUsuario(Long idUsuario) {
         UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
-        Usuario usuario = cuenta.getUsuario();
-        return new MisDatos(
-                usuario.getIdentificacion(),
-                usuario.getTipoDocumento(),
-                usuario.getNombres(),
-                usuario.getApellidos(),
-                usuario.getTelefono(),
-                usuario.getCorreo(),
-                cuenta.getNombreUsuario(),
-                cuenta.getCreadoPor(),
-                cuenta.getRol()
-        );
+        return mapeadorCuenta.aMisDatos(cuenta);
+    }
+
+    @Override
+    public MisDatos editarMiInformacionBasica(Long idUsuario, ActualizarMisDatosDto editarUsuario) {
+        validarCamposDto(editarUsuario);
+        UsuarioAutenticado existente = repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
+        UsuarioAutenticado aGuardar = mapeadorCuenta.aUsuarioAutenticado(existente, editarUsuario);
+        if (!aGuardar.validarEditarUsuarioAutenticado() && !aGuardar.getUsuario().validarUsuario())
+            throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
+        return mapeadorCuenta.aMisDatos(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 
     @Override
@@ -58,7 +64,7 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
         validarCamposDto(usuarioDto);
         UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreo());
 
-        if (!existente.getContrasena().equals(usuarioDto.getContrasenaActual()))
+        if (!passwordEncoder.matches(usuarioDto.getContrasenaActual(), existente.getContrasena()))
             throw new IllegalArgumentException("La contraseña actual proporcionada no coincide con la almacenada en la base de datos.");
         if (existente.getContrasena().equals(usuarioDto.getContrasena()))
             throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior, por favor verifique los datos");
