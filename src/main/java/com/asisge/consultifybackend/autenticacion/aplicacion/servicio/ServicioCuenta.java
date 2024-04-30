@@ -4,7 +4,6 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ActualizarMisDa
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioContrasenaDto;
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 
 public interface ServicioCuenta {
 
@@ -12,7 +11,7 @@ public interface ServicioCuenta {
 
     void cambiarContrasena(Long idUsuario, CambioContrasenaDto usuarioDto);
 
-    UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
+    MisDatos cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto);
 
     Boolean desactivarMiUsuario(Long idUsuario);
 

@@ -75,15 +75,13 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
     }
 
     @Override
-    public UsuarioAutenticado cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
+    public MisDatos cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
         validarCamposDto(usuarioDto);
         UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreoActual());
         Usuario usuario = cuenta.getUsuario();
         usuario.cambiarCorreo(usuarioDto.getCorreoNuevo());
         validarUsuario(usuario);
-        cuenta = repositorioAutorizacion.editarCorreo(usuario);
-        cuenta.limpiarContrasena();
-        return cuenta;
+        return mapeadorCuenta.aMisDatos(repositorioAutorizacion.editarCorreo(usuario));
         // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
     }
 

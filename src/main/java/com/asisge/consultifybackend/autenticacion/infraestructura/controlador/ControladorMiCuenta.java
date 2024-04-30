@@ -5,7 +5,6 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioContrasen
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class ControladorMiCuenta {
     }
 
     @PatchMapping("/correo/{idUsuario}")
-    public ResponseEntity<UsuarioAutenticado> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
+    public ResponseEntity<MisDatos> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
         usuarioDto.setIdUsuario(idUsuario);
         return new ResponseEntity<>(manejadorCuenta.cambiarCorreoElectronico(idUsuario, usuarioDto), HttpStatus.OK);
     }
