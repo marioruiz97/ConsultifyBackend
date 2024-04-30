@@ -1,8 +1,8 @@
 package com.asisge.consultifybackend.usuarios.dominio.modelo;
 
 public enum Rol {
-    ADMIN,
-    ASESOR,
-    CLIENTE
+    ROLE_ADMIN,
+    ROLE_ASESOR,
+    ROLE_CLIENTE
 
 }

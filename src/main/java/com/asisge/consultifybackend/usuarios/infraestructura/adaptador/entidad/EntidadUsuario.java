@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.TipoDocumento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 public class EntidadUsuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private
     Long idUsuario;
 
@@ -35,6 +36,10 @@ public class EntidadUsuario {
     @NotBlank
     private
     String identificacion;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumento;
 
     @NotBlank
     @NotNull
@@ -77,6 +82,7 @@ public class EntidadUsuario {
     @NotBlank
     @NotNull
     @Email(regexp = "^[\\w\\.]+@([\\w-]+)\\.+[\\w-]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
+    @Column(nullable = false, unique = true)
     private String correo;
 
     // propiedades de autenticacion del usuario

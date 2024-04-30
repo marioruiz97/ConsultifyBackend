@@ -13,7 +13,13 @@ public final class ConvertidorUsuario {
     public static Usuario aDominio(EntidadUsuario entidad) {
         Usuario nuevoUsuario = null;
         if (entidad != null) {
-            nuevoUsuario = new Usuario(entidad.getIdUsuario(), entidad.getIdentificacion(), entidad.getNombres(), entidad.getApellidos(), entidad.getTelefono(),
+            nuevoUsuario = new Usuario(
+                    entidad.getIdUsuario(),
+                    entidad.getIdentificacion(),
+                    entidad.getTipoDocumento(),
+                    entidad.getNombres(),
+                    entidad.getApellidos(),
+                    entidad.getTelefono(),
                     entidad.getCorreo());
         }
         return nuevoUsuario;
@@ -23,8 +29,16 @@ public final class ConvertidorUsuario {
         Usuario nuevoUsuario = aDominio(entidad);
         UsuarioAutenticado usuarioAutenticado = null;
         if (entidad != null) {
-            usuarioAutenticado = new UsuarioAutenticado(nuevoUsuario, entidad.getNombreUsuario(), entidad.getContrasena(), entidad.getCreadoEn(), creadoPor,
-                    entidad.getUltimoInicio(), entidad.getActivo(), entidad.getVerificado(), entidad.getRol());
+            usuarioAutenticado = new UsuarioAutenticado(
+                    nuevoUsuario,
+                    entidad.getNombreUsuario(),
+                    entidad.getContrasena(),
+                    entidad.getCreadoEn(),
+                    creadoPor,
+                    entidad.getUltimoInicio(),
+                    entidad.getActivo(),
+                    entidad.getVerificado(),
+                    entidad.getRol());
         }
         return usuarioAutenticado;
     }
@@ -33,6 +47,7 @@ public final class ConvertidorUsuario {
         EntidadUsuario entidad = new EntidadUsuario();
         entidad.setIdUsuario(usuario.getIdUsuario());
         entidad.setIdentificacion(usuario.getIdentificacion());
+        entidad.setTipoDocumento(usuario.getTipoDocumento());
         entidad.setNombres(usuario.getNombres());
         entidad.setApellidos(usuario.getApellidos());
         entidad.setTelefono(usuario.getTelefono());
