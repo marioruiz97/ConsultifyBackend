@@ -1,7 +1,8 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.TipoDocumento;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -64,7 +65,7 @@ public class EntidadUsuario {
      * \d{9} coincide con exactamente 9 dígitos después del prefijo.
      * $ indica el final de la cadena.
      */
-    @Pattern(regexp = "^(60\\d)\\d{7}$|^(3\\d{9})$")
+    @Pattern(regexp = ExpresionRegular.PATRON_TELEFONO)
     @NotBlank
     @NotNull
     private String telefono;

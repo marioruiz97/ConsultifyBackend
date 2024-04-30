@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.autenticacion.dominio.modelo;
 
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.TipoDocumento;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
