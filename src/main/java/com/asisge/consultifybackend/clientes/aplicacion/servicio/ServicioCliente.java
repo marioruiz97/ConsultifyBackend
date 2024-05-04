@@ -13,4 +13,6 @@ public interface ServicioCliente {
     Cliente crearCliente(Cliente nuevoCliente);
 
     Cliente editarCliente(Long idCliente, Cliente editarCliente);
+
+    Boolean eliminarCliente(Long idCliente);
 }

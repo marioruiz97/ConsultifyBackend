@@ -5,6 +5,7 @@ import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +37,14 @@ public class ControladorClientes {
     }
 
     @PatchMapping("/{idCliente}")
-    public ResponseEntity<Cliente> editarInformacionBasica(@PathVariable Long idCliente, @RequestBody Cliente editarCliente) {
+    public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente editarCliente) {
         return new ResponseEntity<>(servicioCliente.editarCliente(idCliente, editarCliente), HttpStatus.CREATED);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{idCliente}")
+    public Boolean eliminarCliente(@PathVariable Long idCliente) {
+        return servicioCliente.eliminarCliente(idCliente);
     }
 
 }

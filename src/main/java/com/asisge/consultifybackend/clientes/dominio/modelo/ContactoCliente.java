@@ -4,13 +4,15 @@ import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
 public class ContactoCliente {
 
+    @Setter
     @EqualsAndHashCode.Exclude
-    private Long id;
+    private String id;
     private String nombreCompleto;
     private String telefono;
     private String correo;

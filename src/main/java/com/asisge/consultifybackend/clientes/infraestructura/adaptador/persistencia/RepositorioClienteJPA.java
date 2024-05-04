@@ -31,8 +31,21 @@ public interface RepositorioClienteJPA extends JpaRepository<EntidadCliente, Lon
     }
 
     @Override
-    default Cliente guardarCliente(Cliente nuevoCliente) {
-        EntidadCliente entidad = ConvertidorCliente.aEntidad(nuevoCliente);
+    default Cliente crearCliente(Cliente nuevoCliente) {
+        EntidadCliente entidad = ConvertidorCliente.aCrearEntidad(nuevoCliente);
         return ConvertidorCliente.aDominio(this.save(entidad));
     }
+
+    @Override
+    default Cliente editarCliente(Cliente editarCliente) {
+        EntidadCliente actual = this.findById(editarCliente.getIdCliente()).orElseThrow(() -> new EntityNotFoundException("No se encontró el cliente en base de datos"));
+        EntidadCliente entidad = ConvertidorCliente.aActualizarEntidad(actual, editarCliente);
+        return ConvertidorCliente.aDominio(this.save(entidad));
+    }
+
+    @Override
+    default void eliminarCliente(Long idCliente) {
+        deleteById(idCliente);
+    }
+
 }

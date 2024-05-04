@@ -24,7 +24,8 @@ public final class ConvertidorContactoCliente {
 
     public static EntidadContactoCliente aEntidad(ContactoCliente dominio) {
         EntidadContactoCliente contacto = new EntidadContactoCliente();
-        contacto.setId(dominio.getId());
+        String id = dominio.getId() != null ? dominio.getId() : null;
+        contacto.setId(id);
         contacto.setNombreCompleto(dominio.getNombreCompleto());
         contacto.setTelefono(dominio.getTelefono());
         contacto.setCorreo(dominio.getCorreo());

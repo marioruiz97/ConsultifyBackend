@@ -1,14 +1,19 @@
 package com.asisge.consultifybackend.clientes.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 
 @Entity
@@ -19,8 +24,9 @@ import lombok.NoArgsConstructor;
 public class EntidadContactoCliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EqualsAndHashCode.Exclude
+    @UuidGenerator
+    private String id;
 
     @NotBlank
     @Column(nullable = false, length = 120)
@@ -36,4 +42,5 @@ public class EntidadContactoCliente {
     @Email(regexp = "^[\\w\\.]+@([\\w-]+)\\.+[\\w-]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
     @Column(nullable = false, unique = true)
     private String correo;
+
 }

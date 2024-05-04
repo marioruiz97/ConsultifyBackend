@@ -12,5 +12,10 @@ public interface RepositorioCliente {
 
     boolean existeClientePorId(Long idCliente);
 
-    Cliente guardarCliente(Cliente nuevoCliente);
+    Cliente crearCliente(Cliente nuevoCliente);
+
+    Cliente editarCliente(Cliente editarCliente);
+
+    void eliminarCliente(Long idCliente);
+
 }

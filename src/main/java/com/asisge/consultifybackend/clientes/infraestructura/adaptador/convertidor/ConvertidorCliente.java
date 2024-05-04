@@ -28,7 +28,7 @@ public final class ConvertidorCliente {
         return cliente;
     }
 
-    public static EntidadCliente aEntidad(Cliente dominio) {
+    public static EntidadCliente aCrearEntidad(Cliente dominio) {
         EntidadCliente entidad = new EntidadCliente();
         entidad.setIdCliente(dominio.getIdCliente());
         entidad.setNumeroIdentificacion(dominio.getNumeroIdentificacion());
@@ -42,4 +42,30 @@ public final class ConvertidorCliente {
         return entidad;
     }
 
+    /**
+     * Método usado para actualizar los datos de un cliente existente. el manejo de los contactos requiere una lógica especial.
+     * <p>El dominio siempre debe enviar la lista completa de contactos, lo que deja lugar a 2 casos:</p>
+     * <p>1. El dominio manda la lista vacía, quiere decir que se eliminará la lista actual si la hay y no se dejará ningún contacto</p>
+     * <p>2. El dominio manda la lista, lo que requiere actualizar la lista, para esto se mantendrán los contactos repetidos en las 2 listas, y se agregaran los nuevos</p>
+     * @param entidad objeto entidad existente en la base de datos
+     * @param dominio objeto dominio que sirve para actualizar la entidad
+     * @return devuelve la entidad actualizada para guardarse en base de datos
+     */
+    public static EntidadCliente aActualizarEntidad(EntidadCliente entidad, Cliente dominio) {
+        entidad.setRazonSocial(dominio.getRazonSocial());
+        entidad.setNombreComercial(dominio.getNombreComercial());
+        entidad.setTipoDocumento(dominio.getTipoDocumento());
+        entidad.setNumeroIdentificacion(dominio.getNumeroIdentificacion());
+
+        List<ContactoCliente> contactosDominio = dominio.getContactos();
+        // caso 1: lista vacia
+        if(contactosDominio.isEmpty()) entidad.eliminarContactos();
+        // caso 2: actualizar contactos
+        if (!contactosDominio.isEmpty()) {
+            List<EntidadContactoCliente> contactos = dominio.getContactos().stream().map(ConvertidorContactoCliente::aEntidad).toList();
+            entidad.actualizarContactos(contactos);
+        }
+
+        return entidad;
+    }
 }
