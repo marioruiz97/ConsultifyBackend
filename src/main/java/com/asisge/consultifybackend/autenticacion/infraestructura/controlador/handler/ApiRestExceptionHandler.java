@@ -1,7 +1,8 @@
 package com.asisge.consultifybackend.autenticacion.infraestructura.controlador.handler;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ApiError;
-import com.asisge.consultifybackend.autenticacion.infraestructura.excepcion.ViolacionIntegridadException;
+import com.asisge.consultifybackend.utilidad.dominio.excepcion.ViolacionIntegridadException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -51,6 +52,18 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleIllegalException(RuntimeException ex, WebRequest request) {
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {NullPointerException.class})
+    protected ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
+        ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), ex.getMessage());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(value = {EntityNotFoundException.class})
+    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getLocalizedMessage(), ex.getMessage());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})

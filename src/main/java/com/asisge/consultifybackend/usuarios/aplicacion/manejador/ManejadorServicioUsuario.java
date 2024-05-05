@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;

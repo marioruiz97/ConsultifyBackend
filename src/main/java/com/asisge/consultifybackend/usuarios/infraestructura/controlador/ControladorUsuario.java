@@ -1,7 +1,9 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.controlador;
 
 
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.*;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.CambioEstadoDto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
+import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class ControladorUsuario {
         return manejadorServicioUsuario.buscarUsuarioPorId(idUsuario);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UsuarioAutenticado> crearUsuario(@RequestBody NuevoUsuarioAutenticadoDto nuevoUsuario) {
         return new ResponseEntity<>(manejadorServicioUsuario.crearUsuarioAutenticado(nuevoUsuario), HttpStatus.CREATED);
     }

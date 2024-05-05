@@ -7,7 +7,7 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.mapeador.MapeadorCu
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.usuarios.aplicacion.dto.Dto;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;

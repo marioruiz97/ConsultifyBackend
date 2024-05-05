@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.autenticacion.infraestructura.excepcion;
+package com.asisge.consultifybackend.utilidad.dominio.excepcion;
 
 import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
