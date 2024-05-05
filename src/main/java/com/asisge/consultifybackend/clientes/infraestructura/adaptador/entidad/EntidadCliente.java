@@ -44,6 +44,10 @@ public class EntidadCliente {
     @Getter(value = AccessLevel.NONE)
     private List<EntidadContactoCliente> contactos;
 
+    public EntidadCliente(Long idCliente) {
+        this.idCliente = idCliente;
+    }
+
     public List<EntidadContactoCliente> getContactos() {
         if (contactos != null)
             return contactos;

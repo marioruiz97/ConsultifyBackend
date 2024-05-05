@@ -14,6 +14,7 @@ public class Actividad {
     private Long id;
     private String nombre;
     private String descripcion;
+    private Proyecto proyecto;
     private EstadoActividad estado;
     private LocalDate fechaCierreEsperado;
     private UsuarioAutenticado responsable;

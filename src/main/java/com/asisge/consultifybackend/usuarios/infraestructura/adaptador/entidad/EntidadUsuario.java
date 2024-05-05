@@ -116,4 +116,7 @@ public class EntidadUsuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
+    public EntidadUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 }

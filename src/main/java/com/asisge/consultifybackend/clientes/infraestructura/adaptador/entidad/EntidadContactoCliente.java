@@ -26,6 +26,7 @@ public class EntidadContactoCliente {
     @Id
     @EqualsAndHashCode.Exclude
     @UuidGenerator
+    @Column(name = "id_contacto")
     private String id;
 
     @NotBlank

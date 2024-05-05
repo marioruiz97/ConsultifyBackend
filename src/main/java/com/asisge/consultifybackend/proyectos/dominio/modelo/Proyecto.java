@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.dominio.modelo;
 
+import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,9 +15,7 @@ public class Proyecto {
 
     private String nombreProyecto;
 
-    private ClienteProyecto clienteProyecto;
-
-    private List<Actividad> actividades;
+    private Cliente clienteProyecto;
 
     private List<UsuarioAutenticado> miembros;
 
