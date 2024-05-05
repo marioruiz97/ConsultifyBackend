@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.usuarios.dominio.modelo;
+package com.asisge.consultifybackend.utilidad.dominio.modelo;
 
 import lombok.Getter;
 

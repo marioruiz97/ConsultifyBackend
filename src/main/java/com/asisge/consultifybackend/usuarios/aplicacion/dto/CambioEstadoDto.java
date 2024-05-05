@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.dto;
 
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,5 +1,7 @@
 package com.asisge.consultifybackend.usuarios.dominio.modelo;
 
+import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -36,8 +38,8 @@ public class Usuario {
     }
 
     private boolean validarContacto() {
-        return this.telefono.matches("^(60\\d)\\d{7}$|^(3\\d{9})$") &&
-                this.correo.matches("^[a-zA-Z\\d._%+-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$");
+        return this.telefono.matches(ExpresionRegular.PATRON_TELEFONO) &&
+                this.correo.matches(ExpresionRegular.PATRON_CORREO);
     }
 
     public void cambiarCorreo(String correo) {
