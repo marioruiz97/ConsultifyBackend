@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.usuarios.dominio.modelo;
 
 import lombok.Getter;
 
+@Getter
 public enum TipoDocumento {
     CC("Cédula de Ciudadanía"),
     CE("Cédula de extranjería"),
@@ -9,7 +10,6 @@ public enum TipoDocumento {
     NIT("NIT"),
     TI("Tarjeta de identidad");
 
-    @Getter
     private final String tipo;
 
     TipoDocumento(String tipo) {
