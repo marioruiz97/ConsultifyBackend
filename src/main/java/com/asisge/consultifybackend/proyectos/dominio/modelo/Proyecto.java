@@ -17,6 +17,8 @@ public class Proyecto {
 
     private Cliente clienteProyecto;
 
+    private String descripcionProyecto;
+
     private List<UsuarioAutenticado> miembros;
 
 }

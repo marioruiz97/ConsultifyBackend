@@ -27,6 +27,7 @@ public final class ConvertidorProyecto {
                     entidad.getIdProyecto(),
                     entidad.getNombreProyecto(),
                     cliente,
+                    entidad.getDescripcionProyecto(),
                     miembros
             );
         }
@@ -37,6 +38,7 @@ public final class ConvertidorProyecto {
         EntidadProyecto entidad = new EntidadProyecto();
         entidad.setIdProyecto(proyecto.getIdProyecto());
         entidad.setNombreProyecto(proyecto.getNombreProyecto());
+        entidad.setDescripcionProyecto(proyecto.getDescripcionProyecto());
 
         EntidadCliente cliente = new EntidadCliente(proyecto.getClienteProyecto().getIdCliente());
         entidad.setClienteProyecto(cliente);

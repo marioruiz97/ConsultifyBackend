@@ -23,6 +23,9 @@ public @Data class EntidadProyecto {
     @NotBlank
     private String nombreProyecto;
 
+    @NotBlank
+    private String descripcionProyecto;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_cliente")
     private EntidadCliente clienteProyecto;
