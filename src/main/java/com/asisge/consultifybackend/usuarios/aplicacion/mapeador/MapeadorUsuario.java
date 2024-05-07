@@ -27,7 +27,8 @@ public class MapeadorUsuario {
                 usuario.getCorreo(),
                 autenticado.getActivo(),
                 autenticado.getRol(),
-                autenticado.getCreadoPor());
+                autenticado.getCreadoPor(),
+                autenticado.getUltimoInicio());
     }
 
     public UsuarioAutenticado aNuevoUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuario) {
