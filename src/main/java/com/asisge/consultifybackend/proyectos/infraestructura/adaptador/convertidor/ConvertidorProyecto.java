@@ -21,7 +21,7 @@ public final class ConvertidorProyecto {
         if (entidad != null) {
             Cliente cliente = ConvertidorCliente.aDominio(entidad.getClienteProyecto());
             List<UsuarioAutenticado> miembros = entidad.getMiembros().stream()
-                    .map(miembro -> ConvertidorUsuario.aDominio(miembro, miembro.getCreadoPor().toString()))
+                    .map(ConvertidorUsuario::aDominio)
                     .toList();
             proyecto = new Proyecto(
                     entidad.getIdProyecto(),

@@ -15,4 +15,5 @@ public interface RepositorioProyecto {
 
     boolean existeProyectoPorId(Long idProyecto);
 
+    void eliminarProyecto(Long idProyecto);
 }

@@ -23,7 +23,7 @@ public final class ConvertidorActividad {
         if (entidad != null) {
             List<Seguimiento> seguimientos = new ArrayList<>();
             Proyecto proyecto = ConvertidorProyecto.aDominio(entidad.getProyecto());
-            UsuarioAutenticado responsable = ConvertidorUsuario.aDominio(entidad.getResponsable(), entidad.getResponsable().getCreadoPor().toString());
+            UsuarioAutenticado responsable = ConvertidorUsuario.aDominio(entidad.getResponsable());
             actividad = new Actividad(
                     entidad.getId(),
                     entidad.getNombre(),

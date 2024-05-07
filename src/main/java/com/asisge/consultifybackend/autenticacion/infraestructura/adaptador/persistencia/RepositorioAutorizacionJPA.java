@@ -26,26 +26,26 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
     @Override
     default UsuarioAutenticado buscarPorCorreo(String correo) {
         EntidadUsuario entidad = findByCorreo(correo).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con correo " + correo));
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+        return ConvertidorUsuario.aDominio(entidad);
     }
 
     @Override
     default UsuarioAutenticado buscarPorNombreUsuarioOCorreo(String correoOUsername) {
         EntidadUsuario entidad = findByCorreoOrNombreUsuario(correoOUsername, correoOUsername).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario"));
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+        return ConvertidorUsuario.aDominio(entidad);
     }
 
     @Override
     default UsuarioAutenticado buscarPorIdUsuarioAndCorreo(Long idUsuario, String correo) {
         EntidadUsuario entidad = findByIdUsuarioAndCorreo(idUsuario, correo)
                 .orElseThrow(() -> new EntityNotFoundException("La combinación de datos id/correo no coincide con ninguna en la base de datos"));
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+        return ConvertidorUsuario.aDominio(entidad);
     }
 
     @Override
     default UsuarioAutenticado buscarPorIdUsuario(Long idUsuario) {
         EntidadUsuario entidad = findById(idUsuario).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario"));
-        return ConvertidorUsuario.aDominio(entidad, entidad.getCreadoPor().toString());
+        return ConvertidorUsuario.aDominio(entidad);
     }
 
     @Override
@@ -53,7 +53,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
         EntidadUsuario actual = findById(usuario.getIdUsuario()).orElseThrow(EntityNotFoundException::new);
         actual.setCorreo(usuario.getCorreo());
         actual.setVerificado(Boolean.FALSE);
-        return ConvertidorUsuario.aDominio(this.save(actual), actual.getCreadoPor().toString());
+        return ConvertidorUsuario.aDominio(this.save(actual));
     }
 
     @Override

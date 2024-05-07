@@ -10,7 +10,7 @@ public final class ConvertidorUsuario {
     private ConvertidorUsuario() {
     }
 
-    public static Usuario aDominio(EntidadUsuario entidad) {
+    public static Usuario aUsuarioDominio(EntidadUsuario entidad) {
         Usuario nuevoUsuario = null;
         if (entidad != null) {
             nuevoUsuario = new Usuario(
@@ -25,8 +25,8 @@ public final class ConvertidorUsuario {
         return nuevoUsuario;
     }
 
-    public static UsuarioAutenticado aDominio(EntidadUsuario entidad, String creadoPor) {
-        Usuario nuevoUsuario = aDominio(entidad);
+    public static UsuarioAutenticado aDominio(EntidadUsuario entidad) {
+        Usuario nuevoUsuario = aUsuarioDominio(entidad);
         UsuarioAutenticado usuarioAutenticado = null;
         if (entidad != null) {
             usuarioAutenticado = new UsuarioAutenticado(
@@ -34,7 +34,7 @@ public final class ConvertidorUsuario {
                     entidad.getNombreUsuario(),
                     entidad.getContrasena(),
                     entidad.getCreadoEn(),
-                    creadoPor,
+                    entidad.getCreadoPor().toString(),
                     entidad.getUltimoInicio(),
                     entidad.getActivo(),
                     entidad.getVerificado(),
