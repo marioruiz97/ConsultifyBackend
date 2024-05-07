@@ -33,8 +33,7 @@ public final class ConvertidorUsuario {
                     nuevoUsuario,
                     entidad.getNombreUsuario(),
                     entidad.getContrasena(),
-                    entidad.getCreadoEn(),
-                    entidad.getCreadoPor().toString(),
+                    entidad.getCreadoPor(),
                     entidad.getUltimoInicio(),
                     entidad.getActivo(),
                     entidad.getVerificado(),
@@ -54,8 +53,6 @@ public final class ConvertidorUsuario {
         entidad.setCorreo(usuario.getCorreo());
         entidad.setNombreUsuario(auth.getNombreUsuario());
         entidad.setContrasena(auth.getContrasena());
-        entidad.setCreadoEn(auth.getCreadoEn());
-        entidad.setCreadoPor(1L);
         entidad.setUltimoInicio(auth.getUltimoInicio());
         entidad.setActivo(auth.getActivo());
         entidad.setVerificado(auth.getVerificado());

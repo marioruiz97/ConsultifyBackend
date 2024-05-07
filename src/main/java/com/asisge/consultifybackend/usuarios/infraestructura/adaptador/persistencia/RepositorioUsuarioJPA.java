@@ -28,10 +28,10 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     @Override
     default UsuarioAutenticado editarInformacionUsuario(UsuarioAutenticado cuenta) {
         Usuario usuario = cuenta.getUsuario();
-        EntidadUsuario existente = findById(usuario.getIdUsuario())
-                .orElseThrow(() -> new EntityNotFoundException("No se a encontrado el usuario en base de datos"));
+        if (!this.existsById(usuario.getIdUsuario()))
+            throw new EntityNotFoundException("No se a encontrado el usuario en base de datos");
+
         EntidadUsuario aGuardar = ConvertidorUsuario.aEntidad(usuario, cuenta);
-        aGuardar.setCreadoPor(existente.getCreadoPor());
         return ConvertidorUsuario.aDominio(this.save(aGuardar));
     }
 

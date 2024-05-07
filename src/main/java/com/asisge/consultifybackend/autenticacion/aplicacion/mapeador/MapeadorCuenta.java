@@ -41,7 +41,6 @@ public class MapeadorCuenta {
                 infoUsuario,
                 editarUsuario.getNombreUsuario(),
                 existente.getContrasena(),
-                existente.getCreadoEn(),
                 existente.getCreadoPor(),
                 existente.getUltimoInicio(),
                 existente.getActivo(),

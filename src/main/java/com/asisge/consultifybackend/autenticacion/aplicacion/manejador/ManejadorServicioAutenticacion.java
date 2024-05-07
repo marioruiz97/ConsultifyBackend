@@ -31,10 +31,10 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
     @Override
     public void recuperarContrasena(String correo) {
-        Usuario usuario = buscarUsuarioPorCorreo(correo);
         /*
-        VerificationToken token = service.validVerificationToken(usuario);
-        emailService.sendRecoveryPassword(token);
+        Usuario usuario = buscarUsuarioPorCorreo(correo)
+        VerificationToken token = service.validVerificationToken(usuario)
+        emailService.sendRecoveryPassword(token)
          */
     }
 
@@ -46,6 +46,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         authenticationManager.authenticate(authToken);
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorNombreUsuarioOCorreo(authRequest.getNombreUsuario());
         String jwt = servicioJWT.generarToken(usuario, agregarExtraClaims(usuario));
+        repositorioAutorizacion.actualizarUltimoInicioSesion(usuario);
         return new AuthenticationResponse(jwt);
     }
 
@@ -64,7 +65,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         return extraClaims;
     }
 
-    private Usuario buscarUsuarioPorCorreo(String correo) {
+    public Usuario buscarUsuarioPorCorreo(String correo) {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
         if (usuario == null)
             throw new EntityNotFoundException(String.format("No se encontro el correo electronico %s en la base de datos", correo));

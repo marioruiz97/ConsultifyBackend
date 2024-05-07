@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
@@ -9,23 +10,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "usuarios")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class EntidadUsuario {
+@EqualsAndHashCode(callSuper = false)
+public @Data class EntidadUsuario extends ModeloAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -95,15 +91,6 @@ public class EntidadUsuario {
     @NotNull
     private String contrasena;
 
-    @Column(nullable = false, updatable = false)
-    @CreatedDate
-    private LocalDateTime creadoEn;
-
-    @Column(nullable = false)
-    private Long creadoPor;
-
-    @Column(nullable = false)
-    @LastModifiedDate
     private LocalDateTime ultimoInicio;
 
     @NotNull
