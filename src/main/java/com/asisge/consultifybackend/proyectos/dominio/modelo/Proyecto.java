@@ -5,6 +5,7 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,8 @@ public class Proyecto {
     private Cliente clienteProyecto;
 
     private String descripcionProyecto;
+
+    private LocalDateTime creadoEn;
 
     private List<UsuarioAutenticado> miembros;
 

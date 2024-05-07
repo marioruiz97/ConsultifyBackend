@@ -28,6 +28,7 @@ public final class ConvertidorProyecto {
                     entidad.getNombreProyecto(),
                     cliente,
                     entidad.getDescripcionProyecto(),
+                    entidad.getCreadoEn(),
                     miembros
             );
         }

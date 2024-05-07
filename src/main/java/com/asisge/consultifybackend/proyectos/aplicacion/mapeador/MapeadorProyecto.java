@@ -21,6 +21,7 @@ public class MapeadorProyecto {
                     dto.getNombreProyecto(),
                     cliente,
                     dto.getDescripcionProyecto(),
+                    null,
                     new ArrayList<>()
             );
         }

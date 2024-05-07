@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.clientes.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -16,8 +17,8 @@ import java.util.List;
 @Table(name = "cliente", uniqueConstraints = @UniqueConstraint(columnNames = "numeroIdentificacion"))
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class EntidadCliente {
+@EqualsAndHashCode(callSuper = false)
+public @Data class EntidadCliente extends ModeloAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

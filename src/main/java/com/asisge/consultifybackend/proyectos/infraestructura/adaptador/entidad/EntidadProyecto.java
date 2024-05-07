@@ -1,11 +1,13 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.clientes.infraestructura.adaptador.entidad.EntidadCliente;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.List;
 @Table(name = "proyecto")
 @AllArgsConstructor
 @NoArgsConstructor
-public @Data class EntidadProyecto {
+@EqualsAndHashCode(callSuper = false)
+public @Data class EntidadProyecto extends ModeloAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
