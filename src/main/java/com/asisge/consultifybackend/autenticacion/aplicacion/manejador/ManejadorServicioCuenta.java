@@ -7,19 +7,22 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.mapeador.MapeadorCu
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.logging.Logger;
 
 @Service
 public class ManejadorServicioCuenta implements ServicioCuenta {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
-
+    private final Logger logger = Logger.getLogger(ManejadorServicioCuenta.class.getName());
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioUsuario repositorioUsuario;
@@ -49,6 +52,9 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
         UsuarioAutenticado aGuardar = mapeadorCuenta.aUsuarioAutenticado(existente, editarUsuario);
         if (!aGuardar.validarEditarUsuarioAutenticado() && !aGuardar.getUsuario().validarUsuario())
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
+
+        String mensaje = Mensajes.getString("cuenta.info.editar.usuario.exito", aGuardar.getNombreUsuario());
+        logger.info(mensaje);
         return mapeadorCuenta.aMisDatos(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 
@@ -56,6 +62,9 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
     public Boolean desactivarMiUsuario(Long idUsuario) {
         UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
         cuenta = repositorioUsuario.cambiarEstado(cuenta, Boolean.FALSE);
+
+        String mensaje = Mensajes.getString("cuenta.info.desactivar.usuario.exito", cuenta.getNombreUsuario());
+        logger.info(mensaje);
         return cuenta.getActivo();
     }
 
@@ -65,13 +74,16 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
         UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreo());
 
         if (!passwordEncoder.matches(usuarioDto.getContrasenaActual(), existente.getContrasena()))
-            throw new IllegalArgumentException("La contraseña actual proporcionada no coincide con la almacenada en la base de datos.");
+            throw new IllegalArgumentException(Mensajes.getString("cuenta.error.contrasena.actual.nocoincide"));
         if (existente.getContrasena().equals(usuarioDto.getContrasena()))
-            throw new IllegalArgumentException("La nueva contraseña no puede ser igual a la anterior, por favor verifique los datos");
+            throw new IllegalArgumentException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
 
         existente.cambiarContrasena(usuarioDto.getContrasena());
         existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
         repositorioAutorizacion.cambiarContrasena(existente);
+
+        String mensaje = Mensajes.getString("cuenta.info.cambiar.contrasena.exitoso", existente.getNombreUsuario());
+        logger.info(mensaje);
     }
 
     @Override
@@ -87,7 +99,7 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
 
     private void validarCamposDto(Dto dto) {
         if (!dto.validarDto())
-            throw new IllegalArgumentException("Por favor valide los datos obligatorios del usuario DTO");
+            throw new IllegalArgumentException(Mensajes.getString("utilidad.error.dto.faltan.campos.obligatorios", "usuario"));
     }
 
     private void validarUsuario(Usuario existente) {

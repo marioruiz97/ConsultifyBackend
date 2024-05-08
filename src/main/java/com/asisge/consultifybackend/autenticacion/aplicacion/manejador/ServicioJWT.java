@@ -15,7 +15,6 @@ import org.springframework.web.util.WebUtils;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -77,13 +76,13 @@ public class ServicioJWT {
             Jwts.parserBuilder().setSigningKey(generarKey()).build().parseClaimsJws(jwt);
             return true;
         } catch (MalformedJwtException e) {
-            logger.log(Level.SEVERE, String.format("Token JWT inválido: %s", e.getMessage()));
+            logger.severe(String.format("Token JWT inválido: %s", e.getMessage()));
         } catch (ExpiredJwtException e) {
-            logger.log(Level.SEVERE, String.format("Token JWT vencido: %s", e.getMessage()));
+            logger.severe(String.format("Token JWT vencido: %s", e.getMessage()));
         } catch (UnsupportedJwtException e) {
-            logger.log(Level.SEVERE, String.format("Token JWT no soportado: %s", e.getMessage()));
+            logger.severe(String.format("Token JWT no soportado: %s", e.getMessage()));
         } catch (IllegalArgumentException e) {
-            logger.log(Level.SEVERE, String.format("JWT claims string is empty: %s", e.getMessage()));
+            logger.severe(String.format("JWT claims string is empty: %s", e.getMessage()));
         }
 
         return false;

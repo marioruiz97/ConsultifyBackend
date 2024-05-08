@@ -6,17 +6,23 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAu
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Service
 public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
+
+    private final Logger logger = Logger.getLogger(ManejadorServicioAutenticacion.class.getName());
 
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final AuthenticationManager authenticationManager;
@@ -47,6 +53,11 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorNombreUsuarioOCorreo(authRequest.getNombreUsuario());
         String jwt = servicioJWT.generarToken(usuario, agregarExtraClaims(usuario));
         repositorioAutorizacion.actualizarUltimoInicioSesion(usuario);
+
+        String mensaje = Mensajes.getString("autenticacion.info.nuevo.inicio.sesion",
+                usuario.getNombreUsuario(),
+                LocalDateTime.now(ZoneId.systemDefault()).toString());
+        logger.info(mensaje);
         return new AuthenticationResponse(jwt);
     }
 
@@ -68,7 +79,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
     public Usuario buscarUsuarioPorCorreo(String correo) {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
         if (usuario == null)
-            throw new EntityNotFoundException(String.format("No se encontro el correo electronico %s en la base de datos", correo));
+            throw new EntityNotFoundException(Mensajes.getString("autenticacion.error.correo.no.encontrado", correo));
         return usuario.getUsuario();
     }
 }

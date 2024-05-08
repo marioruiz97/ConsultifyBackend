@@ -1,7 +1,6 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
-import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;
@@ -9,17 +8,21 @@ import com.asisge.consultifybackend.usuarios.aplicacion.servicio.GeneradorContra
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class ManejadorServicioUsuario implements ServicioUsuario {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
+    private final Logger logger = Logger.getLogger(ManejadorServicioUsuario.class.getName(), Mensajes.BUNDLE_NAME);
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
     private final PasswordEncoder passwordEncoder;
@@ -51,6 +54,7 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         usuarioAGuardar.cambiarContrasena("Contra1234*"); // TODO cambiar a generador de contrasenas
         if (usuarioAGuardar.validarCrearUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
             usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
+            logger.info("usuarios.info.crear.usuario");
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
@@ -63,6 +67,9 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         UsuarioAutenticado aGuardar = mapeadorUsuario.aEditarUsuarioAutenticado(existente, editarUsuario);
         if (!aGuardar.validarEditarUsuarioAutenticado() && !aGuardar.getUsuario().validarUsuario())
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
+
+        String mensaje = Mensajes.getString("usuarios.info.editar.usuario", aGuardar.getNombreUsuario());
+        logger.info(mensaje);
         return devolverUsuarioSinClave(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 
@@ -71,6 +78,10 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public Boolean adminDesactivaUsuario(Long idUsuario) {
         UsuarioAutenticado cuenta = this.repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
         cuenta = this.repositorioUsuario.cambiarEstado(cuenta, Boolean.FALSE);
+
+        String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, "false");
+        logger.info(mensaje);
+
         return cuenta.getActivo();
     }
 
@@ -89,12 +100,15 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             UsuarioAutenticado nuevoUsuario = repositorioUsuario.cambiarEstado(usuario, activar);
             nuevoEstado = nuevoUsuario.getActivo();
         }
+
+        String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, activar);
+        logger.info(mensaje);
         return nuevoEstado;
     }
 
     private void validarCamposDto(Dto dto) {
         if (!dto.validarDto())
-            throw new IllegalArgumentException("Por favor valide los datos obligatorios del usuario DTO");
+            throw new IllegalArgumentException(Mensajes.getString("utilidad.error.dto.faltan.campos.obligatorios", "usuario"));
     }
 
     private UsuarioAutenticado devolverUsuarioSinClave(UsuarioAutenticado usuario) {

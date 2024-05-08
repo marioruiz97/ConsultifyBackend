@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
 
+
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.mapeador.MapeadorProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
@@ -7,11 +8,13 @@ import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class ManejadorServicioProyecto implements ServicioProyecto {
@@ -20,6 +23,7 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
 
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorProyecto mapeadorProyecto;
+    private final Logger logger = Logger.getLogger(ManejadorServicioProyecto.class.getName());
 
     public ManejadorServicioProyecto(RepositorioProyecto repositorioProyecto, RepositorioUsuario repositorioUsuario, MapeadorProyecto mapeadorProyecto) {
         this.repositorioProyecto = repositorioProyecto;
@@ -43,16 +47,24 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
         proyecto.validarProyecto();
         UsuarioAutenticado usuario = repositorioUsuario.buscarPorCorreoOUsername(dto.getCreadoPor());
         proyecto.agregarMiembro(usuario);
+
+        String mensaje = Mensajes.getString("proyectos.info.crear.proyecto", usuario.getNombreUsuario(), proyecto.getNombreProyecto());
+        logger.info(mensaje);
+
         return repositorioProyecto.crearProyecto(proyecto);
     }
 
     @Override
     public Proyecto editarProyecto(Long idProyecto, Proyecto proyecto) {
         if (proyecto.getIdProyecto() == null || !proyecto.getIdProyecto().equals(idProyecto))
-            throw new IllegalArgumentException("El id del proyecto es null o no corresponde al del objeto enviado en la peticion");
+            throw new IllegalArgumentException(Mensajes.getString("proyectos.error.id.proyecto.no.coincide"));
         if (!repositorioProyecto.existeProyectoPorId(idProyecto))
-            throw new EntityNotFoundException("No se encontro el proyecto en la base de datos");
+            throw new EntityNotFoundException(Mensajes.getString("proyectos.error.proyecto.no.encontrado", idProyecto));
         proyecto.validarProyecto();
+
+        String mensaje = Mensajes.getString("proyectos.info.editar.proyecto", proyecto.getIdProyecto());
+        logger.info(mensaje);
+
         return repositorioProyecto.editarProyecto(idProyecto, proyecto);
     }
 
@@ -62,6 +74,10 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
         if (!repositorioProyecto.existeProyectoPorId(idProyecto))
             return Boolean.FALSE;
         repositorioProyecto.eliminarProyecto(idProyecto);
+
+        String mensaje = Mensajes.getString("proyectos.info.eliminar.proyecto.exito", idProyecto);
+        logger.info(mensaje);
+
         return Boolean.TRUE;
     }
 }
