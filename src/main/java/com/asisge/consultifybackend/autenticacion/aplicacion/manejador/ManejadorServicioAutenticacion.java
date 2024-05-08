@@ -11,6 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,10 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         this.repositorioAutorizacion = repositorioAutorizacion;
         this.authenticationManager = authenticationManager;
         this.servicioJWT = servicioJWT;
+    }
+
+    private static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     @Override
@@ -59,6 +65,18 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
                 LocalDateTime.now(ZoneId.systemDefault()).toString());
         logger.info(mensaje);
         return new AuthenticationResponse(jwt);
+    }
+
+    @Override
+    public String obtenerNombreUsuarioEnSesion() {
+        return estaAutenticado()
+                ? getAuthentication().getName()
+                : null;
+    }
+
+    @Override
+    public boolean estaAutenticado() {
+        return getAuthentication().isAuthenticated();
     }
 
     private Map<String, Object> agregarExtraClaims(UsuarioAutenticado usuarioAutenticado) {

@@ -9,6 +9,8 @@ public interface RepositorioProyecto {
 
     Proyecto obtenerProyectoPorId(Long idProyecto);
 
+    List<Proyecto> obtenerMisProyectos(Long idUsuario);
+
     Proyecto crearProyecto(Proyecto proyecto);
 
     Proyecto editarProyecto(Long idProyecto, Proyecto proyecto);
@@ -16,4 +18,5 @@ public interface RepositorioProyecto {
     boolean existeProyectoPorId(Long idProyecto);
 
     void eliminarProyecto(Long idProyecto);
+
 }

@@ -6,7 +6,10 @@ import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import java.util.List;
 
 public interface ServicioProyecto {
+
     List<Proyecto> obtenerTodos();
+
+    List<Proyecto> obtenerMisProyectos(String usernameOCorreo);
 
     Proyecto obtenerProyectoPorId(Long idProyecto);
 

@@ -10,6 +10,8 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,11 @@ import java.util.logging.Logger;
 public class ManejadorServicioProyecto implements ServicioProyecto {
 
     private final RepositorioProyecto repositorioProyecto;
-
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorProyecto mapeadorProyecto;
     private final Logger logger = Logger.getLogger(ManejadorServicioProyecto.class.getName());
 
+    @Autowired
     public ManejadorServicioProyecto(RepositorioProyecto repositorioProyecto, RepositorioUsuario repositorioUsuario, MapeadorProyecto mapeadorProyecto) {
         this.repositorioProyecto = repositorioProyecto;
         this.repositorioUsuario = repositorioUsuario;
@@ -34,6 +36,15 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
     @Override
     public List<Proyecto> obtenerTodos() {
         return repositorioProyecto.obtenerTodos();
+    }
+
+    @Override
+    public List<Proyecto> obtenerMisProyectos(@NotBlank String usernameOCorreo) {
+        UsuarioAutenticado usuario = repositorioUsuario.buscarPorCorreoOUsername(usernameOCorreo);
+
+        String mensaje = Mensajes.getString("mis.proyectos.info.buscar", usernameOCorreo);
+        logger.info(mensaje);
+        return repositorioProyecto.obtenerMisProyectos(usuario.getUsuario().getIdUsuario());
     }
 
     @Override
