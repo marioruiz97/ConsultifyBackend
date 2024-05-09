@@ -14,6 +14,8 @@ public class ContactoCliente {
     @EqualsAndHashCode.Exclude
     private String id;
     private String nombreCompleto;
+
+    private String cargo;
     private String telefono;
     private String correo;
 

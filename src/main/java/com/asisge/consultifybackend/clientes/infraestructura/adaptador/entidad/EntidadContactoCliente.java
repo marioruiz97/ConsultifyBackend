@@ -33,6 +33,10 @@ public class EntidadContactoCliente {
     @Column(nullable = false, length = 120)
     private String nombreCompleto;
 
+    @NotBlank
+    @Column
+    private String cargo;
+
     @Pattern(regexp = ExpresionRegular.PATRON_TELEFONO)
     @NotBlank
     @NotNull
