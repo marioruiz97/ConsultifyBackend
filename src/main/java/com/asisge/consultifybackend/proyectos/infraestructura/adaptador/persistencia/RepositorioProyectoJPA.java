@@ -4,6 +4,9 @@ import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor.ConvertidorProyecto;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
+import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +22,9 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
     // metodos JPA y JPQL
     @Query("SELECT p FROM EntidadProyecto p JOIN p.miembros u WHERE u.idUsuario = :idUsuario")
     List<EntidadProyecto> findProyectosByIdUsuario(@Param("idUsuario") Long idUsuario);
+
+    @Query("SELECT u FROM EntidadUsuario u WHERE u NOT IN (SELECT mp FROM EntidadProyecto p JOIN p.miembros mp WHERE p.idProyecto = :idProyecto)")
+    List<EntidadUsuario> findPosiblesMiembros(@Param("idProyecto") Long idProyecto);
 
 
     // metodos propios
@@ -40,6 +46,13 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
         return ConvertidorProyecto.aDominio(entidad);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    default List<UsuarioAutenticado> obtenerPosiblesMiembros(Long idProyecto) {
+        List<EntidadUsuario> usuarios = this.findPosiblesMiembros(idProyecto);
+        return usuarios.stream().map(ConvertidorUsuario::aDominio).toList();
+    }
+
     @Transactional
     @Override
     default Proyecto crearProyecto(Proyecto proyecto) {
@@ -49,9 +62,11 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
 
     @Override
     default Proyecto editarProyecto(Long idProyecto, Proyecto proyecto) {
-        EntidadProyecto entidad = ConvertidorProyecto.aEntidad(proyecto);
-        entidad.setIdProyecto(idProyecto);
-        return ConvertidorProyecto.aDominio(save(entidad));
+        EntidadProyecto actual = findById(idProyecto).orElse(null);
+
+        actual = ConvertidorProyecto.aActualizarEntidad(actual, proyecto);
+        assert actual != null;
+        return ConvertidorProyecto.aDominio(save(actual));
     }
 
     @Override

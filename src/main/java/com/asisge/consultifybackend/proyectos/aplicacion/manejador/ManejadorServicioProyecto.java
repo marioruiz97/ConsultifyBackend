@@ -71,6 +71,13 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
     }
 
     @Override
+    public List<UsuarioAutenticado> obtenerPosiblesMiembros(Long idProyecto) {
+        List<UsuarioAutenticado> posiblesMiembros = repositorioProyecto.obtenerPosiblesMiembros(idProyecto);
+        posiblesMiembros.forEach(UsuarioAutenticado::limpiarContrasena);
+        return posiblesMiembros;
+    }
+
+    @Override
     public Proyecto crearProyecto(ProyectoDto dto) {
         Proyecto proyecto = mapeadorProyecto.aProyecto(dto);
         proyecto.validarProyecto();
@@ -84,7 +91,8 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
     }
 
     @Override
-    public Proyecto editarProyecto(Long idProyecto, Proyecto proyecto) {
+    public Proyecto editarProyecto(Long idProyecto, ProyectoDto proyectoDto) {
+        Proyecto proyecto = mapeadorProyecto.aProyecto(proyectoDto);
         if (proyecto.getIdProyecto() == null || !proyecto.getIdProyecto().equals(idProyecto))
             throw new IllegalArgumentException(Mensajes.getString("proyectos.error.id.proyecto.no.coincide"));
         if (!repositorioProyecto.existeProyectoPorId(idProyecto))

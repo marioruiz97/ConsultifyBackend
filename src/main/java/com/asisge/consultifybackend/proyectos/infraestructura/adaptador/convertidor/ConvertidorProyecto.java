@@ -49,4 +49,13 @@ public final class ConvertidorProyecto {
 
         return entidad;
     }
+
+    public static EntidadProyecto aActualizarEntidad(EntidadProyecto actual, Proyecto proyecto) {
+        if (actual != null) {
+            actual.setIdProyecto(proyecto.getIdProyecto());
+            actual.setDescripcionProyecto(proyecto.getDescripcionProyecto());
+            actual.setNombreProyecto(proyecto.getNombreProyecto());
+        }
+        return actual;
+    }
 }
