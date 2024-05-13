@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
+import com.asisge.consultifybackend.proyectos.aplicacion.dto.TableroProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class ControladorProyecto {
     }
 
     @GetMapping("/{idProyecto}")
-    public Proyecto obtenerProyectoPorId(@PathVariable Long idProyecto) {
+    public TableroProyecto obtenerProyectoPorId(@PathVariable Long idProyecto) {
         return servicioProyecto.obtenerProyectoPorId(idProyecto);
     }
 
