@@ -1,10 +1,8 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.TableroProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +26,6 @@ public class ControladorProyecto {
     @GetMapping
     public List<Proyecto> obtenerTodosProyectos() {
         return servicioProyecto.obtenerTodos();
-    }
-
-    @GetMapping("/{idProyecto}")
-    public TableroProyecto obtenerProyectoPorId(@PathVariable Long idProyecto) {
-        return servicioProyecto.obtenerProyectoPorId(idProyecto);
-    }
-
-    @GetMapping("/{idProyecto}/posibles-miembros")
-    public List<UsuarioAutenticado> obtenerPosiblesMiembrosProyecto(@PathVariable Long idProyecto) {
-        return servicioProyecto.obtenerPosiblesMiembros(idProyecto);
     }
 
     @PostMapping

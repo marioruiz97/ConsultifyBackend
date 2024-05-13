@@ -2,12 +2,9 @@ package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
 
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.TableroProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.mapeador.MapeadorProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioActividad;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
@@ -26,18 +23,15 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
 
     private final RepositorioProyecto repositorioProyecto;
     private final RepositorioUsuario repositorioUsuario;
-    private final RepositorioActividad repositorioActividad;
     private final MapeadorProyecto mapeadorProyecto;
     private final Logger logger = Logger.getLogger(ManejadorServicioProyecto.class.getName());
 
     @Autowired
     public ManejadorServicioProyecto(RepositorioProyecto repositorioProyecto,
                                      RepositorioUsuario repositorioUsuario,
-                                     RepositorioActividad repositorioActividad,
                                      MapeadorProyecto mapeadorProyecto) {
         this.repositorioProyecto = repositorioProyecto;
         this.repositorioUsuario = repositorioUsuario;
-        this.repositorioActividad = repositorioActividad;
         this.mapeadorProyecto = mapeadorProyecto;
     }
 
@@ -53,28 +47,6 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
         String mensaje = Mensajes.getString("mis.proyectos.info.buscar", usernameOCorreo);
         logger.info(mensaje);
         return repositorioProyecto.obtenerMisProyectos(usuario.getUsuario().getIdUsuario());
-    }
-
-    @Override
-    public TableroProyecto obtenerProyectoPorId(Long idProyecto) {
-        Proyecto proyecto = repositorioProyecto.obtenerProyectoPorId(idProyecto);
-
-        String mensaje = Mensajes.getString("proyectos.info.obtener.tablero.proyecto", proyecto.getNombreProyecto());
-        logger.info(mensaje);
-
-        List<Actividad> actividades = repositorioActividad.obtenerActividadesPorProyecto(proyecto);
-
-        mensaje = Mensajes.getString("proyectos.info.obtener.actividades.proyecto", proyecto.getNombreProyecto(), actividades.size());
-        logger.info(mensaje);
-
-        return new TableroProyecto(proyecto, actividades);
-    }
-
-    @Override
-    public List<UsuarioAutenticado> obtenerPosiblesMiembros(Long idProyecto) {
-        List<UsuarioAutenticado> posiblesMiembros = repositorioProyecto.obtenerPosiblesMiembros(idProyecto);
-        posiblesMiembros.forEach(UsuarioAutenticado::limpiarContrasena);
-        return posiblesMiembros;
     }
 
     @Override

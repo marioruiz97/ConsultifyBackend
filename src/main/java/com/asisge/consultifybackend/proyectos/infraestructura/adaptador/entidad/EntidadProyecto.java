@@ -44,4 +44,9 @@ public @Data class EntidadProyecto extends ModeloAuditoria {
     public EntidadProyecto(Long idProyecto) {
         this.idProyecto = idProyecto;
     }
+
+    public void agregarMiembro(EntidadUsuario nuevoMiembro) {
+        if (this.miembros == null) this.miembros = List.of(nuevoMiembro);
+        this.miembros.add(nuevoMiembro);
+    }
 }
