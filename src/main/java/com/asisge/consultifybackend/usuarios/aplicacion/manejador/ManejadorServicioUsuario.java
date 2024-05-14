@@ -56,7 +56,10 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         usuarioAGuardar.cambiarContrasena("Contra1234*"); // TODO cambiar a generador de contrasenas
         if (usuarioAGuardar.validarCrearUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
             usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
-            logger.info("usuarios.info.crear.usuario");
+
+            String mensaje = Mensajes.getString("usuarios.info.crear.usuario");
+            logger.info(mensaje, usuarioAGuardar);
+
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);

@@ -42,7 +42,10 @@ public class ManejadorServicioCliente implements ServicioCliente {
         nuevoCliente.setIdCliente(null);
         validarContactos(nuevoCliente.getContactos());
         alistarNuevosContactos(nuevoCliente.getContactos());
-        logger.info("clientes.info.crear.cliente");
+
+        String mensaje = Mensajes.getString("clientes.info.crear.cliente");
+        logger.info(mensaje, nuevoCliente);
+
         return repositorioCliente.crearCliente(nuevoCliente);
     }
 
