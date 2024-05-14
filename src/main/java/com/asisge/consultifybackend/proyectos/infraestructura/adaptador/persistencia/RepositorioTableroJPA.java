@@ -21,6 +21,9 @@ public interface RepositorioTableroJPA extends JpaRepository<EntidadProyecto, Lo
     @Query("SELECT u FROM EntidadUsuario u WHERE u NOT IN (SELECT mp FROM EntidadProyecto p JOIN p.miembros mp WHERE p.idProyecto = :idProyecto)")
     List<EntidadUsuario> findPosiblesMiembros(@Param("idProyecto") Long idProyecto);
 
+    @Query("SELECT mp FROM EntidadProyecto p JOIN p.miembros mp WHERE p.idProyecto = :idProyecto")
+    List<EntidadUsuario> findMiembrosProyecto(@Param("idProyecto") Long idProyecto);
+
 
     // metodos propios
     @Transactional(readOnly = true)
@@ -35,5 +38,21 @@ public interface RepositorioTableroJPA extends JpaRepository<EntidadProyecto, Lo
         EntidadProyecto proyecto = findById(idProyecto).orElseThrow();
         EntidadUsuario nuevoMiembro = new EntidadUsuario(usuario.getIdUsuario());
         proyecto.agregarMiembro(nuevoMiembro);
+        save(proyecto);
     }
+
+    @Override
+    default void quitarMiembroProyecto(Long idProyecto, Long idMiembro) {
+        EntidadProyecto proyecto = findById(idProyecto).orElseThrow();
+        proyecto.quitarMiembro(idMiembro);
+        save(proyecto);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    default List<UsuarioAutenticado> obtenerMiembrosProyecto(Long idProyecto) {
+        List<EntidadUsuario> usuarios = this.findMiembrosProyecto(idProyecto);
+        return usuarios.stream().map(ConvertidorUsuario::aDominio).toList();
+    }
+
 }

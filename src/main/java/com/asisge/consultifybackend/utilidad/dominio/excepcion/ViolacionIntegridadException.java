@@ -29,6 +29,9 @@ public class ViolacionIntegridadException extends Exception {
             mensajeError = "El número de identificación ya está registrado";
         if (mensajeError.toUpperCase().contains("NOMBRE_USUARIO"))
             mensajeError = "El nombre de usuario ya está registrado";
+        if (mensajeError.toUpperCase().contains("MIEMBRO_PROYECTO(ID_PROYECTO"))
+            mensajeError = "Miembro duplicado, ya existe dentro del proyecto";
+
         this.mensaje = mensajeError;
     }
 }

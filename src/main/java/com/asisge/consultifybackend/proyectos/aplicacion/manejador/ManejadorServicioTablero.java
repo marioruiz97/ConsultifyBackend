@@ -40,12 +40,12 @@ public class ManejadorServicioTablero implements ServicioTablero {
     public TableroProyecto obtenerProyectoPorId(Long idProyecto) {
         Proyecto proyecto = repositorioProyecto.obtenerProyectoPorId(idProyecto);
 
-        String mensaje = Mensajes.getString("proyectos.info.obtener.tablero.proyecto", proyecto.getNombreProyecto());
+        String mensaje = Mensajes.getString("tableros.info.obtener.tablero.proyecto", proyecto.getNombreProyecto());
         logger.info(mensaje);
 
         List<Actividad> actividades = repositorioActividad.obtenerActividadesPorProyecto(proyecto);
 
-        mensaje = Mensajes.getString("proyectos.info.obtener.actividades.proyecto", proyecto.getNombreProyecto(), actividades.size());
+        mensaje = Mensajes.getString("tableros.info.obtener.actividades.proyecto", proyecto.getNombreProyecto(), actividades.size());
         logger.info(mensaje);
 
         return new TableroProyecto(proyecto, actividades);
@@ -72,5 +72,17 @@ public class ManejadorServicioTablero implements ServicioTablero {
         logger.info(mensaje);
 
         return new UsuarioAutenticado(usuario, miembroDto.getNombreUsuario(), null, null, null, null, null, null);
+    }
+
+    @Override
+    public List<UsuarioAutenticado> quitarMiembroProyecto(Long idProyecto, Long idMiembro) {
+        String mensaje = Mensajes.getString("tableros.info.eliminar.miembro.accion", idMiembro, idProyecto);
+        logger.info(mensaje);
+
+        repositorioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
+        mensaje = Mensajes.getString("tableros.info.eliminar.miembro.exitoso", idMiembro, idProyecto);
+        logger.info(mensaje);
+
+        return repositorioTablero.obtenerMiembrosProyecto(idProyecto);
     }
 }

@@ -36,4 +36,9 @@ public class ControladorTableroProyecto {
     public UsuarioAutenticado agregarMiembroAlProyecto(@PathVariable Long idProyecto, @Valid @RequestBody MiembroDto miembroDto) {
         return servicioTablero.agregarMiembroAlProyecto(idProyecto, miembroDto);
     }
+
+    @DeleteMapping("/{idProyecto}/miembros/{idMiembro}")
+    public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro){
+        return servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
+    }
 }

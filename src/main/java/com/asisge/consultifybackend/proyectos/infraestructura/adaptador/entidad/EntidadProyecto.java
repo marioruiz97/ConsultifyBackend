@@ -49,4 +49,10 @@ public @Data class EntidadProyecto extends ModeloAuditoria {
         if (this.miembros == null) this.miembros = List.of(nuevoMiembro);
         this.miembros.add(nuevoMiembro);
     }
+
+    public void quitarMiembro(Long idMiembro) {
+        if (this.miembros != null) {
+            this.miembros.removeIf(quitar -> quitar.getIdUsuario().equals(idMiembro));
+        }
+    }
 }

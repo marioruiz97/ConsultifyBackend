@@ -12,4 +12,6 @@ public interface ServicioTablero {
     List<UsuarioAutenticado> obtenerPosiblesMiembros(Long idProyecto);
 
     UsuarioAutenticado agregarMiembroAlProyecto(Long idProyecto, MiembroDto miembroDto);
+
+    List<UsuarioAutenticado> quitarMiembroProyecto(Long idProyecto, Long idMiembro);
 }
