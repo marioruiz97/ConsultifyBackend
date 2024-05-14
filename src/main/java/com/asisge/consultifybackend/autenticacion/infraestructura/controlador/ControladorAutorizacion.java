@@ -33,6 +33,7 @@ public class ControladorAutorizacion {
         return ResponseEntity.ok(jwtDto);
     }
 
+    @PreAuthorize("permitAll")
     @PostMapping("/recuperar")
     public ResponseEntity<Usuario> recuperarContrasena(@RequestBody ModelMap model) {
         String correo = model.get("correo").toString();

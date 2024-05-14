@@ -48,10 +48,9 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
 
     @Override
     default Proyecto editarProyecto(Long idProyecto, Proyecto proyecto) {
-        EntidadProyecto actual = findById(idProyecto).orElse(null);
+        EntidadProyecto actual = findById(idProyecto).orElseThrow(() -> new EntityNotFoundException("No se encontró el proyecto en base de datos"));
 
         actual = ConvertidorProyecto.aActualizarEntidad(actual, proyecto);
-        assert actual != null;
         return ConvertidorProyecto.aDominio(save(actual));
     }
 

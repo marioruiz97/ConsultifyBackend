@@ -39,7 +39,7 @@ public class ManejadorServicioCliente implements ServicioCliente {
         nuevoCliente.validarCampos();
         nuevoCliente.setIdCliente(null);
         validarContactos(nuevoCliente.getContactos());
-        alistarContactos(nuevoCliente.getContactos());
+        alistarNuevosContactos(nuevoCliente.getContactos());
         logger.info("clientes.info.crear.cliente");
         return repositorioCliente.crearCliente(nuevoCliente);
     }
@@ -79,7 +79,7 @@ public class ManejadorServicioCliente implements ServicioCliente {
         }
     }
 
-    private void alistarContactos(List<ContactoCliente> contactos) {
+    private void alistarNuevosContactos(List<ContactoCliente> contactos) {
         if (contactos != null && !contactos.isEmpty())
             contactos.forEach(contacto -> contacto.setId(null));
     }
