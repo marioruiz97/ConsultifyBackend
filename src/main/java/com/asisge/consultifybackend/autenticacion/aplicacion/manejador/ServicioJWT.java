@@ -7,6 +7,8 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,11 @@ import org.springframework.web.util.WebUtils;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Service
 public class ServicioJWT {
 
-    private final Logger logger = Logger.getLogger(ServicioJWT.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ServicioJWT.class);
 
     @Value("${security.jwt.expiration-minutes}")
     private long systemExpirationMinutes;
@@ -76,13 +77,13 @@ public class ServicioJWT {
             Jwts.parserBuilder().setSigningKey(generarKey()).build().parseClaimsJws(jwt);
             return true;
         } catch (MalformedJwtException e) {
-            logger.severe(String.format("Token JWT inválido: %s", e.getMessage()));
+            logger.error("Token JWT inválido:", e);
         } catch (ExpiredJwtException e) {
-            logger.severe(String.format("Token JWT vencido: %s", e.getMessage()));
+            logger.error("Token JWT vencido:", e);
         } catch (UnsupportedJwtException e) {
-            logger.severe(String.format("Token JWT no soportado: %s", e.getMessage()));
+            logger.error("Token JWT no soportado:", e);
         } catch (IllegalArgumentException e) {
-            logger.severe(String.format("JWT claims string is empty: %s", e.getMessage()));
+            logger.error("JWT claims string is empty:", e);
         }
 
         return false;

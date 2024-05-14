@@ -8,6 +8,8 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
+
 
 @Service
 public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
-    private final Logger logger = Logger.getLogger(ManejadorServicioAutenticacion.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioAutenticacion.class.getName());
 
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final AuthenticationManager authenticationManager;

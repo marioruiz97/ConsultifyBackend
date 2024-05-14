@@ -11,10 +11,12 @@ import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioTablero;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 public class ManejadorServicioTablero implements ServicioTablero {
@@ -24,7 +26,7 @@ public class ManejadorServicioTablero implements ServicioTablero {
     private final RepositorioTablero repositorioTablero;
 
     private final RepositorioActividad repositorioActividad;
-    private final Logger logger = Logger.getLogger(ManejadorServicioTablero.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioTablero.class);
 
 
     public ManejadorServicioTablero(RepositorioProyecto repositorioProyecto,
@@ -62,7 +64,7 @@ public class ManejadorServicioTablero implements ServicioTablero {
     public UsuarioAutenticado agregarMiembroAlProyecto(Long idProyecto, MiembroDto miembroDto) {
         if (!miembroDto.validarDto()) {
             String mensaje = Mensajes.getString("tableros.error.nuevo.miembro.invalido");
-            logger.warning(mensaje);
+            logger.error(mensaje);
             throw new IllegalArgumentException(mensaje);
         }
         Usuario usuario = miembroDto.getUsuario();

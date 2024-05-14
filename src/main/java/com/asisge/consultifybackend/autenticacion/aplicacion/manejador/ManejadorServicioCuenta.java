@@ -10,19 +10,20 @@ import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAuto
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
-import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
 
 @Service
 public class ManejadorServicioCuenta implements ServicioCuenta {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
-    private final Logger logger = Logger.getLogger(ManejadorServicioCuenta.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioCuenta.class);
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioUsuario repositorioUsuario;

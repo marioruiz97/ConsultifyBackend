@@ -6,17 +6,19 @@ import com.asisge.consultifybackend.clientes.dominio.modelo.ContactoCliente;
 import com.asisge.consultifybackend.clientes.dominio.puerto.RepositorioCliente;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 public class ManejadorServicioCliente implements ServicioCliente {
 
-    private final Logger logger = Logger.getLogger(ManejadorServicioCliente.class.getName(), Mensajes.BUNDLE_NAME);
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioCliente.class);
     private final RepositorioCliente repositorioCliente;
 
     @Autowired

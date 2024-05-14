@@ -4,6 +4,7 @@ import com.asisge.consultifybackend.autenticacion.infraestructura.configuracion.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -45,6 +46,7 @@ public class ConfiguracionSpringSecurity {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasAnyRole("ADMIN", "ASESOR")
                         .anyRequest().authenticated());
 
         // config para que muestre la consola H2

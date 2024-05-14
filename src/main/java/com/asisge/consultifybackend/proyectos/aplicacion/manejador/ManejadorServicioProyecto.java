@@ -11,12 +11,14 @@ import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 public class ManejadorServicioProyecto implements ServicioProyecto {
@@ -24,7 +26,7 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
     private final RepositorioProyecto repositorioProyecto;
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorProyecto mapeadorProyecto;
-    private final Logger logger = Logger.getLogger(ManejadorServicioProyecto.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioProyecto.class);
 
     @Autowired
     public ManejadorServicioProyecto(RepositorioProyecto repositorioProyecto,

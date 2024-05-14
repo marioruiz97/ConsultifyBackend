@@ -8,21 +8,23 @@ import com.asisge.consultifybackend.usuarios.aplicacion.servicio.GeneradorContra
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
-import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 public class ManejadorServicioUsuario implements ServicioUsuario {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
-    private final Logger logger = Logger.getLogger(ManejadorServicioUsuario.class.getName(), Mensajes.BUNDLE_NAME);
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioUsuario.class);
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
     private final PasswordEncoder passwordEncoder;
