@@ -26,7 +26,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConstraints(ConstraintViolationException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         StringBuilder mensaje = new StringBuilder();
         ex.getConstraintViolations().forEach(err -> {
@@ -39,7 +39,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class, org.hibernate.exception.ConstraintViolationException.class})
     protected ResponseEntity<Object> handleIntegrityExceptions(org.hibernate.exception.ConstraintViolationException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ViolacionIntegridadException exception = new ViolacionIntegridadException(ex);
         ApiError error = new ApiError(HttpStatus.CONFLICT.value(), exception.getTitulo(), exception.getMensaje());
@@ -48,7 +48,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {DataAccessException.class})
     protected ResponseEntity<Object> handleDataAccessException(DataAccessException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = ApiError.conMensajeGenerico(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
@@ -56,7 +56,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class})
     protected ResponseEntity<Object> handleIllegalException(RuntimeException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
@@ -64,7 +64,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NullPointerException.class})
     protected ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
@@ -72,7 +72,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getLocalizedMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
@@ -80,7 +80,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BadCredentialsException.class})
     protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ERROR_INICIANDO_SESION, "Usuario/contraseña incorrectas");
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
@@ -88,7 +88,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {CredentialsExpiredException.class})
     protected ResponseEntity<Object> handleCredentialsExpiredException(CredentialsExpiredException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ERROR_INICIANDO_SESION, "El token de acceso ha caducado");
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
@@ -96,7 +96,7 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {LockedException.class})
     protected ResponseEntity<Object> handleLockedException(LockedException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ERROR_INICIANDO_SESION, "Debes validar tu correo electrónico antes de iniciar sesión");
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
@@ -104,10 +104,15 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {DisabledException.class})
     protected ResponseEntity<Object> handleDisabledException(DisabledException ex, WebRequest request) {
-        ex.printStackTrace();
+        printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.UNAUTHORIZED.value(), ERROR_INICIANDO_SESION, "Usuario Inactivo, primero debe activarse");
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+    }
+
+    private void printInfoError(Exception ex) {
+        String mensaje = String.format("Error: %s", ex.getMessage());
+        logger.error(mensaje, ex);
     }
 
 }

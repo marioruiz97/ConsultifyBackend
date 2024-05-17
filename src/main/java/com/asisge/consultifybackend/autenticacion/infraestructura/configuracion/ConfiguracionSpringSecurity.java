@@ -46,6 +46,7 @@ public class ConfiguracionSpringSecurity {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers( "/error").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasAnyRole("ADMIN", "ASESOR")
                         .anyRequest().authenticated());
 
