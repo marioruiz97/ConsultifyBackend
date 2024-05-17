@@ -27,7 +27,8 @@ public class MapeadorUsuario {
                 usuario.getCorreo(),
                 autenticado.getActivo(),
                 autenticado.getRol(),
-                autenticado.getCreadoPor());
+                autenticado.getCreadoPor(),
+                autenticado.getUltimoInicio());
     }
 
     public UsuarioAutenticado aNuevoUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuario) {
@@ -45,7 +46,6 @@ public class MapeadorUsuario {
                     usuario,
                     nuevoUsuario.getNombreUsuario(),
                     DUMMY_PASSWORD,
-                    LocalDateTime.now(),
                     nuevoUsuario.getCreadoPor(),
                     LocalDateTime.now(),
                     Boolean.TRUE,
@@ -73,7 +73,6 @@ public class MapeadorUsuario {
                     infoUsuario,
                     editarUsuario.getNombreUsuario(),
                     existente.getContrasena(),
-                    existente.getCreadoEn(),
                     existente.getCreadoPor(),
                     existente.getUltimoInicio(),
                     existente.getActivo(),

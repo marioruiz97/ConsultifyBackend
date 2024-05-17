@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,5 +21,6 @@ public class MisDatos {
     private String correo;
     private String nombreUsuario;
     private String creadoPor;
+    private LocalDateTime ultimoInicio;
     private Rol rol;
 }

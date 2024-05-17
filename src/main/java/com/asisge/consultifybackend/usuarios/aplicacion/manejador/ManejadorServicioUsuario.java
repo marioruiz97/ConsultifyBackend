@@ -1,7 +1,6 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
-import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;
@@ -9,6 +8,10 @@ import com.asisge.consultifybackend.usuarios.aplicacion.servicio.GeneradorContra
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +19,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class ManejadorServicioUsuario implements ServicioUsuario {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioUsuario.class);
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
     private final PasswordEncoder passwordEncoder;
@@ -48,9 +53,13 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuarioDto) {
         validarCamposDto(nuevoUsuarioDto);
         UsuarioAutenticado usuarioAGuardar = mapeadorUsuario.aNuevoUsuarioAutenticado(nuevoUsuarioDto);
-        usuarioAGuardar.cambiarContrasena("contSENA12*"); // TODO cambiar a generador de contrasenas
+        usuarioAGuardar.cambiarContrasena("Contra1234*"); // TODO cambiar a generador de contrasenas
         if (usuarioAGuardar.validarCrearUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
             usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
+
+            String mensaje = Mensajes.getString("usuarios.info.crear.usuario");
+            logger.info(mensaje, usuarioAGuardar);
+
             return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
@@ -63,6 +72,9 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         UsuarioAutenticado aGuardar = mapeadorUsuario.aEditarUsuarioAutenticado(existente, editarUsuario);
         if (!aGuardar.validarEditarUsuarioAutenticado() && !aGuardar.getUsuario().validarUsuario())
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
+
+        String mensaje = Mensajes.getString("usuarios.info.editar.usuario", aGuardar.getNombreUsuario());
+        logger.info(mensaje);
         return devolverUsuarioSinClave(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 
@@ -71,6 +83,10 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public Boolean adminDesactivaUsuario(Long idUsuario) {
         UsuarioAutenticado cuenta = this.repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
         cuenta = this.repositorioUsuario.cambiarEstado(cuenta, Boolean.FALSE);
+
+        String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, "false");
+        logger.info(mensaje);
+
         return cuenta.getActivo();
     }
 
@@ -89,12 +105,15 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             UsuarioAutenticado nuevoUsuario = repositorioUsuario.cambiarEstado(usuario, activar);
             nuevoEstado = nuevoUsuario.getActivo();
         }
+
+        String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, activar);
+        logger.info(mensaje);
         return nuevoEstado;
     }
 
     private void validarCamposDto(Dto dto) {
         if (!dto.validarDto())
-            throw new IllegalArgumentException("Por favor valide los datos obligatorios del usuario DTO");
+            throw new IllegalArgumentException(Mensajes.getString("utilidad.error.dto.faltan.campos.obligatorios", "usuario"));
     }
 
     private UsuarioAutenticado devolverUsuarioSinClave(UsuarioAutenticado usuario) {

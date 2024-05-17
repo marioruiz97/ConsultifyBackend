@@ -4,8 +4,12 @@ import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@ToString(exclude = {"telefono", "correo"})
+@NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
 

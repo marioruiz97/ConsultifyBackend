@@ -15,4 +15,6 @@ public interface RepositorioAutorizacion {
     void cambiarContrasena(UsuarioAutenticado usuarioAutenticado);
 
     UsuarioAutenticado buscarPorIdUsuarioAndCorreo(Long idUsuario, String correo);
+
+    void actualizarUltimoInicioSesion(UsuarioAutenticado usuario);
 }

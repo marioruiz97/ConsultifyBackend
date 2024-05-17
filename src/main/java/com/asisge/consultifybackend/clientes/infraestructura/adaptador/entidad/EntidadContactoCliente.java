@@ -26,11 +26,16 @@ public class EntidadContactoCliente {
     @Id
     @EqualsAndHashCode.Exclude
     @UuidGenerator
+    @Column(name = "id_contacto")
     private String id;
 
     @NotBlank
     @Column(nullable = false, length = 120)
     private String nombreCompleto;
+
+    @NotBlank
+    @Column
+    private String cargo;
 
     @Pattern(regexp = ExpresionRegular.PATRON_TELEFONO)
     @NotBlank

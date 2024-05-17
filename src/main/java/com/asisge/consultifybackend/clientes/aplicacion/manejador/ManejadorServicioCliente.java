@@ -4,16 +4,21 @@ import com.asisge.consultifybackend.clientes.aplicacion.servicio.ServicioCliente
 import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import com.asisge.consultifybackend.clientes.dominio.modelo.ContactoCliente;
 import com.asisge.consultifybackend.clientes.dominio.puerto.RepositorioCliente;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class ManejadorServicioCliente implements ServicioCliente {
 
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioCliente.class);
     private final RepositorioCliente repositorioCliente;
 
     @Autowired
@@ -36,7 +41,11 @@ public class ManejadorServicioCliente implements ServicioCliente {
         nuevoCliente.validarCampos();
         nuevoCliente.setIdCliente(null);
         validarContactos(nuevoCliente.getContactos());
-        alistarContactos(nuevoCliente.getContactos());
+        alistarNuevosContactos(nuevoCliente.getContactos());
+
+        String mensaje = Mensajes.getString("clientes.info.crear.cliente");
+        logger.info(mensaje, nuevoCliente);
+
         return repositorioCliente.crearCliente(nuevoCliente);
     }
 
@@ -45,9 +54,12 @@ public class ManejadorServicioCliente implements ServicioCliente {
         editarCliente.validarCampos();
         validarContactos(editarCliente.getContactos());
         if (editarCliente.getIdCliente() == null || !editarCliente.getIdCliente().equals(idCliente))
-            throw new IllegalArgumentException("El id del cliente a editar no puede ser null");
+            throw new IllegalArgumentException(Mensajes.getString("clientes.error.id.cliente.no.coincide"));
         if (!repositorioCliente.existeClientePorId(idCliente))
-            throw new EntityNotFoundException("No se encontro el cliente en la base de datos");
+            throw new EntityNotFoundException(Mensajes.getString("clientes.error.cliente.no.encontrado", idCliente));
+
+        String mensaje = Mensajes.getString("clientes.info.editar.cliente", idCliente);
+        logger.info(mensaje);
         return repositorioCliente.editarCliente(editarCliente);
     }
 
@@ -57,6 +69,9 @@ public class ManejadorServicioCliente implements ServicioCliente {
         if (!repositorioCliente.existeClientePorId(idCliente))
             return Boolean.FALSE;
         repositorioCliente.eliminarCliente(idCliente);
+
+        String mensaje = Mensajes.getString("clientes.info.eliminar.cliente.exito", idCliente);
+        logger.info(mensaje);
         return Boolean.TRUE;
     }
 
@@ -65,11 +80,11 @@ public class ManejadorServicioCliente implements ServicioCliente {
             boolean contactosValidos = contactos.stream()
                     .allMatch(ContactoCliente::validarContacto);
             if (!contactosValidos)
-                throw new IllegalArgumentException("Al menos uno de los contactos no cumple con el formato requerido");
+                throw new IllegalArgumentException(Mensajes.getString("clientes.error.contacto.invalido"));
         }
     }
 
-    private void alistarContactos(List<ContactoCliente> contactos) {
+    private void alistarNuevosContactos(List<ContactoCliente> contactos) {
         if (contactos != null && !contactos.isEmpty())
             contactos.forEach(contacto -> contacto.setId(null));
     }

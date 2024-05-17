@@ -10,12 +10,6 @@ public class ViolacionIntegridadException extends Exception {
 
     private final String mensaje;
 
-    public ViolacionIntegridadException(String message) {
-        super(message);
-        this.titulo = "Error de integridad de datos";
-        this.mensaje = message;
-    }
-
     public ViolacionIntegridadException(ConstraintViolationException ex) {
         this.titulo = ex.getLocalizedMessage().split(":")[0].split("\\[")[1];
 
@@ -29,6 +23,9 @@ public class ViolacionIntegridadException extends Exception {
             mensajeError = "El número de identificación ya está registrado";
         if (mensajeError.toUpperCase().contains("NOMBRE_USUARIO"))
             mensajeError = "El nombre de usuario ya está registrado";
+        if (mensajeError.toUpperCase().contains("MIEMBRO_PROYECTO(ID_PROYECTO"))
+            mensajeError = "Miembro duplicado, ya existe dentro del proyecto";
+
         this.mensaje = mensajeError;
     }
 }

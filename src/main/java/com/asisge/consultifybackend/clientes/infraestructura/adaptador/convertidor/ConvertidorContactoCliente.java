@@ -15,6 +15,7 @@ public final class ConvertidorContactoCliente {
             contacto = new ContactoCliente(
                     entidad.getId(),
                     entidad.getNombreCompleto(),
+                    entidad.getCargo(),
                     entidad.getTelefono(),
                     entidad.getCorreo()
             );
@@ -27,6 +28,7 @@ public final class ConvertidorContactoCliente {
         String id = dominio.getId() != null ? dominio.getId() : null;
         contacto.setId(id);
         contacto.setNombreCompleto(dominio.getNombreCompleto());
+        contacto.setCargo(dominio.getCargo());
         contacto.setTelefono(dominio.getTelefono());
         contacto.setCorreo(dominio.getCorreo());
         return contacto;

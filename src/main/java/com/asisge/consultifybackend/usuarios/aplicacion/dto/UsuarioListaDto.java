@@ -5,6 +5,8 @@ import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 public class UsuarioListaDto {
@@ -20,4 +22,5 @@ public class UsuarioListaDto {
     private Boolean estado;
     private Rol rol;
     private String creadoPor;
+    private LocalDateTime ultimoInicio;
 }

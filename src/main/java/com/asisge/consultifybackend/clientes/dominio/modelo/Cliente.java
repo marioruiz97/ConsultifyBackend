@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "contactos")
 public class Cliente {
 
     @Setter

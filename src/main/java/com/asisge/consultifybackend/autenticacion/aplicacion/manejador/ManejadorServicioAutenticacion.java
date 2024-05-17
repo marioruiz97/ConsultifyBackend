@@ -6,17 +6,27 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAu
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Service
 public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
+
+    private final Logger logger = LoggerFactory.getLogger(ManejadorServicioAutenticacion.class.getName());
 
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final AuthenticationManager authenticationManager;
@@ -29,12 +39,16 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         this.servicioJWT = servicioJWT;
     }
 
+    private static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
     @Override
     public void recuperarContrasena(String correo) {
-        Usuario usuario = buscarUsuarioPorCorreo(correo);
         /*
-        VerificationToken token = service.validVerificationToken(usuario);
-        emailService.sendRecoveryPassword(token);
+        Usuario usuario = buscarUsuarioPorCorreo(correo)
+        VerificationToken token = service.validVerificationToken(usuario)
+        emailService.sendRecoveryPassword(token)
          */
     }
 
@@ -46,7 +60,25 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         authenticationManager.authenticate(authToken);
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorNombreUsuarioOCorreo(authRequest.getNombreUsuario());
         String jwt = servicioJWT.generarToken(usuario, agregarExtraClaims(usuario));
+        repositorioAutorizacion.actualizarUltimoInicioSesion(usuario);
+
+        String mensaje = Mensajes.getString("autenticacion.info.nuevo.inicio.sesion",
+                usuario.getNombreUsuario(),
+                LocalDateTime.now(ZoneId.systemDefault()).toString());
+        logger.info(mensaje);
         return new AuthenticationResponse(jwt);
+    }
+
+    @Override
+    public String obtenerNombreUsuarioEnSesion() {
+        return estaAutenticado()
+                ? getAuthentication().getName()
+                : null;
+    }
+
+    @Override
+    public boolean estaAutenticado() {
+        return getAuthentication().isAuthenticated();
     }
 
     private Map<String, Object> agregarExtraClaims(UsuarioAutenticado usuarioAutenticado) {
@@ -64,10 +96,10 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         return extraClaims;
     }
 
-    private Usuario buscarUsuarioPorCorreo(String correo) {
+    public Usuario buscarUsuarioPorCorreo(String correo) {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
         if (usuario == null)
-            throw new EntityNotFoundException(String.format("No se encontro el correo electronico %s en la base de datos", correo));
+            throw new EntityNotFoundException(Mensajes.getString("autenticacion.error.correo.no.encontrado", correo));
         return usuario.getUsuario();
     }
 }

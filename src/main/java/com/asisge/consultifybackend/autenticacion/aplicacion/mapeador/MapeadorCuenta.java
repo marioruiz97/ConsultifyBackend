@@ -22,6 +22,7 @@ public class MapeadorCuenta {
                 usuario.getCorreo(),
                 cuenta.getNombreUsuario(),
                 cuenta.getCreadoPor(),
+                cuenta.getUltimoInicio(),
                 cuenta.getRol()
         );
     }
@@ -41,7 +42,6 @@ public class MapeadorCuenta {
                 infoUsuario,
                 editarUsuario.getNombreUsuario(),
                 existente.getContrasena(),
-                existente.getCreadoEn(),
                 existente.getCreadoPor(),
                 existente.getUltimoInicio(),
                 existente.getActivo(),

@@ -4,17 +4,18 @@ package com.asisge.consultifybackend.usuarios.dominio.modelo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
+@ToString(exclude = {"contrasena", "ultimoInicio"})
 @AllArgsConstructor
 public class UsuarioAutenticado {
 
     private Usuario usuario;
     private String nombreUsuario;
     private String contrasena;
-    private LocalDateTime creadoEn;
     private String creadoPor;
     private LocalDateTime ultimoInicio;
     @Setter
@@ -38,9 +39,6 @@ public class UsuarioAutenticado {
         boolean valido = this.validarContrasena();
         if (valido) valido = this.nombreUsuario != null &&
                 this.contrasena != null &&
-                this.creadoEn != null &&
-                //this.creadoPor != null &&
-                this.ultimoInicio != null &&
                 this.activo != null &&
                 this.verificado != null &&
                 this.rol != null;
@@ -53,9 +51,6 @@ public class UsuarioAutenticado {
 
     public boolean validarEditarUsuarioAutenticado() {
         return this.nombreUsuario != null &&
-                this.creadoEn != null &&
-                this.creadoPor != null &&
-                this.ultimoInicio != null &&
                 this.activo != null &&
                 this.verificado != null &&
                 this.rol != null;
