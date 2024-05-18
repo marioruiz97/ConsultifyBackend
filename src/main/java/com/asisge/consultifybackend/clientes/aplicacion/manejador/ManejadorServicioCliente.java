@@ -5,6 +5,7 @@ import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import com.asisge.consultifybackend.clientes.dominio.modelo.ContactoCliente;
 import com.asisge.consultifybackend.clientes.dominio.puerto.RepositorioCliente;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +55,12 @@ public class ManejadorServicioCliente implements ServicioCliente {
         editarCliente.validarCampos();
         validarContactos(editarCliente.getContactos());
         if (editarCliente.getIdCliente() == null || !editarCliente.getIdCliente().equals(idCliente))
-            throw new IllegalArgumentException(Mensajes.getString("clientes.error.id.cliente.no.coincide"));
+            throw new AccionNoPermitidaException(Mensajes.getString("clientes.error.id.cliente.no.coincide"));
         if (!repositorioCliente.existeClientePorId(idCliente))
             throw new EntityNotFoundException(Mensajes.getString("clientes.error.cliente.no.encontrado", idCliente));
 
         String mensaje = Mensajes.getString("clientes.info.editar.cliente", idCliente);
-        logger.info(mensaje);
+        logger.info(mensaje, editarCliente);
         return repositorioCliente.editarCliente(editarCliente);
     }
 

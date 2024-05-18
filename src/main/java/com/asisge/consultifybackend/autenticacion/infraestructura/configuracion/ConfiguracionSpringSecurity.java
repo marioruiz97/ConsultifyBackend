@@ -37,6 +37,9 @@ public class ConfiguracionSpringSecurity {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        final String[] roles = {"ADMIN", "ASESOR"};
+        final String apiV1Path = "/api/v1/**";
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -46,8 +49,10 @@ public class ConfiguracionSpringSecurity {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers( "/error").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasAnyRole("ADMIN", "ASESOR")
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.POST, apiV1Path).hasAnyRole(roles)
+                        .requestMatchers(HttpMethod.PATCH, apiV1Path).hasAnyRole(roles)
+                        .requestMatchers(HttpMethod.DELETE, apiV1Path).hasAnyRole(roles)
                         .anyRequest().authenticated());
 
         // config para que muestre la consola H2

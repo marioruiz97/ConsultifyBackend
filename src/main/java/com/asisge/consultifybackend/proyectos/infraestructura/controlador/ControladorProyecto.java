@@ -2,12 +2,14 @@ package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
+import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +18,13 @@ import java.util.List;
 @RequestMapping("/proyectos")
 public class ControladorProyecto {
 
+    final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioProyecto servicioProyecto;
 
     @Autowired
-    public ControladorProyecto(ServicioProyecto servicioProyecto) {
+    public ControladorProyecto(ServicioProyecto servicioProyecto, ServicioSeguridadProyecto seguridadProyecto) {
         this.servicioProyecto = servicioProyecto;
+        this.seguridadProyecto = seguridadProyecto;
     }
 
     @GetMapping
@@ -35,6 +39,7 @@ public class ControladorProyecto {
     }
 
     @PatchMapping("/{idProyecto}")
+    @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esMiembroProyecto(#idProyecto, authentication.name)")
     public ResponseEntity<Proyecto> editarProyecto(@PathVariable Long idProyecto, @Valid @RequestBody ProyectoDto proyecto) {
         Proyecto proyectoEditado = servicioProyecto.editarProyecto(idProyecto, proyecto);
         return new ResponseEntity<>(proyectoEditado, HttpStatus.CREATED);

@@ -19,4 +19,5 @@ public interface RepositorioProyecto {
 
     void eliminarProyecto(Long idProyecto);
 
+    boolean esMiembroProyecto(String correoOUsername);
 }

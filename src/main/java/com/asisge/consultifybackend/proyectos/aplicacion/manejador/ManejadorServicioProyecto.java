@@ -59,7 +59,7 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
         proyecto.agregarMiembro(usuario);
 
         String mensaje = Mensajes.getString("proyectos.info.crear.proyecto", usuario.getNombreUsuario(), proyecto.getNombreProyecto());
-        logger.info(mensaje);
+        logger.info(mensaje, proyecto);
 
         return repositorioProyecto.crearProyecto(proyecto);
     }
@@ -74,7 +74,7 @@ public class ManejadorServicioProyecto implements ServicioProyecto {
         proyecto.validarProyecto();
 
         String mensaje = Mensajes.getString("proyectos.info.editar.proyecto", proyecto.getIdProyecto());
-        logger.info(mensaje);
+        logger.info(mensaje, proyecto);
 
         return repositorioProyecto.editarProyecto(idProyecto, proyecto);
     }

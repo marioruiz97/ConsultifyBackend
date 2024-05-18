@@ -43,7 +43,7 @@ public class ManejadorServicioTablero implements ServicioTablero {
         Proyecto proyecto = repositorioProyecto.obtenerProyectoPorId(idProyecto);
 
         String mensaje = Mensajes.getString("tableros.info.obtener.tablero.proyecto", proyecto.getNombreProyecto());
-        logger.info(mensaje);
+        logger.info(mensaje, proyecto);
 
         List<Actividad> actividades = repositorioActividad.obtenerActividadesPorProyecto(proyecto);
 
@@ -64,14 +64,14 @@ public class ManejadorServicioTablero implements ServicioTablero {
     public UsuarioAutenticado agregarMiembroAlProyecto(Long idProyecto, MiembroDto miembroDto) {
         if (!miembroDto.validarDto()) {
             String mensaje = Mensajes.getString("tableros.error.nuevo.miembro.invalido");
-            logger.error(mensaje);
+            logger.error(mensaje, miembroDto);
             throw new IllegalArgumentException(mensaje);
         }
         Usuario usuario = miembroDto.getUsuario();
         repositorioTablero.agregarMiembroAlProyecto(idProyecto, usuario);
 
-        String mensaje = Mensajes.getString("tableros.info.nuevo.miembro.agregado");
-        logger.info(mensaje);
+        String mensaje = Mensajes.getString("tableros.info.nuevo.miembro.agregado", idProyecto);
+        logger.info(mensaje, usuario);
 
         return new UsuarioAutenticado(usuario, miembroDto.getNombreUsuario(), null, null, null, null, null, null);
     }
