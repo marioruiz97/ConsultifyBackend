@@ -1,7 +1,6 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.dto;
 
 import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +11,6 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -31,11 +29,9 @@ public class ActividadDto {
     private EstadoActividad estado;
 
     @Nullable
-    @FutureOrPresent
+    @FutureOrPresent(message = "La fecha de cierre esperada debe ser minimo hoy o una fecha futura")
     private LocalDate fechaCierreEsperado;
 
     private Usuario responsable;
-
-    private List<Seguimiento> seguimiento;
 
 }

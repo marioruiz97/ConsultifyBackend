@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 
 @ControllerAdvice
 public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -77,6 +79,15 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
         printInfoError(ex);
 
         ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getLocalizedMessage(), ex.getMessage());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    protected ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex, WebRequest request) {
+        printInfoError(ex);
+
+        String titulo = "Error: Recurso no encontrado (" + request.getContextPath() + ") " + ex.getLocalizedMessage();
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), titulo, ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 

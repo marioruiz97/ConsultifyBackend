@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Seguimiento {
 
     private Long idSeguimiento;
+    private Actividad actividad;
     private UsuarioAutenticado usuario;
     private LocalDateTime fechaSeguimiento;
     private String comentarios;

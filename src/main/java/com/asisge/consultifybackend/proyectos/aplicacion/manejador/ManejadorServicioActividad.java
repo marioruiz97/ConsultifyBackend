@@ -13,7 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -63,7 +62,6 @@ public class ManejadorServicioActividad implements ServicioActividad {
         return repositorioActividad.editarActividad(idActividad, actividad);
     }
 
-    @Secured("ROLE_ADMIN")
     @Override
     public void eliminarActividad(Long idProyecto, Long idActividad) {
         validarProyecto(idProyecto);

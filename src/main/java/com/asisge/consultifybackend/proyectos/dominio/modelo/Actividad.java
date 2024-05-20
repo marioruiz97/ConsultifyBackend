@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@ToString(exclude = {"seguimiento", "proyecto"})
+@ToString(exclude = "proyecto")
 public class Actividad {
 
     private Long id;
@@ -20,5 +19,5 @@ public class Actividad {
     private EstadoActividad estado;
     private LocalDate fechaCierreEsperado;
     private Usuario responsable;
-    private List<Seguimiento> seguimiento;
+
 }

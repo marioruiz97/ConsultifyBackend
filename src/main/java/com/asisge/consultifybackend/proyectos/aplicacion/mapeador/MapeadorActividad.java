@@ -16,8 +16,7 @@ public class MapeadorActividad {
                 new Proyecto(idProyecto),
                 nuevaActividad.getEstado(),
                 nuevaActividad.getFechaCierreEsperado(),
-                nuevaActividad.getResponsable(),
-                nuevaActividad.getSeguimiento()
+                nuevaActividad.getResponsable()
         );
     }
 }

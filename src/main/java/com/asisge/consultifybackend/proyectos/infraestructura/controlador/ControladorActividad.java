@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esMiembroProyecto(#idProyecto, authentication.name)")
+@RequestMapping("/proyectos/{idProyecto}/actividades")
 @Secured({"ROLE_ADMIN", "ROLE_ASESOR"})
 public class ControladorActividad {
 
@@ -26,13 +27,13 @@ public class ControladorActividad {
         this.seguridadProyecto = seguridadProyecto;
     }
 
-    @PostMapping("/proyectos/{idProyecto}/actividades")
+    @PostMapping
     public ResponseEntity<Actividad> crearActividad(@PathVariable Long idProyecto, @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/proyectos/{idProyecto}/actividades/{idActividad}")
+    @PatchMapping("/{idActividad}")
     public ResponseEntity<Actividad> editarActividad(@PathVariable Long idProyecto,
                                                      @PathVariable Long idActividad,
                                                      @Valid @RequestBody ActividadDto nuevaActividad) {
@@ -40,7 +41,7 @@ public class ControladorActividad {
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/proyectos/{idProyecto}/actividades/{idActividad}")
+    @DeleteMapping("/{idActividad}")
     @ResponseStatus(HttpStatus.OK)
     public void eliminarActividad(@PathVariable Long idProyecto, @PathVariable Long idActividad) {
         servicioActividad.eliminarActividad(idProyecto, idActividad);

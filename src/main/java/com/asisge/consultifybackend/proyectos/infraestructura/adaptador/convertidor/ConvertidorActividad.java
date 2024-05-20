@@ -2,16 +2,12 @@ package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convert
 
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadActividad;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.validation.Valid;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ConvertidorActividad {
 
@@ -21,7 +17,6 @@ public final class ConvertidorActividad {
     public static Actividad aDominio(@Valid EntidadActividad entidad) {
         Actividad actividad = null;
         if (entidad != null) {
-            List<Seguimiento> seguimientos = new ArrayList<>();
             Proyecto proyecto = new Proyecto(entidad.getProyecto().getIdProyecto());
             Usuario responsable = ConvertidorUsuario.aUsuarioDominio(entidad.getResponsable());
             actividad = new Actividad(
@@ -31,8 +26,7 @@ public final class ConvertidorActividad {
                     proyecto,
                     entidad.getEstado(),
                     entidad.getFechaCierreEsperado(),
-                    responsable,
-                    seguimientos
+                    responsable
             );
         }
         return actividad;

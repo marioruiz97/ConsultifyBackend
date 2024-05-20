@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Table(name = "actividad")
 @AllArgsConstructor
 @NoArgsConstructor
-public @Data class EntidadActividad {
+public @Data class EntidadActividad extends ModeloAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
