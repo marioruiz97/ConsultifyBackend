@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface RepositorioActividad {
 
+    Actividad obtenerActividadPorId(Long idActividad);
+
     List<Actividad> obtenerActividadesPorProyecto(Proyecto proyecto);
 
     Actividad crearActividad(Actividad actividad);

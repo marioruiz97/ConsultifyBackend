@@ -34,6 +34,13 @@ public class ManejadorServicioActividad implements ServicioActividad {
     }
 
     @Override
+    public Actividad obtenerActividadPorId(Long idProyecto, Long idActividad) {
+        validarProyecto(idProyecto);
+
+        return repositorioActividad.obtenerActividadPorId(idActividad);
+    }
+
+    @Override
     public Actividad crearActividad(Long idProyecto, ActividadDto nuevaActividad) {
         validarProyecto(idProyecto);
 

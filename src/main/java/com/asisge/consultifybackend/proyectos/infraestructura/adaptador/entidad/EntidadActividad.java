@@ -45,4 +45,7 @@ public @Data class EntidadActividad extends ModeloAuditoria {
     @JoinColumn(name = "id_responsable", nullable = false)
     private EntidadUsuario responsable;
 
+    public EntidadActividad(Long id) {
+        this.id = id;
+    }
 }

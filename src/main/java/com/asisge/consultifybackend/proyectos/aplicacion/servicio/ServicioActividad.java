@@ -5,6 +5,8 @@ import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 
 public interface ServicioActividad {
 
+    Actividad obtenerActividadPorId(Long idProyecto, Long idActividad);
+
     Actividad crearActividad(Long idProyecto, ActividadDto nuevaActividad);
 
     Actividad editarActividad(Long idProyecto, Long idActividad, ActividadDto nuevaActividad);

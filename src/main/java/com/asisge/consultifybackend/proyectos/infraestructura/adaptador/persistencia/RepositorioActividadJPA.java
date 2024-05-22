@@ -5,6 +5,7 @@ import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioActividad;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor.ConvertidorActividad;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadActividad;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,12 @@ public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad,
 
 
     // metodos propios
+    @Override
+    default Actividad obtenerActividadPorId(Long idActividad) {
+        EntidadActividad entidad = findById(idActividad).orElseThrow(() -> new EntityNotFoundException("No se encontró la actividad en base de datos"));
+        return ConvertidorActividad.aDominio(entidad);
+    }
+
     @Transactional(readOnly = true)
     @Override
     default List<Actividad> obtenerActividadesPorProyecto(Proyecto proyecto) {

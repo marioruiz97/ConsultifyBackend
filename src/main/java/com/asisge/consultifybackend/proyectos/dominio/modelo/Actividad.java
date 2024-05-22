@@ -20,4 +20,7 @@ public class Actividad {
     private LocalDate fechaCierreEsperado;
     private Usuario responsable;
 
+    public Actividad(Long id) {
+        this.id = id;
+    }
 }

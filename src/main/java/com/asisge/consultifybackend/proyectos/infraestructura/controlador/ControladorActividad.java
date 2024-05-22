@@ -27,6 +27,11 @@ public class ControladorActividad {
         this.seguridadProyecto = seguridadProyecto;
     }
 
+    @GetMapping("/{idActividad}")
+    public Actividad obtenerActividadPorId(@PathVariable Long idProyecto, @PathVariable Long idActividad) {
+        return servicioActividad.obtenerActividadPorId(idProyecto, idActividad);
+    }
+
     @PostMapping
     public ResponseEntity<Actividad> crearActividad(@PathVariable Long idProyecto, @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
