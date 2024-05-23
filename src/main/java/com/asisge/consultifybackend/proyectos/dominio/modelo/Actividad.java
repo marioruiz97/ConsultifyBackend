@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -19,6 +20,8 @@ public class Actividad {
     private EstadoActividad estado;
     private LocalDate fechaCierreEsperado;
     private Usuario responsable;
+
+    private LocalDateTime fechaCompletada;
 
     public Actividad(Long id) {
         this.id = id;

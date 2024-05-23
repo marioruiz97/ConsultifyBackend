@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
@@ -33,5 +34,8 @@ public class ActividadDto {
     private LocalDate fechaCierreEsperado;
 
     private Usuario responsable;
+
+    @Nullable
+    private LocalDateTime fechaCompletada;
 
 }

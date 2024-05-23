@@ -37,7 +37,7 @@ public @Data class EntidadProyecto extends ModeloAuditoria {
     @JoinTable(name = "miembro_proyecto",
             joinColumns = @JoinColumn(name = "id_proyecto"),
             inverseJoinColumns = @JoinColumn(name = "id_usuario"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"id_proyecto", "id_usuario"})}
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_proyecto", "id_usuario"})
     )
     private List<EntidadUsuario> miembros;
 

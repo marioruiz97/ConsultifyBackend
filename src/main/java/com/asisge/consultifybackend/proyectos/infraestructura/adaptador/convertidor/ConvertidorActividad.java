@@ -26,7 +26,8 @@ public final class ConvertidorActividad {
                     proyecto,
                     entidad.getEstado(),
                     entidad.getFechaCierreEsperado(),
-                    responsable
+                    responsable,
+                    entidad.getFechaCompletada()
             );
         }
         return actividad;
