@@ -3,6 +3,7 @@ package com.asisge.consultifybackend.proyectos.dominio.modelo;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class Actividad {
     private String nombre;
     private String descripcion;
     private Proyecto proyecto;
-    private EstadoActividad estado;
+    private @Setter EstadoActividad estado;
     private LocalDate fechaCierreEsperado;
     private Usuario responsable;
 

@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.mapeador.MapeadorActividad;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
@@ -64,6 +65,22 @@ public class ManejadorServicioActividad implements ServicioActividad {
         Actividad actividad = mapeadorActividad.aActividad(editarActividad, idProyecto);
 
         String mensaje = Mensajes.getString("actividad.info.editar.actividad", idActividad);
+        logger.info(mensaje, actividad);
+
+        return repositorioActividad.editarActividad(idActividad, actividad);
+    }
+
+    @Override
+    public Actividad cambiarEstadoActividad(Long idProyecto, Long idActividad, CambioEstadoActividadDto estadoActividadDto) {
+        validarProyecto(idProyecto);
+        if (estadoActividadDto.getId() == null || !idActividad.equals(estadoActividadDto.getId()))
+            throw new AccionNoPermitidaException(
+                    Mensajes.getString("actividad.error.id.actividad.no.coincide", idActividad));
+
+        Actividad actividad = repositorioActividad.obtenerActividadPorId(idActividad);
+        actividad.setEstado(estadoActividadDto.getEstado());
+
+        String mensaje = Mensajes.getString("actividad.info.cambiar.estado.actividad", idActividad);
         logger.info(mensaje, actividad);
 
         return repositorioActividad.editarActividad(idActividad, actividad);

@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
@@ -44,6 +45,14 @@ public class ControladorActividad {
                                                      @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.editarActividad(idProyecto, idActividad, nuevaActividad);
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idActividad}")
+    public ResponseEntity<Actividad> cambiarEstadoActividad(@PathVariable Long idProyecto,
+                                                            @PathVariable Long idActividad,
+                                                            @Valid @RequestBody CambioEstadoActividadDto estadoActividadDto) {
+        Actividad actividad = servicioActividad.cambiarEstadoActividad(idProyecto, idActividad, estadoActividadDto);
+        return new ResponseEntity<>(actividad, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idActividad}")
