@@ -1,21 +1,26 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad;
 
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "actividad")
 @AllArgsConstructor
 @NoArgsConstructor
-public @Data class EntidadActividad {
+@EqualsAndHashCode(callSuper = false)
+public @Data class EntidadActividad extends ModeloAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public @Data class EntidadActividad {
     private Long id;
 
     @NotBlank
+    @Size(max = 100)
     private String nombre;
 
     @NotBlank
@@ -35,11 +41,22 @@ public @Data class EntidadActividad {
     @Enumerated(EnumType.STRING)
     private EstadoActividad estado;
 
-    @NotNull
     private LocalDate fechaCierreEsperado;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = EntidadUsuario.class, optional = false)
     @JoinColumn(name = "id_responsable", nullable = false)
     private EntidadUsuario responsable;
 
+    private LocalDateTime fechaCompletada;
+
+    public EntidadActividad(Long id) {
+        this.id = id;
+    }
+
+    @PreUpdate
+    public void setCompletada() {
+        if (estado.equals(EstadoActividad.COMPLETADA))
+            fechaCompletada = LocalDateTime.now(ZoneId.systemDefault());
+        else fechaCompletada = null;
+    }
 }

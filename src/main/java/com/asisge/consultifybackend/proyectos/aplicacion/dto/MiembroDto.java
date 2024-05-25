@@ -7,8 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
+@ToString
 @Getter
 @Setter
 public class MiembroDto implements Dto {
@@ -21,7 +23,7 @@ public class MiembroDto implements Dto {
 
     @Override
     public boolean validarDto() {
-        return nombreUsuario != null && !nombreUsuario.trim().equals("") &&
+        return nombreUsuario != null && !nombreUsuario.trim().isEmpty() &&
                 usuario != null && usuario.getIdUsuario() != null;
     }
 }

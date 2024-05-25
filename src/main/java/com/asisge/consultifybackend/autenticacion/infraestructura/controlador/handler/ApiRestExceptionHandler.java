@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.autenticacion.infraestructura.controlador.handler;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ApiError;
+import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.ViolacionIntegridadException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -9,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.NoSuchElementException;
 
 
 @ControllerAdvice
@@ -76,6 +80,33 @@ public class ApiRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getLocalizedMessage(), ex.getMessage());
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    protected ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex, WebRequest request) {
+        printInfoError(ex);
+
+        String titulo = "Error: Recurso no encontrado (" + request.getContextPath() + ") " + ex.getLocalizedMessage();
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), titulo, ex.getMessage());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {AccionNoPermitidaException.class})
+    protected ResponseEntity<Object> handleAccionNoPermitidaException(AccionNoPermitidaException ex, WebRequest request) {
+        printInfoError(ex);
+
+        ApiError error = new ApiError(HttpStatus.FORBIDDEN.value(), ex.getTitulo(), ex.getMensaje());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        printInfoError(ex);
+
+        ApiError error = new ApiError(HttpStatus.FORBIDDEN.value(),
+                "Acceso denegado",
+                "No tienes acceso a este recurso" + request.getContextPath());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class})

@@ -23,6 +23,7 @@ public final class ConvertidorProyecto {
             List<UsuarioAutenticado> miembros = entidad.getMiembros().stream()
                     .map(ConvertidorUsuario::aDominio)
                     .toList();
+            miembros.forEach(UsuarioAutenticado::limpiarContrasena);
             proyecto = new Proyecto(
                     entidad.getIdProyecto(),
                     entidad.getNombreProyecto(),

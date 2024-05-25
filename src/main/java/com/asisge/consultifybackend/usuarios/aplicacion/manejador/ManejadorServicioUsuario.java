@@ -74,7 +74,7 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
 
         String mensaje = Mensajes.getString("usuarios.info.editar.usuario", aGuardar.getNombreUsuario());
-        logger.info(mensaje);
+        logger.info(mensaje, aGuardar);
         return devolverUsuarioSinClave(repositorioUsuario.editarInformacionUsuario(aGuardar));
     }
 

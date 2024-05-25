@@ -11,6 +11,7 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +76,9 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
         UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreo());
 
         if (!passwordEncoder.matches(usuarioDto.getContrasenaActual(), existente.getContrasena()))
-            throw new IllegalArgumentException(Mensajes.getString("cuenta.error.contrasena.actual.nocoincide"));
+            throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.actual.nocoincide"));
         if (existente.getContrasena().equals(usuarioDto.getContrasena()))
-            throw new IllegalArgumentException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
+            throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
 
         existente.cambiarContrasena(usuarioDto.getContrasena());
         existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));

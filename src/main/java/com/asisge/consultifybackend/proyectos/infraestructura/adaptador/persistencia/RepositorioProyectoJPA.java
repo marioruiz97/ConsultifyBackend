@@ -20,6 +20,10 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
     @Query("SELECT p FROM EntidadProyecto p JOIN p.miembros u WHERE u.idUsuario = :idUsuario")
     List<EntidadProyecto> findProyectosByIdUsuario(@Param("idUsuario") Long idUsuario);
 
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+            "FROM EntidadProyecto p JOIN p.miembros m WHERE m.correo = :username OR m.nombreUsuario = :username")
+    boolean existeMiembroProyecto(@Param("username") String username);
+
     // metodos propios
     @Override
     default List<Proyecto> obtenerTodos() {
@@ -63,4 +67,10 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
     default boolean existeProyectoPorId(Long idProyecto) {
         return existsById(idProyecto);
     }
+
+    @Override
+    default boolean esMiembroProyecto(String correoOUsername) {
+        return existeMiembroProyecto(correoOUsername);
+    }
+
 }

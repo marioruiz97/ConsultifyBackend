@@ -2,23 +2,28 @@ package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.MiembroDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.TableroProyecto;
+import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioTablero;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/tableros")
+@PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esMiembroProyecto(#idProyecto, authentication.name)")
 public class ControladorTableroProyecto {
 
+    final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioTablero servicioTablero;
 
     @Autowired
-    public ControladorTableroProyecto(ServicioTablero servicioTablero) {
+    public ControladorTableroProyecto(ServicioTablero servicioTablero, ServicioSeguridadProyecto seguridadProyecto) {
         this.servicioTablero = servicioTablero;
+        this.seguridadProyecto = seguridadProyecto;
     }
 
 
@@ -38,7 +43,7 @@ public class ControladorTableroProyecto {
     }
 
     @DeleteMapping("/{idProyecto}/miembros/{idMiembro}")
-    public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro){
+    public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro) {
         return servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
     }
 }
