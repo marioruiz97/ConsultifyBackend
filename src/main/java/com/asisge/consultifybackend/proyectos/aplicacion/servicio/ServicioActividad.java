@@ -4,6 +4,8 @@ import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 
+import java.util.List;
+
 public interface ServicioActividad {
 
     Actividad obtenerActividadPorId(Long idProyecto, Long idActividad);
@@ -15,5 +17,7 @@ public interface ServicioActividad {
     Actividad cambiarEstadoActividad(Long idProyecto, Long idActividad, CambioEstadoActividadDto estadoActividadDto);
 
     void eliminarActividad(Long idProyecto, Long idActividad);
+
+    List<Actividad> obtenerMisActividades(String usernameOCorreo);
 
 }

@@ -11,10 +11,13 @@ import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ManejadorServicioActividad implements ServicioActividad {
@@ -39,6 +42,15 @@ public class ManejadorServicioActividad implements ServicioActividad {
         validarProyecto(idProyecto);
 
         return repositorioActividad.obtenerActividadPorId(idActividad);
+    }
+
+    @Override
+    public List<Actividad> obtenerMisActividades(@NotBlank String usernameOCorreo) {
+
+        String mensaje = Mensajes.getString("mis.actividades.info.buscar", usernameOCorreo);
+        logger.info(mensaje);
+
+        return repositorioActividad.obtenerMisActividades(usernameOCorreo);
     }
 
     @Override
