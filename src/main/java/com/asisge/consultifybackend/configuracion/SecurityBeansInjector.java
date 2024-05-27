@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.autenticacion.infraestructura.configuracion;
+package com.asisge.consultifybackend.configuracion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
