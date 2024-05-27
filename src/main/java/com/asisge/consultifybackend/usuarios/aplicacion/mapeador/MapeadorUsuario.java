@@ -6,8 +6,6 @@ import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class MapeadorUsuario {
 
@@ -47,7 +45,7 @@ public class MapeadorUsuario {
                     nuevoUsuario.getNombreUsuario(),
                     DUMMY_PASSWORD,
                     nuevoUsuario.getCreadoPor(),
-                    LocalDateTime.now(),
+                    null,
                     Boolean.TRUE,
                     Boolean.TRUE,
                     nuevoUsuario.getRol());

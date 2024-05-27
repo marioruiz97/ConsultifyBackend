@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 public @Data class EntidadUsuario extends ModeloAuditoria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private
     Long idUsuario;
 
