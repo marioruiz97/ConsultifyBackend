@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("${api.base-path}/clientes")
 public class ControladorClientes {
 
     private final ServicioCliente servicioCliente;

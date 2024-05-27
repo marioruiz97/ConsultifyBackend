@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("${api.base-path}/usuarios")
 public class ControladorUsuario {
 
     private final ServicioUsuario manejadorServicioUsuario;

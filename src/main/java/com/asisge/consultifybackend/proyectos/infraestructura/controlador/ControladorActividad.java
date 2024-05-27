@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esMiembroProyecto(#idProyecto, authentication.name)")
-@RequestMapping("/proyectos/{idProyecto}/actividades")
+@RequestMapping("${api.base-path}/proyectos/{idProyecto}/actividades")
 @Secured({"ROLE_ADMIN", "ROLE_ASESOR"})
 public class ControladorActividad {
 

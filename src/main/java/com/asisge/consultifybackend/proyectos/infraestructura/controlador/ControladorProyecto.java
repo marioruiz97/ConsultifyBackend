@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/proyectos")
+@RequestMapping("${api.base-path}/proyectos")
 public class ControladorProyecto {
 
     final ServicioSeguridadProyecto seguridadProyecto;
