@@ -7,6 +7,7 @@ import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguri
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -28,18 +29,23 @@ public class ControladorActividad {
         this.seguridadProyecto = seguridadProyecto;
     }
 
+
     @GetMapping("/{idActividad}")
     public Actividad obtenerActividadPorId(@PathVariable Long idProyecto, @PathVariable Long idActividad) {
         return servicioActividad.obtenerActividadPorId(idProyecto, idActividad);
     }
 
+
     @PostMapping
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public ResponseEntity<Actividad> crearActividad(@PathVariable Long idProyecto, @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }
 
+
     @PatchMapping("/{idActividad}")
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public ResponseEntity<Actividad> editarActividad(@PathVariable Long idProyecto,
                                                      @PathVariable Long idActividad,
                                                      @Valid @RequestBody ActividadDto nuevaActividad) {
@@ -47,7 +53,9 @@ public class ControladorActividad {
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }
 
+
     @PutMapping("/{idActividad}")
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public ResponseEntity<Actividad> cambiarEstadoActividad(@PathVariable Long idProyecto,
                                                             @PathVariable Long idActividad,
                                                             @Valid @RequestBody CambioEstadoActividadDto estadoActividadDto) {
@@ -55,8 +63,10 @@ public class ControladorActividad {
         return new ResponseEntity<>(actividad, HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{idActividad}")
     @ResponseStatus(HttpStatus.OK)
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public void eliminarActividad(@PathVariable Long idProyecto, @PathVariable Long idActividad) {
         servicioActividad.eliminarActividad(idProyecto, idActividad);
     }

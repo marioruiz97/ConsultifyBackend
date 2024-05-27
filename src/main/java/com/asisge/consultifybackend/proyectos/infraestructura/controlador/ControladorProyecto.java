@@ -6,6 +6,7 @@ import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguri
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -27,25 +28,32 @@ public class ControladorProyecto {
         this.seguridadProyecto = seguridadProyecto;
     }
 
+
     @GetMapping
     public List<Proyecto> obtenerTodosProyectos() {
         return servicioProyecto.obtenerTodos();
     }
 
+
     @PostMapping
+    @CacheEvict(value = "informeProyecto", allEntries = true)
     public ResponseEntity<Proyecto> crearProyecto(@Valid @RequestBody ProyectoDto proyecto) {
         Proyecto nuevoProyecto = servicioProyecto.crearProyecto(proyecto);
         return new ResponseEntity<>(nuevoProyecto, HttpStatus.CREATED);
     }
 
+
     @PatchMapping("/{idProyecto}")
+    @CacheEvict(value = "informeProyecto", allEntries = true)
     @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esMiembroProyecto(#idProyecto, authentication.name)")
     public ResponseEntity<Proyecto> editarProyecto(@PathVariable Long idProyecto, @Valid @RequestBody ProyectoDto proyecto) {
         Proyecto proyectoEditado = servicioProyecto.editarProyecto(idProyecto, proyecto);
         return new ResponseEntity<>(proyectoEditado, HttpStatus.CREATED);
     }
 
+
     @Secured("ROLE_ADMIN")
+    @CacheEvict(value = "informeProyecto", allEntries = true)
     @DeleteMapping("/{idProyecto}")
     public Boolean eliminarProyecto(@PathVariable Long idProyecto) {
         return servicioProyecto.eliminarProyecto(idProyecto);

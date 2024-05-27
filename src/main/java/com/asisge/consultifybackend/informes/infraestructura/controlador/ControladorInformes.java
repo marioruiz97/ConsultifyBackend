@@ -7,6 +7,7 @@ import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguri
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,8 @@ public class ControladorInformes {
         this.servicioInforme = servicioInforme;
     }
 
+
+    @Cacheable("informeProyecto")
     @GetMapping
     public List<InformeProyecto> obtenerEncabezadosInformes() {
 
@@ -43,6 +46,8 @@ public class ControladorInformes {
         }
     }
 
+
+    @Cacheable(value = "informeActividades", key = "#idProyecto")
     @GetMapping("/{idProyecto}")
     public InformeProyecto obtenerInformeProyecto(@PathVariable Long idProyecto) {
         @Valid String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
