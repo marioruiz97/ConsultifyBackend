@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.autenticacion.aplicacion.dto;
+package com.asisge.consultifybackend.utilidad.aplicacion.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,12 +14,6 @@ public class ApiError {
     private String error;
     private String message;
 
-    public static ApiError conMensajeGenerico(Exception ex, HttpStatus status) {
-        return new ApiError(
-                status.value(),
-                ex.getLocalizedMessage(),
-                ex.getCause().getLocalizedMessage());
-    }
 
     public static ApiError conMensajeGenerico(NestedRuntimeException ex, HttpStatus status) {
         return new ApiError(

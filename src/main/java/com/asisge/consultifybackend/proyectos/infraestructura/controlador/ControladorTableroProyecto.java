@@ -7,6 +7,7 @@ import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioTabler
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,17 +33,22 @@ public class ControladorTableroProyecto {
         return servicioTablero.obtenerProyectoPorId(idProyecto);
     }
 
+
     @GetMapping("/{idProyecto}/posibles-miembros")
     public List<UsuarioAutenticado> obtenerPosiblesMiembrosProyecto(@PathVariable Long idProyecto) {
         return servicioTablero.obtenerPosiblesMiembros(idProyecto);
     }
 
+
     @PutMapping("/{idProyecto}/miembros")
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public UsuarioAutenticado agregarMiembroAlProyecto(@PathVariable Long idProyecto, @Valid @RequestBody MiembroDto miembroDto) {
         return servicioTablero.agregarMiembroAlProyecto(idProyecto, miembroDto);
     }
 
+
     @DeleteMapping("/{idProyecto}/miembros/{idMiembro}")
+    @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro) {
         return servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
     }

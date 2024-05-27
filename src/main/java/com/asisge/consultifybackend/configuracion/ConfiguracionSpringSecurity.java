@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.autenticacion.infraestructura.configuracion;
+package com.asisge.consultifybackend.configuracion;
 
-import com.asisge.consultifybackend.autenticacion.infraestructura.configuracion.filtros.JWTAuthenticationFilter;
+import com.asisge.consultifybackend.configuracion.filtros.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +47,15 @@ public class ConfiguracionSpringSecurity {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
+                        // paginas con acceso publico
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/error", "/error/**").permitAll()
+
+                        // controlar acciones por rol
                         .requestMatchers(HttpMethod.POST, apiV1Path).hasAnyRole(roles)
                         .requestMatchers(HttpMethod.PATCH, apiV1Path).hasAnyRole(roles)
+                        .requestMatchers(HttpMethod.PUT, apiV1Path).hasAnyRole(roles)
                         .requestMatchers(HttpMethod.DELETE, apiV1Path).hasAnyRole(roles)
                         .anyRequest().authenticated());
 

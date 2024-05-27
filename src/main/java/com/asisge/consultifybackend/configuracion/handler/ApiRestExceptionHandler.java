@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.autenticacion.infraestructura.controlador.handler;
+package com.asisge.consultifybackend.configuracion.handler;
 
-import com.asisge.consultifybackend.autenticacion.aplicacion.dto.ApiError;
+import com.asisge.consultifybackend.utilidad.aplicacion.dto.ApiError;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.ViolacionIntegridadException;
 import jakarta.persistence.EntityNotFoundException;
