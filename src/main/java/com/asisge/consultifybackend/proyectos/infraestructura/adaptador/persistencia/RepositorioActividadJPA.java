@@ -12,14 +12,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad, Long>, RepositorioActividad {
 
+
     // metodos JPQL
     @Query("SELECT a FROM EntidadActividad a JOIN a.proyecto p WHERE p.idProyecto= :idProyecto")
     List<EntidadActividad> findByIdProyecto(@Param("idProyecto") Long idProyecto);
+
+    @Query("SELECT a FROM EntidadActividad a JOIN a.responsable r WHERE a.estado != 'COMPLETADA' AND a.fechaCierreEsperado <= :fecha AND " +
+            "r.nombreUsuario= :usernameOCorreo OR r.correo= :usernameOCorreo")
+    List<EntidadActividad> findByUsernameOCorreo(@Param("usernameOCorreo") String usernameOCorreo, @Param("fecha") LocalDate fecha);
 
 
     // metodos propios
@@ -33,6 +39,16 @@ public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad,
     @Override
     default List<Actividad> obtenerActividadesPorProyecto(Proyecto proyecto) {
         List<EntidadActividad> actividades = findByIdProyecto(proyecto.getIdProyecto());
+        return actividades.stream().map(ConvertidorActividad::aDominio).toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    default List<Actividad> obtenerMisActividades(String usernameOCorreo) {
+        LocalDate fecha = LocalDate.now();
+        fecha = fecha.plusDays(7);
+
+        List<EntidadActividad> actividades = findByUsernameOCorreo(usernameOCorreo, fecha);
         return actividades.stream().map(ConvertidorActividad::aDominio).toList();
     }
 

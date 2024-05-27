@@ -16,4 +16,7 @@ public interface RepositorioActividad {
     Actividad editarActividad(Long idActividad, Actividad actividad);
 
     void eliminarActividad(Long idActividad);
+
+    List<Actividad> obtenerMisActividades(String usernameOCorreo);
+
 }
