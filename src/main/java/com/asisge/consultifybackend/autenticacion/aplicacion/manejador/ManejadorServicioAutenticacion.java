@@ -3,11 +3,14 @@ package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationRequest;
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.AuthenticationResponse;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioToken;
+import com.asisge.consultifybackend.autenticacion.dominio.modelo.TokenVerificacion;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
-import jakarta.persistence.EntityNotFoundException;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.ServicioCorreo;
+import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,12 +35,20 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final AuthenticationManager authenticationManager;
     private final ServicioJWT servicioJWT;
+    private final ServicioToken servicioToken;
+    private final ServicioCorreo servicioCorreo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ManejadorServicioAutenticacion(RepositorioAutorizacion repositorioAutorizacion, AuthenticationManager authenticationManager, ServicioJWT servicioJWT) {
+    public ManejadorServicioAutenticacion(RepositorioAutorizacion repositorioAutorizacion, AuthenticationManager authenticationManager,
+                                          ServicioJWT servicioJWT, ServicioToken servicioToken,
+                                          ServicioCorreo servicioCorreo, PasswordEncoder passwordEncoder) {
         this.repositorioAutorizacion = repositorioAutorizacion;
         this.authenticationManager = authenticationManager;
         this.servicioJWT = servicioJWT;
+        this.servicioToken = servicioToken;
+        this.servicioCorreo = servicioCorreo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private static Authentication getAuthentication() {
@@ -45,11 +57,41 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
     @Override
     public void recuperarContrasena(String correo) {
-        /*
-        Usuario usuario = buscarUsuarioPorCorreo(correo)
-        VerificationToken token = service.validVerificationToken(usuario)
-        emailService.sendRecoveryPassword(token)
-         */
+        UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
+        TokenVerificacion token = servicioToken.crearTokenVerificacion(usuario);
+
+        String mensaje = Mensajes.getString("autenticacion.info.preparar.correo.recuperacion");
+        logger.info(mensaje, token);
+
+        // preparar correo
+        String to = usuario.getUsuario().getCorreo();
+        String subject = Mensajes.getString("autenticacion.subject.recuperar.contrasena", to);
+        String text = servicioCorreo.prepararContenidoCorreoRecuperacion(token.getToken());
+
+        servicioCorreo.enviarCorreo(to, subject, text);
+    }
+
+
+    @Override
+    public void reiniciarClave(String token, String contrasena) {
+        TokenVerificacion tokenVerificacion = servicioToken.obtenerToken(token);
+        servicioToken.validarToken(tokenVerificacion);
+
+        Long idUsuario = tokenVerificacion.getUsuario().getIdUsuario();
+        UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
+
+        if (existente.getContrasena().equals(contrasena))
+            throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
+
+        existente.cambiarContrasena(contrasena);
+        existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
+
+        repositorioAutorizacion.cambiarContrasena(existente);
+
+        String mensaje = Mensajes.getString("cuenta.info.cambiar.contrasena.exitoso", existente.getNombreUsuario());
+        logger.info(mensaje);
+
+        servicioToken.eliminarToken(tokenVerificacion);
     }
 
     @Override
@@ -96,10 +138,4 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         return extraClaims;
     }
 
-    public Usuario buscarUsuarioPorCorreo(String correo) {
-        UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
-        if (usuario == null)
-            throw new EntityNotFoundException(Mensajes.getString("autenticacion.error.correo.no.encontrado", correo));
-        return usuario.getUsuario();
-    }
 }

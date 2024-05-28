@@ -13,4 +13,5 @@ public interface ServicioAutenticacion {
 
     boolean estaAutenticado();
 
+    void reiniciarClave(String token, String contrasena);
 }
