@@ -18,15 +18,18 @@ public class ManejadorServicioToken implements ServicioToken {
         this.repositorioToken = repositorioToken;
     }
 
-    @Override
-    public TokenVerificacion crearTokenVerificacion(UsuarioAutenticado usuario) {
-        return repositorioToken.crearTokenVerificacion(usuario);
-    }
 
     @Override
     public TokenVerificacion obtenerToken(String token) {
         return repositorioToken.obtenerToken(token);
     }
+
+
+    @Override
+    public TokenVerificacion crearTokenVerificacion(UsuarioAutenticado usuario) {
+        return repositorioToken.crearTokenVerificacion(usuario);
+    }
+
 
     @Override
     public void validarToken(TokenVerificacion token) {

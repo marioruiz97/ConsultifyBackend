@@ -5,12 +5,15 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioContrasen
 import com.asisge.consultifybackend.autenticacion.aplicacion.dto.CambioCorreoDto;
 import com.asisge.consultifybackend.autenticacion.aplicacion.mapeador.MapeadorCuenta;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioCuenta;
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioToken;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.MisDatos;
+import com.asisge.consultifybackend.autenticacion.dominio.modelo.TokenVerificacion;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.ServicioCorreo;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import org.slf4j.Logger;
@@ -25,20 +28,27 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
     private final Logger logger = LoggerFactory.getLogger(ManejadorServicioCuenta.class);
+
     private final RepositorioAutorizacion repositorioAutorizacion;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorCuenta mapeadorCuenta;
+    private final ServicioToken servicioToken;
+    private final ServicioCorreo servicioCorreo;
 
     @Autowired
     public ManejadorServicioCuenta(RepositorioAutorizacion repositorioAutorizacion,
                                    RepositorioUsuario repositorioUsuario,
                                    PasswordEncoder passwordEncoder,
-                                   MapeadorCuenta mapeadorCuenta) {
+                                   MapeadorCuenta mapeadorCuenta,
+                                   ServicioToken servicioToken,
+                                   ServicioCorreo servicioCorreo) {
         this.repositorioAutorizacion = repositorioAutorizacion;
         this.passwordEncoder = passwordEncoder;
         this.repositorioUsuario = repositorioUsuario;
         this.mapeadorCuenta = mapeadorCuenta;
+        this.servicioToken = servicioToken;
+        this.servicioCorreo = servicioCorreo;
     }
 
     @Override
@@ -91,12 +101,24 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
     @Override
     public MisDatos cambiarCorreoElectronico(Long idUsuario, CambioCorreoDto usuarioDto) {
         validarCamposDto(usuarioDto);
-        UsuarioAutenticado cuenta = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreoActual());
-        Usuario usuario = cuenta.getUsuario();
+
+        Usuario usuario = repositorioAutorizacion.buscarPorIdUsuarioAndCorreo(idUsuario, usuarioDto.getCorreoActual()).getUsuario();
         usuario.cambiarCorreo(usuarioDto.getCorreoNuevo());
         validarUsuario(usuario);
-        return mapeadorCuenta.aMisDatos(repositorioAutorizacion.editarCorreo(usuario));
-        // TODO enviar correo pidiendo verificacion del nuevo correo y finalizar sesion (hacer el token actual invalido)
+
+        UsuarioAutenticado cuenta = repositorioAutorizacion.editarCorreo(usuario);
+        MisDatos misDatos = mapeadorCuenta.aMisDatos(cuenta);
+        String mensaje = Mensajes.getString("cuenta.info.cambiar.correo.exitoso", cuenta.getNombreUsuario(), misDatos.getCorreo());
+        logger.info(mensaje, misDatos);
+
+        //envio de correo
+        TokenVerificacion token = servicioToken.crearTokenVerificacion(cuenta);
+        String to = misDatos.getCorreo();
+        String subject = Mensajes.getString("cuenta.subject.verificar.cuenta", to);
+
+        servicioCorreo.enviarCorreoVerificacion(to, subject, token);
+
+        return misDatos;
     }
 
     private void validarCamposDto(Dto dto) {

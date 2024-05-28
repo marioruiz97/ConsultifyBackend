@@ -60,15 +60,11 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
         TokenVerificacion token = servicioToken.crearTokenVerificacion(usuario);
 
-        String mensaje = Mensajes.getString("autenticacion.info.preparar.correo.recuperacion");
-        logger.info(mensaje, token);
-
         // preparar correo
         String to = usuario.getUsuario().getCorreo();
         String subject = Mensajes.getString("autenticacion.subject.recuperar.contrasena", to);
-        String text = servicioCorreo.prepararContenidoCorreoRecuperacion(token.getToken());
+        servicioCorreo.enviarCorreoRecuperacion(to, subject, token);
 
-        servicioCorreo.enviarCorreo(to, subject, text);
     }
 
 
@@ -85,6 +81,8 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
         existente.cambiarContrasena(contrasena);
         existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
+        existente.setActivo(Boolean.TRUE);
+        existente.setVerificado(Boolean.TRUE);
 
         repositorioAutorizacion.cambiarContrasena(existente);
 

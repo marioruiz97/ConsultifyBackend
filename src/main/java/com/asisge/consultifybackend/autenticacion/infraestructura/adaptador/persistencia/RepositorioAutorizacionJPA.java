@@ -27,7 +27,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
 
     Optional<EntidadUsuario> findByIdUsuarioAndCorreo(Long idUsuario, String correo);
 
-    @Transactional
+
     @Modifying(flushAutomatically = true)
     @Query("UPDATE EntidadUsuario u SET u.ultimoInicio = :ultimoInicio WHERE u.idUsuario = :id")
     void actualizarUltimoInicioSesion(@Param("id") Long id, @Param("ultimoInicio") LocalDateTime ultimoInicio);
@@ -59,6 +59,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
         return ConvertidorUsuario.aDominio(entidad);
     }
 
+    @Transactional
     @Override
     default void actualizarUltimoInicioSesion(UsuarioAutenticado usuario) {
         this.actualizarUltimoInicioSesion(usuario.getUsuario().getIdUsuario(), LocalDateTime.now(ZoneId.systemDefault()));
