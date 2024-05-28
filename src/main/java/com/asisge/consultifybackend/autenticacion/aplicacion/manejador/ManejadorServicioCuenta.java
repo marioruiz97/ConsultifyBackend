@@ -92,7 +92,7 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
 
         existente.cambiarContrasena(usuarioDto.getContrasena());
         existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
-        repositorioAutorizacion.cambiarContrasena(existente);
+        repositorioAutorizacion.guardarDatosUsuario(existente);
 
         String mensaje = Mensajes.getString("cuenta.info.cambiar.contrasena.exitoso", existente.getNombreUsuario());
         logger.info(mensaje);

@@ -6,7 +6,6 @@ import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAu
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioToken;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.TokenVerificacion;
 import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
-import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.ServicioCorreo;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Service
@@ -56,6 +53,19 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
     }
 
     @Override
+    public String obtenerNombreUsuarioEnSesion() {
+        return estaAutenticado()
+                ? getAuthentication().getName()
+                : null;
+    }
+
+    @Override
+    public boolean estaAutenticado() {
+        return getAuthentication().isAuthenticated();
+    }
+
+
+    @Override
     public void recuperarContrasena(String correo) {
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorCorreo(correo);
         TokenVerificacion token = servicioToken.crearTokenVerificacion(usuario);
@@ -81,10 +91,9 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
         existente.cambiarContrasena(contrasena);
         existente.guardarClaveEncriptada(passwordEncoder.encode(existente.getContrasena()));
-        existente.setActivo(Boolean.TRUE);
         existente.setVerificado(Boolean.TRUE);
 
-        repositorioAutorizacion.cambiarContrasena(existente);
+        repositorioAutorizacion.guardarDatosUsuario(existente);
 
         String mensaje = Mensajes.getString("cuenta.info.cambiar.contrasena.exitoso", existente.getNombreUsuario());
         logger.info(mensaje);
@@ -99,7 +108,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         );
         authenticationManager.authenticate(authToken);
         UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorNombreUsuarioOCorreo(authRequest.getNombreUsuario());
-        String jwt = servicioJWT.generarToken(usuario, agregarExtraClaims(usuario));
+        String jwt = servicioJWT.generarToken(usuario);
         repositorioAutorizacion.actualizarUltimoInicioSesion(usuario);
 
         String mensaje = Mensajes.getString("autenticacion.info.nuevo.inicio.sesion",
@@ -109,31 +118,26 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         return new AuthenticationResponse(jwt);
     }
 
-    @Override
-    public String obtenerNombreUsuarioEnSesion() {
-        return estaAutenticado()
-                ? getAuthentication().getName()
-                : null;
-    }
 
     @Override
-    public boolean estaAutenticado() {
-        return getAuthentication().isAuthenticated();
+    public void verificarNuevaCuenta(Long idUsuario, String contrasena, String token) {
+        // TODO implementar
     }
 
-    private Map<String, Object> agregarExtraClaims(UsuarioAutenticado usuarioAutenticado) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        Usuario usuario = usuarioAutenticado.getUsuario();
+    @Override
+    public void verificarCorreoCuenta(String token) {
+        TokenVerificacion tokenVerificacion = servicioToken.obtenerToken(token);
+        servicioToken.validarToken(tokenVerificacion);
 
-        extraClaims.put("idUsuario", usuario.getIdUsuario());
-        extraClaims.put("identificacion", usuario.getIdentificacion());
-        extraClaims.put("nombreUsuario", usuarioAutenticado.getNombreUsuario());
-        extraClaims.put("nombreCompleto", usuario.getNombres() + " " + usuario.getApellidos());
-        extraClaims.put("rol", usuarioAutenticado.getRol().name());
-        extraClaims.put("correo", usuario.getCorreo());
-        extraClaims.put("activo", usuarioAutenticado.getActivo());
+        Long idUsuario = tokenVerificacion.getUsuario().getIdUsuario();
+        UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
+        existente.setVerificado(Boolean.TRUE);
 
-        return extraClaims;
+        repositorioAutorizacion.guardarDatosUsuario(existente);
+
+        String mensaje = Mensajes.getString("cuenta.info.verificar.cuenta.exitoso", existente.getNombreUsuario());
+        logger.info(mensaje);
+
+        servicioToken.eliminarToken(tokenVerificacion);
     }
-
 }

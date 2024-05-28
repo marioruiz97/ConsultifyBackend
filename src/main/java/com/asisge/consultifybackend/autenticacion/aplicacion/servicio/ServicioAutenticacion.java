@@ -14,4 +14,9 @@ public interface ServicioAutenticacion {
     boolean estaAutenticado();
 
     void reiniciarClave(String token, String contrasena);
+
+    void verificarCorreoCuenta(String token);
+
+    void verificarNuevaCuenta(Long idUsuario, String contrasena, String token);
+
 }

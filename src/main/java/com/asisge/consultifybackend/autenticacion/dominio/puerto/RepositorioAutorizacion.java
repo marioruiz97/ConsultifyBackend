@@ -12,7 +12,7 @@ public interface RepositorioAutorizacion {
 
     UsuarioAutenticado editarCorreo(Usuario existente);
 
-    void cambiarContrasena(UsuarioAutenticado usuarioAutenticado);
+    void guardarDatosUsuario(UsuarioAutenticado usuarioAutenticado);
 
     UsuarioAutenticado buscarPorIdUsuarioAndCorreo(Long idUsuario, String correo);
 

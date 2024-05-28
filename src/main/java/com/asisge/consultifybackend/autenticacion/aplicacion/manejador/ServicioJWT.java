@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 
 
+import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,6 +17,7 @@ import org.springframework.web.util.WebUtils;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -30,8 +32,9 @@ public class ServicioJWT {
     @Value("${security.jwt.cookie-name}")
     private String jwtCookie;
 
-    public String generarToken(UsuarioAutenticado user, Map<String, Object> extraClaims) {
+    public String generarToken(UsuarioAutenticado user) {
 
+        Map<String, Object> extraClaims = agregarExtraClaims(user);
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiration = new Date(issuedAt.getTime() + (systemExpirationMinutes * 60 * 1000));
 
@@ -49,6 +52,22 @@ public class ServicioJWT {
         byte[] secretAsBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(secretAsBytes);
     }
+
+    private Map<String, Object> agregarExtraClaims(UsuarioAutenticado usuarioAutenticado) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        Usuario usuario = usuarioAutenticado.getUsuario();
+
+        extraClaims.put("idUsuario", usuario.getIdUsuario());
+        extraClaims.put("identificacion", usuario.getIdentificacion());
+        extraClaims.put("nombreUsuario", usuarioAutenticado.getNombreUsuario());
+        extraClaims.put("nombreCompleto", usuario.getNombres() + " " + usuario.getApellidos());
+        extraClaims.put("rol", usuarioAutenticado.getRol().name());
+        extraClaims.put("correo", usuario.getCorreo());
+        extraClaims.put("activo", usuarioAutenticado.getActivo());
+
+        return extraClaims;
+    }
+
 
     public String extraerNombreUsuario(String jwt) {
         return extraerClaims(jwt).getSubject();

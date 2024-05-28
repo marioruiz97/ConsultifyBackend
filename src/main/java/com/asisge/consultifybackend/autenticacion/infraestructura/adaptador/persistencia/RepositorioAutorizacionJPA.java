@@ -74,7 +74,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
     }
 
     @Override
-    default void cambiarContrasena(UsuarioAutenticado usuarioAutenticado) {
+    default void guardarDatosUsuario(UsuarioAutenticado usuarioAutenticado) {
         this.save(ConvertidorUsuario.aEntidad(usuarioAutenticado.getUsuario(), usuarioAutenticado));
     }
 }
