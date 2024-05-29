@@ -15,4 +15,7 @@ public interface ServicioCorreo {
     @Async
     void enviarCorreoVerificacion(String to, String subject, TokenVerificacion token);
 
+    @Async
+    void enviarCorreoVerificacionCuentaNueva(String to, String subject, TokenVerificacion token);
+
 }

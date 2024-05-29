@@ -87,7 +87,7 @@ public class ManejadorServicioCuenta implements ServicioCuenta {
 
         if (!passwordEncoder.matches(usuarioDto.getContrasenaActual(), existente.getContrasena()))
             throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.actual.nocoincide"));
-        if (existente.getContrasena().equals(usuarioDto.getContrasena()))
+        if (passwordEncoder.matches(usuarioDto.getContrasena(), existente.getContrasena()))
             throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
 
         existente.cambiarContrasena(usuarioDto.getContrasena());

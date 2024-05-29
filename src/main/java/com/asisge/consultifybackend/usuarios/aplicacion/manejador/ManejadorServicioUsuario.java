@@ -1,6 +1,8 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioToken;
+import com.asisge.consultifybackend.autenticacion.dominio.modelo.TokenVerificacion;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;
@@ -9,6 +11,7 @@ import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
+import com.asisge.consultifybackend.utilidad.aplicacion.servicio.ServicioCorreo;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.Dto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +31,18 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
     private final PasswordEncoder passwordEncoder;
+    private final ServicioToken servicioToken;
+    private final ServicioCorreo servicioCorreo;
 
 
     @Autowired
-    public ManejadorServicioUsuario(RepositorioUsuario repositorioUsuario, MapeadorUsuario mapeadorUsuario, PasswordEncoder passwordEncoder) {
+    public ManejadorServicioUsuario(RepositorioUsuario repositorioUsuario, MapeadorUsuario mapeadorUsuario, PasswordEncoder passwordEncoder,
+                                    ServicioToken servicioToken, ServicioCorreo servicioCorreo) {
         this.repositorioUsuario = repositorioUsuario;
         this.mapeadorUsuario = mapeadorUsuario;
         this.passwordEncoder = passwordEncoder;
+        this.servicioToken = servicioToken;
+        this.servicioCorreo = servicioCorreo;
     }
 
     @Override
@@ -48,19 +56,26 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     }
 
 
-    // TODO despues de que el sistema crea el usuario, debe enviar un correo eléctronico con un token de verificacion donde el nuevo usuario podrá asignar su nueva contraseña y activar su cuenta
     @Override
     public UsuarioAutenticado crearUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuarioDto) {
         validarCamposDto(nuevoUsuarioDto);
         UsuarioAutenticado usuarioAGuardar = mapeadorUsuario.aNuevoUsuarioAutenticado(nuevoUsuarioDto);
-        usuarioAGuardar.cambiarContrasena("Contra1234*"); // TODO cambiar a generador de contrasenas
+        usuarioAGuardar.cambiarContrasena(generarContrasenaSegura());
+
         if (usuarioAGuardar.validarCrearUsuarioAutenticado() && usuarioAGuardar.getUsuario().validarUsuario()) {
             usuarioAGuardar.guardarClaveEncriptada(passwordEncoder.encode(usuarioAGuardar.getContrasena()));
 
             String mensaje = Mensajes.getString("usuarios.info.crear.usuario");
             logger.info(mensaje, usuarioAGuardar);
 
-            return devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
+            usuarioAGuardar = devolverUsuarioSinClave(repositorioUsuario.crearUsuarioAutenticado(usuarioAGuardar));
+            TokenVerificacion token = servicioToken.crearTokenVerificacion(usuarioAGuardar);
+
+            String to = usuarioAGuardar.getUsuario().getCorreo();
+            String subject = Mensajes.getString("usuarios.subject.nuevo.usuario.creado");
+            servicioCorreo.enviarCorreoVerificacionCuentaNueva(to, subject, token);
+
+            return usuarioAGuardar;
         } else
             throw new IllegalArgumentException(VALIDACION_DATOS_OBLIGATORIOS);
     }
@@ -95,19 +110,20 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
     public boolean cambiarEstado(Long idUsuario, boolean activar) {
         UsuarioAutenticado usuario = repositorioUsuario.buscarUsuarioPorIdUsuario(idUsuario);
         Boolean nuevoEstado = activar;
+
+        String info = Mensajes.getString("usuarios.info.cambio.estado.iniciado");
+        logger.info(info);
+
         if (!usuario.getActivo().equals(activar)) {
-            if (activar) {
-                String nuevaContrasena = generarContrasenaSegura();
-                usuario.cambiarContrasena(nuevaContrasena);
-                usuario.guardarClaveEncriptada(passwordEncoder.encode(nuevaContrasena));
-                // TODO si el cambio es para activar el usuario nuevamente, se debe enviar correo de verificacion y generar nueva clave
-            }
             UsuarioAutenticado nuevoUsuario = repositorioUsuario.cambiarEstado(usuario, activar);
             nuevoEstado = nuevoUsuario.getActivo();
+
+            String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, activar);
+            logger.info(mensaje);
         }
 
-        String mensaje = Mensajes.getString("usuarios.info.cambio.estado.exito", idUsuario, activar);
-        logger.info(mensaje);
+        info = Mensajes.getString("usuarios.info.cambio.estado.terminado");
+        logger.info(info);
         return nuevoEstado;
     }
 

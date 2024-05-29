@@ -86,7 +86,7 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
         Long idUsuario = tokenVerificacion.getUsuario().getIdUsuario();
         UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
 
-        if (existente.getContrasena().equals(contrasena))
+        if (passwordEncoder.matches(contrasena, existente.getContrasena()))
             throw new AccionNoPermitidaException(Mensajes.getString("cuenta.error.contrasena.igual.anterior"));
 
         existente.cambiarContrasena(contrasena);
@@ -121,7 +121,20 @@ public class ManejadorServicioAutenticacion implements ServicioAutenticacion {
 
     @Override
     public void verificarNuevaCuenta(Long idUsuario, String contrasena, String token) {
-        // TODO implementar
+        TokenVerificacion tokenVerificacion = servicioToken.obtenerToken(token);
+        servicioToken.validarToken(tokenVerificacion);
+
+        UsuarioAutenticado existente = repositorioAutorizacion.buscarPorIdUsuario(idUsuario);
+        existente.setVerificado(Boolean.TRUE);
+        existente.cambiarContrasena(contrasena);
+        existente.guardarClaveEncriptada(passwordEncoder.encode(contrasena));
+
+        repositorioAutorizacion.guardarDatosUsuario(existente);
+
+        String mensaje = Mensajes.getString("cuenta.info.verificar.cuenta.exitoso", existente.getNombreUsuario());
+        logger.info(mensaje);
+
+        servicioToken.eliminarToken(tokenVerificacion);
     }
 
     @Override
