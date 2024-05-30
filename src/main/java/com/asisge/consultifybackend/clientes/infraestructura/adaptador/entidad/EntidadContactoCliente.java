@@ -44,7 +44,7 @@ public class EntidadContactoCliente {
 
     @NotBlank
     @NotNull
-    @Email(regexp = "^[\\w\\.]+@([\\w-]+)\\.+[\\w-]{2,}$", flags = {Pattern.Flag.CASE_INSENSITIVE})
+    @Email(regexp = ExpresionRegular.PATRON_CORREO, flags = {Pattern.Flag.CASE_INSENSITIVE})
     @Column(nullable = false, unique = true)
     private String correo;
 

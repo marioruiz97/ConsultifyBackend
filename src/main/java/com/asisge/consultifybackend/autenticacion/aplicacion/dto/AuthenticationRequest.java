@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.autenticacion.aplicacion.dto;
 
+import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class AuthenticationRequest {
     @NotBlank
     private String nombreUsuario;
     @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$")
+    @Pattern(regexp = ExpresionRegular.PATRON_CONTRASENA)
     private String contrasena;
 
 }

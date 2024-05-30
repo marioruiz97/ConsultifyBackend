@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.usuarios.dominio.modelo;
 
 
+import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class UsuarioAutenticado {
     private Rol rol;
 
     public void cambiarContrasena(String nuevaContrasena) {
-        if (!nuevaContrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$")) {
+        if (!nuevaContrasena.matches(ExpresionRegular.PATRON_CONTRASENA)) {
             throw new IllegalArgumentException("La contraseña no cumple con el formato requerido");
         }
         this.contrasena = nuevaContrasena;
@@ -46,7 +47,7 @@ public class UsuarioAutenticado {
     }
 
     private boolean validarContrasena() {
-        return this.contrasena.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$");
+        return this.contrasena.matches(ExpresionRegular.PATRON_CONTRASENA);
     }
 
     public boolean validarEditarUsuarioAutenticado() {
@@ -57,6 +58,6 @@ public class UsuarioAutenticado {
     }
 
     public void guardarClaveEncriptada(String contrasena) {
-        if (contrasena.length() > 16) this.contrasena = contrasena;
+        if (contrasena.length() > 20) this.contrasena = contrasena;
     }
 }
