@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.notificaciones.aplicacion.servicio;
 
 import com.asisge.consultifybackend.notificaciones.dominio.modelo.Notificacion;
+import com.asisge.consultifybackend.notificaciones.dominio.modelo.TipoNotificacion;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ServicioNotificacion {
 
     @Async
     void crearNotificacion(Notificacion notificacion);
+
+    Notificacion construirNotificacion(Long idResponsable, Long idProyecto, String mensaje, TipoNotificacion tipoNotificacion);
 }

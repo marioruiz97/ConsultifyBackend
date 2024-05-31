@@ -34,7 +34,7 @@ public final class ConvertidorNotificacion {
             entidad.setMensaje(notificacion.getMensaje());
             entidad.setIdUsuario(notificacion.getIdUsuario());
             entidad.setIdProyecto(notificacion.getIdProyecto());
-            entidad.setLeida(Boolean.TRUE);
+            entidad.setLeida(Boolean.FALSE);
         }
 
         return entidad;

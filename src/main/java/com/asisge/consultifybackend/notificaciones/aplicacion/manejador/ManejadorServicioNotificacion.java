@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.notificaciones.aplicacion.manejador;
 
 import com.asisge.consultifybackend.notificaciones.aplicacion.servicio.ServicioNotificacion;
 import com.asisge.consultifybackend.notificaciones.dominio.modelo.Notificacion;
+import com.asisge.consultifybackend.notificaciones.dominio.modelo.TipoNotificacion;
 import com.asisge.consultifybackend.notificaciones.dominio.puerto.RepositorioNotificacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -41,4 +42,15 @@ public class ManejadorServicioNotificacion implements ServicioNotificacion {
         repositorioNotificacion.crearNotificacion(notificacion);
     }
 
+    @Override
+    public Notificacion construirNotificacion(Long idUsuario, Long idProyecto, String mensaje, TipoNotificacion tipoNotificacion) {
+        return Notificacion.builder()
+                .conId(null)
+                .conTipoNotificacion(tipoNotificacion)
+                .conMensaje(mensaje)
+                .conIdUsuario(idUsuario)
+                .conIdProyecto(idProyecto)
+                .build();
+
+    }
 }

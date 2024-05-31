@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
+import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorActividad;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
@@ -20,11 +21,13 @@ public class ControladorActividad {
 
     final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioActividad servicioActividad;
+    private final NotificadorActividad notificador;
 
     @Autowired
-    public ControladorActividad(ServicioActividad servicioActividad, ServicioSeguridadProyecto seguridadProyecto) {
+    public ControladorActividad(ServicioActividad servicioActividad, ServicioSeguridadProyecto seguridadProyecto, NotificadorActividad notificador) {
         this.servicioActividad = servicioActividad;
         this.seguridadProyecto = seguridadProyecto;
+        this.notificador = notificador;
     }
 
 
@@ -38,8 +41,11 @@ public class ControladorActividad {
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public ResponseEntity<Actividad> crearActividad(@PathVariable Long idProyecto, @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
-        return new ResponseEntity<>(actividad, HttpStatus.CREATED);
+
         // notificar usuario responsable actividad. enviar correo si no es quien la creo
+        notificador.notificarResponsableActividad(actividad);
+
+        return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }
 
 

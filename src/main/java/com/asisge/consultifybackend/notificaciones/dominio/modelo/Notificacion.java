@@ -1,14 +1,12 @@
 package com.asisge.consultifybackend.notificaciones.dominio.modelo;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@Builder(setterPrefix = "con")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notificacion {
