@@ -35,6 +35,10 @@ public class ControladorSeguimiento {
     public ResponseEntity<Seguimiento> crearSeguimientoActividad(@PathVariable Long idActividad, @Valid @RequestBody NuevoSeguimientoDto nuevoSeguimiento) {
         nuevoSeguimiento.setUsername(servicioAutenticacion.obtenerNombreUsuarioEnSesion());
         Seguimiento seguimiento = servicioSeguimientoActividad.crearSeguimiento(idActividad, nuevoSeguimiento);
+
+        // notificar usuarios responsable y quienes han interactuado con la actividad
+
+
         return new ResponseEntity<>(seguimiento, HttpStatus.CREATED);
     }
 

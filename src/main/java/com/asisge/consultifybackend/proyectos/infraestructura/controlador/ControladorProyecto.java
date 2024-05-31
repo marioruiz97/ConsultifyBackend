@@ -40,6 +40,7 @@ public class ControladorProyecto {
     public ResponseEntity<Proyecto> crearProyecto(@Valid @RequestBody ProyectoDto proyecto) {
         Proyecto nuevoProyecto = servicioProyecto.crearProyecto(proyecto);
         return new ResponseEntity<>(nuevoProyecto, HttpStatus.CREATED);
+        // notificar proyecto
     }
 
 

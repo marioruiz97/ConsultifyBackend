@@ -39,6 +39,7 @@ public class ControladorActividad {
     public ResponseEntity<Actividad> crearActividad(@PathVariable Long idProyecto, @Valid @RequestBody ActividadDto nuevaActividad) {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
+        // notificar usuario responsable actividad. enviar correo si no es quien la creo
     }
 
 

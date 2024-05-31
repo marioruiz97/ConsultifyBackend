@@ -44,6 +44,7 @@ public class ControladorTableroProyecto {
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public UsuarioAutenticado agregarMiembroAlProyecto(@PathVariable Long idProyecto, @Valid @RequestBody MiembroDto miembroDto) {
         return servicioTablero.agregarMiembroAlProyecto(idProyecto, miembroDto);
+        // notificar proyecto y usuario. enviar correo
     }
 
 
@@ -51,5 +52,6 @@ public class ControladorTableroProyecto {
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro) {
         return servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
+        // notificar proyecto y usuario
     }
 }

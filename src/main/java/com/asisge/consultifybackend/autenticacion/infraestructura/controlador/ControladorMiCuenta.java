@@ -37,6 +37,7 @@ public class ControladorMiCuenta {
     public ResponseEntity<MisDatos> cambiarCorreoElectronico(@PathVariable Long idUsuario, @RequestBody CambioCorreoDto usuarioDto) {
         usuarioDto.setIdUsuario(idUsuario);
         return new ResponseEntity<>(manejadorCuenta.cambiarCorreoElectronico(idUsuario, usuarioDto), HttpStatus.OK);
+        // notificar usuario
     }
 
     @PatchMapping("/contrasena/{idUsuario}")
@@ -44,6 +45,7 @@ public class ControladorMiCuenta {
         usuarioDto.setIdUsuario(idUsuario);
         manejadorCuenta.cambiarContrasena(idUsuario, usuarioDto);
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+        // notificar usuario
     }
 
     @DeleteMapping("/{idUsuario}")
