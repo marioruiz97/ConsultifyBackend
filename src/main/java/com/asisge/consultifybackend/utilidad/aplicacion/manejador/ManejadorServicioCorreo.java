@@ -48,7 +48,8 @@ public class ManejadorServicioCorreo implements ServicioCorreo {
             String mensaje = Mensajes.getString("servicio.correo.mensaje.enviado", to, subject);
             logger.info(mensaje);
         } catch (MessagingException e) {
-            logger.error(e.getMessage(), e);
+            String mensaje = "Fallo al enviar correo: " + e.getMessage();
+            logger.error(mensaje, e);
         }
     }
 

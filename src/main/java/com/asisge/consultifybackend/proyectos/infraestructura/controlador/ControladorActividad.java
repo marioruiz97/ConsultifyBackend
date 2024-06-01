@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorActividad;
@@ -22,12 +23,15 @@ public class ControladorActividad {
     final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioActividad servicioActividad;
     private final NotificadorActividad notificador;
+    private final ServicioAutenticacion servicioAutenticacion;
 
     @Autowired
-    public ControladorActividad(ServicioActividad servicioActividad, ServicioSeguridadProyecto seguridadProyecto, NotificadorActividad notificador) {
+    public ControladorActividad(ServicioActividad servicioActividad, ServicioSeguridadProyecto seguridadProyecto,
+                                NotificadorActividad notificador, ServicioAutenticacion servicioAutenticacion) {
         this.servicioActividad = servicioActividad;
         this.seguridadProyecto = seguridadProyecto;
         this.notificador = notificador;
+        this.servicioAutenticacion = servicioAutenticacion;
     }
 
 
@@ -43,7 +47,8 @@ public class ControladorActividad {
         Actividad actividad = servicioActividad.crearActividad(idProyecto, nuevaActividad);
 
         // notificar usuario responsable actividad. enviar correo si no es quien la creo
-        notificador.notificarResponsableActividad(actividad);
+        String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
+        notificador.notificarResponsableActividad(actividad, nuevaActividad, username);
 
         return new ResponseEntity<>(actividad, HttpStatus.CREATED);
     }

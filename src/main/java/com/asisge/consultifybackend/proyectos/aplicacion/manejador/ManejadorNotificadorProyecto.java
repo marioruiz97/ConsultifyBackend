@@ -1,9 +1,9 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
 
-import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.notificaciones.aplicacion.servicio.ServicioNotificacion;
 import com.asisge.consultifybackend.notificaciones.dominio.modelo.Notificacion;
 import com.asisge.consultifybackend.notificaciones.dominio.modelo.TipoNotificacion;
+import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorActividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
@@ -22,24 +22,23 @@ public class ManejadorNotificadorProyecto implements NotificadorActividad {
     private final Logger logger = LoggerFactory.getLogger(ManejadorNotificadorProyecto.class);
 
     private final RepositorioUsuario repositorioUsuario;
-    private final ServicioAutenticacion servicioAutenticacion;
     private final ServicioCorreo servicioCorreo;
     private final ServicioNotificacion servicioNotificacion;
 
     @Autowired
-    public ManejadorNotificadorProyecto(RepositorioUsuario repositorioUsuario, ServicioAutenticacion servicioAutenticacion, ServicioCorreo servicioCorreo, ServicioNotificacion servicioNotificacion) {
+    public ManejadorNotificadorProyecto(RepositorioUsuario repositorioUsuario,
+                                        ServicioCorreo servicioCorreo,
+                                        ServicioNotificacion servicioNotificacion) {
         this.repositorioUsuario = repositorioUsuario;
-        this.servicioAutenticacion = servicioAutenticacion;
         this.servicioCorreo = servicioCorreo;
         this.servicioNotificacion = servicioNotificacion;
     }
 
     @Async
     @Override
-    public void notificarResponsableActividad(Actividad actividad) {
+    public void notificarResponsableActividad(Actividad actividad, ActividadDto dto, String username) {
 
         try {
-            String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
             Usuario creadoPor = repositorioUsuario.buscarPorCorreoOUsername(username).getUsuario();
 
             Long idCreadoPor = creadoPor.getIdUsuario();
@@ -47,7 +46,11 @@ public class ManejadorNotificadorProyecto implements NotificadorActividad {
 
             if (!idCreadoPor.equals(idResponsable)) {
 
-                String mensaje = Mensajes.getString("notificacion.actividad.asignar.nueva.actividad.mensaje", actividad.getId(), actividad.getNombre(), actividad.getFechaCierreEsperado());
+                String mensaje = Mensajes.getString("notificacion.actividad.asignar.nueva.actividad.mensaje",
+                        actividad.getId(),
+                        actividad.getNombre(),
+                        actividad.getFechaCierreEsperado(),
+                        actividad.getProyecto().getIdProyecto());
 
                 Notificacion notificacion = servicioNotificacion.construirNotificacion(idResponsable,
                         actividad.getProyecto().getIdProyecto(),
@@ -58,7 +61,7 @@ public class ManejadorNotificadorProyecto implements NotificadorActividad {
                 servicioNotificacion.crearNotificacion(notificacion);
 
                 // enviar correo
-                String para = actividad.getResponsable().getCorreo();
+                String para = dto.getResponsable().getCorreo();
                 String subject = Mensajes.getString("notificacion.actividad.asignar.nueva.actividad", creadoPor.getNombres(), creadoPor.getApellidos());
                 servicioCorreo.enviarCorreo(para, subject, mensaje);
             }

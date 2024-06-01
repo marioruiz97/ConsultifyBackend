@@ -33,6 +33,7 @@ public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad,
 
 
     // metodos propios
+    @Transactional(readOnly = true)
     @Override
     default Actividad obtenerActividadPorId(Long idActividad) {
         EntidadActividad entidad = findById(idActividad).orElseThrow(() -> new EntityNotFoundException("No se encontró la actividad en base de datos"));
