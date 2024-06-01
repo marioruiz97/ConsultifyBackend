@@ -19,4 +19,6 @@ public interface RepositorioActividad {
 
     List<Actividad> obtenerMisActividades(String usernameOCorreo);
 
+    boolean esResponsableActividad(Long idActividad, String username);
+
 }

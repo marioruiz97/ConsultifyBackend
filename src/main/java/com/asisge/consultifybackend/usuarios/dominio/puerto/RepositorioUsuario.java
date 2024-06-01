@@ -18,4 +18,6 @@ public interface RepositorioUsuario {
 
     UsuarioAutenticado cambiarEstado(UsuarioAutenticado usuario, boolean activo);
 
+    List<UsuarioAutenticado> asesorBuscarTodosUsuariosAutenticados();
+
 }

@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
@@ -21,17 +22,27 @@ public class ControladorProyecto {
 
     final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioProyecto servicioProyecto;
+    private final ServicioAutenticacion servicioAutenticacion;
 
     @Autowired
-    public ControladorProyecto(ServicioProyecto servicioProyecto, ServicioSeguridadProyecto seguridadProyecto) {
+    public ControladorProyecto(ServicioProyecto servicioProyecto, ServicioSeguridadProyecto seguridadProyecto, ServicioAutenticacion servicioAutenticacion) {
         this.servicioProyecto = servicioProyecto;
         this.seguridadProyecto = seguridadProyecto;
+        this.servicioAutenticacion = servicioAutenticacion;
     }
 
 
     @GetMapping
     public List<Proyecto> obtenerTodosProyectos() {
-        return servicioProyecto.obtenerTodos();
+
+        if (seguridadProyecto.esAdmin()) {
+            return servicioProyecto.obtenerTodos();
+
+        } else {
+            @Valid String usernameOCorreo = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
+            return servicioProyecto.obtenerMisProyectos(usernameOCorreo);
+        }
+
     }
 
 

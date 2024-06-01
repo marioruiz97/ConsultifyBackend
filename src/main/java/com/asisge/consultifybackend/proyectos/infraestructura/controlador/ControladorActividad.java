@@ -51,6 +51,7 @@ public class ControladorActividad {
 
     @PatchMapping("/{idActividad}")
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
+    @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esResponsableActividad(#idActividad, authentication.name)")
     public ResponseEntity<Actividad> editarActividad(@PathVariable Long idProyecto,
                                                      @PathVariable Long idActividad,
                                                      @Valid @RequestBody ActividadDto nuevaActividad) {
@@ -61,6 +62,7 @@ public class ControladorActividad {
 
     @PutMapping("/{idActividad}")
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
+    @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esResponsableActividad(#idActividad, authentication.name)")
     public ResponseEntity<Actividad> cambiarEstadoActividad(@PathVariable Long idProyecto,
                                                             @PathVariable Long idActividad,
                                                             @Valid @RequestBody CambioEstadoActividadDto estadoActividadDto) {
@@ -72,6 +74,7 @@ public class ControladorActividad {
     @DeleteMapping("/{idActividad}")
     @ResponseStatus(HttpStatus.OK)
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
+    @PreAuthorize("@seguridadProyecto.esAdmin() or @seguridadProyecto.esResponsableActividad(#idActividad, authentication.name)")
     public void eliminarActividad(@PathVariable Long idProyecto, @PathVariable Long idActividad) {
         servicioActividad.eliminarActividad(idProyecto, idActividad);
     }

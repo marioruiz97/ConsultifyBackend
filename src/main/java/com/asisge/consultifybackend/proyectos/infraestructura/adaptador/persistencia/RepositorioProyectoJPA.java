@@ -21,8 +21,8 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
     List<EntidadProyecto> findProyectosByIdUsuario(@Param("idUsuario") Long idUsuario);
 
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
-            "FROM EntidadProyecto p JOIN p.miembros m WHERE m.correo = :username OR m.nombreUsuario = :username")
-    boolean existeMiembroProyecto(@Param("username") String username);
+            "FROM EntidadProyecto p JOIN p.miembros m WHERE p.idProyecto= :idProyecto AND (m.correo = :username OR m.nombreUsuario = :username)")
+    boolean existeMiembroProyecto(@Param("idProyecto") Long idProyecto, @Param("username") String username);
 
     // metodos propios
     @Override
@@ -69,8 +69,8 @@ public interface RepositorioProyectoJPA extends JpaRepository<EntidadProyecto, L
     }
 
     @Override
-    default boolean esMiembroProyecto(String correoOUsername) {
-        return existeMiembroProyecto(correoOUsername);
+    default boolean esMiembroProyecto(Long idProyecto, String correoOUsername) {
+        return existeMiembroProyecto(idProyecto, correoOUsername);
     }
 
 }

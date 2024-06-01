@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.usuarios.aplicacion.manejador;
 
 
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioToken;
 import com.asisge.consultifybackend.autenticacion.dominio.modelo.TokenVerificacion;
 import com.asisge.consultifybackend.usuarios.aplicacion.dto.NuevoUsuarioAutenticadoDto;
@@ -8,6 +9,7 @@ import com.asisge.consultifybackend.usuarios.aplicacion.dto.UsuarioListaDto;
 import com.asisge.consultifybackend.usuarios.aplicacion.mapeador.MapeadorUsuario;
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.GeneradorContrasena;
 import com.asisge.consultifybackend.usuarios.aplicacion.servicio.ServicioUsuario;
+import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,27 +31,37 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
 
     public static final String VALIDACION_DATOS_OBLIGATORIOS = "El objeto no pasó la validación de usuario. Verifica los datos obligatorios y el formato de teléfono/correo";
     private final Logger logger = LoggerFactory.getLogger(ManejadorServicioUsuario.class);
+
     private final RepositorioUsuario repositorioUsuario;
     private final MapeadorUsuario mapeadorUsuario;
     private final PasswordEncoder passwordEncoder;
     private final ServicioToken servicioToken;
     private final ServicioCorreo servicioCorreo;
+    private final ServicioAutenticacion servicioAutenticacion;
 
 
     @Autowired
     public ManejadorServicioUsuario(RepositorioUsuario repositorioUsuario, MapeadorUsuario mapeadorUsuario, PasswordEncoder passwordEncoder,
-                                    ServicioToken servicioToken, ServicioCorreo servicioCorreo) {
+                                    ServicioToken servicioToken, ServicioCorreo servicioCorreo, ServicioAutenticacion servicioAutenticacion) {
         this.repositorioUsuario = repositorioUsuario;
         this.mapeadorUsuario = mapeadorUsuario;
         this.passwordEncoder = passwordEncoder;
         this.servicioToken = servicioToken;
         this.servicioCorreo = servicioCorreo;
+        this.servicioAutenticacion = servicioAutenticacion;
     }
 
     @Override
     public List<UsuarioListaDto> buscarTodos() {
-        return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioLista).toList();
+        UsuarioAutenticado usuarioEnSesion = obtenerUsuarioEnSesion();
+
+        if (usuarioEnSesion.getRol().equals(Rol.ROLE_ADMIN))
+            return repositorioUsuario.buscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioLista).toList();
+        else
+            return repositorioUsuario.asesorBuscarTodosUsuariosAutenticados().stream().map(mapeadorUsuario::aUsuarioLista).toList();
+
     }
+
 
     @Override
     public UsuarioAutenticado buscarUsuarioPorId(Long idUsuario) {
@@ -125,6 +138,15 @@ public class ManejadorServicioUsuario implements ServicioUsuario {
         info = Mensajes.getString("usuarios.info.cambio.estado.terminado");
         logger.info(info);
         return nuevoEstado;
+    }
+
+    private UsuarioAutenticado obtenerUsuarioEnSesion() {
+        String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
+        UsuarioAutenticado usuario = repositorioUsuario.buscarPorCorreoOUsername(username);
+        if (usuario == null) {
+            throw new UsernameNotFoundException("no se encontró el usuario " + username);
+        }
+        return usuario;
     }
 
     private void validarCamposDto(Dto dto) {
