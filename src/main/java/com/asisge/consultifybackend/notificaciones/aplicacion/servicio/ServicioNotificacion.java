@@ -17,5 +17,5 @@ public interface ServicioNotificacion {
     @Async
     void crearNotificacion(Notificacion notificacion);
 
-    Notificacion construirNotificacion(Long idResponsable, Long idProyecto, String mensaje, TipoNotificacion tipoNotificacion);
+    Notificacion construirNotificacion(Long idUsuario, Long idProyecto, String mensaje, TipoNotificacion tipoNotificacion);
 }

@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.MiembroDto;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.TableroProyecto;
+import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioTablero;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
@@ -20,11 +21,15 @@ public class ControladorTableroProyecto {
 
     final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioTablero servicioTablero;
+    private final NotificadorProyecto notificadorProyecto;
 
     @Autowired
-    public ControladorTableroProyecto(ServicioTablero servicioTablero, ServicioSeguridadProyecto seguridadProyecto) {
+    public ControladorTableroProyecto(ServicioTablero servicioTablero,
+                                      ServicioSeguridadProyecto seguridadProyecto,
+                                      NotificadorProyecto notificadorProyecto) {
         this.servicioTablero = servicioTablero;
         this.seguridadProyecto = seguridadProyecto;
+        this.notificadorProyecto = notificadorProyecto;
     }
 
 
@@ -43,15 +48,23 @@ public class ControladorTableroProyecto {
     @PutMapping("/{idProyecto}/miembros")
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public UsuarioAutenticado agregarMiembroAlProyecto(@PathVariable Long idProyecto, @Valid @RequestBody MiembroDto miembroDto) {
-        return servicioTablero.agregarMiembroAlProyecto(idProyecto, miembroDto);
+
         // notificar proyecto y usuario. enviar correo
+        UsuarioAutenticado miembro = servicioTablero.agregarMiembroAlProyecto(idProyecto, miembroDto);
+        notificadorProyecto.notificarNuevoMiembroProyecto(idProyecto, miembro);
+
+        return miembro;
     }
 
 
     @DeleteMapping("/{idProyecto}/miembros/{idMiembro}")
     @CacheEvict(value = "informeActividades", key = "#idProyecto")
     public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro) {
-        return servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
+        List<UsuarioAutenticado> usuarioAutenticados = servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
+
         // notificar proyecto y usuario
+        notificadorProyecto.notificarEliminarMiembroProyecto(idProyecto, idMiembro);
+
+        return usuarioAutenticados;
     }
 }

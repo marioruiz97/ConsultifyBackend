@@ -13,7 +13,7 @@ public interface RepositorioNotificacionJPA extends JpaRepository<EntidadNotific
     // metodos JPQL
     List<EntidadNotificacion> findByIdUsuario(Long idUsuario);
 
-    List<EntidadNotificacion> findByIdProyecto(Long idProyecto);
+    List<EntidadNotificacion> findByIdProyectoAndIdUsuarioIsNull(Long idProyecto);
 
 
     // metodos propios
@@ -26,7 +26,7 @@ public interface RepositorioNotificacionJPA extends JpaRepository<EntidadNotific
 
     @Override
     default List<Notificacion> obtenerNotificacionesProyecto(Long idProyecto) {
-        List<EntidadNotificacion> notificaciones = this.findByIdProyecto(idProyecto);
+        List<EntidadNotificacion> notificaciones = this.findByIdProyectoAndIdUsuarioIsNull(idProyecto);
         return notificaciones.stream().map(ConvertidorNotificacion::aDominio).toList();
     }
 

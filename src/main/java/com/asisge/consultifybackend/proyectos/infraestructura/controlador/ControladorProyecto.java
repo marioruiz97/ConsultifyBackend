@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.proyectos.aplicacion.dto.ProyectoDto;
+import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioProyecto;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
@@ -23,12 +24,17 @@ public class ControladorProyecto {
     final ServicioSeguridadProyecto seguridadProyecto;
     private final ServicioProyecto servicioProyecto;
     private final ServicioAutenticacion servicioAutenticacion;
+    private final NotificadorProyecto notificadorProyecto;
 
     @Autowired
-    public ControladorProyecto(ServicioProyecto servicioProyecto, ServicioSeguridadProyecto seguridadProyecto, ServicioAutenticacion servicioAutenticacion) {
+    public ControladorProyecto(ServicioProyecto servicioProyecto,
+                               ServicioSeguridadProyecto seguridadProyecto,
+                               ServicioAutenticacion servicioAutenticacion,
+                               NotificadorProyecto notificadorProyecto) {
         this.servicioProyecto = servicioProyecto;
         this.seguridadProyecto = seguridadProyecto;
         this.servicioAutenticacion = servicioAutenticacion;
+        this.notificadorProyecto = notificadorProyecto;
     }
 
 
@@ -50,8 +56,11 @@ public class ControladorProyecto {
     @CacheEvict(value = "informeProyecto", allEntries = true)
     public ResponseEntity<Proyecto> crearProyecto(@Valid @RequestBody ProyectoDto proyecto) {
         Proyecto nuevoProyecto = servicioProyecto.crearProyecto(proyecto);
-        return new ResponseEntity<>(nuevoProyecto, HttpStatus.CREATED);
+
         // notificar proyecto
+        notificadorProyecto.notificarNuevoProyecto(nuevoProyecto);
+
+        return new ResponseEntity<>(nuevoProyecto, HttpStatus.CREATED);
     }
 
 
