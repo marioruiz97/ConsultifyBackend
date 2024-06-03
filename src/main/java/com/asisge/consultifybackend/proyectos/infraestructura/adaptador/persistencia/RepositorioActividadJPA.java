@@ -27,8 +27,13 @@ public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad,
             "r.nombreUsuario= :usernameOCorreo OR r.correo= :usernameOCorreo")
     List<EntidadActividad> findByUsernameOCorreo(@Param("usernameOCorreo") String usernameOCorreo, @Param("fecha") LocalDate fecha);
 
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+            "FROM EntidadActividad a JOIN a.responsable u WHERE a.id= :idActividad AND (u.correo = :username OR u.nombreUsuario = :username)")
+    boolean esResponsbleActividadByCorreo(@Param("idActividad") Long idActividad, @Param("username") String username);
+
 
     // metodos propios
+    @Transactional(readOnly = true)
     @Override
     default Actividad obtenerActividadPorId(Long idActividad) {
         EntidadActividad entidad = findById(idActividad).orElseThrow(() -> new EntityNotFoundException("No se encontró la actividad en base de datos"));
@@ -52,6 +57,10 @@ public interface RepositorioActividadJPA extends JpaRepository<EntidadActividad,
         return actividades.stream().map(ConvertidorActividad::aDominio).toList();
     }
 
+    @Override
+    default boolean esResponsableActividad(Long idActividad, String username) {
+        return esResponsbleActividadByCorreo(idActividad, username);
+    }
 
     @Override
     default Actividad crearActividad(Actividad actividad) {

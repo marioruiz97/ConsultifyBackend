@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mis-proyectos")
+@RequestMapping("${api.base-path}/mis-proyectos")
 public class ControladorMisProyectos {
 
     private final ServicioProyecto servicioProyecto;

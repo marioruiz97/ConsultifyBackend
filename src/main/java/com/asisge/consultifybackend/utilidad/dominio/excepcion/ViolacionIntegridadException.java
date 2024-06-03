@@ -4,11 +4,17 @@ import lombok.Getter;
 import org.hibernate.exception.ConstraintViolationException;
 
 @Getter
-public class ViolacionIntegridadException extends Exception {
+public class ViolacionIntegridadException extends RuntimeException {
 
     private final String titulo;
 
     private final String mensaje;
+
+    public ViolacionIntegridadException(String mensaje) {
+        super(mensaje);
+        this.titulo = "Violacion de integridad";
+        this.mensaje = mensaje;
+    }
 
     public ViolacionIntegridadException(ConstraintViolationException ex) {
         this.titulo = ex.getLocalizedMessage().split(":")[0].split("\\[")[1];

@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.usuarios.infraestructura.adaptador.persistencia;
 
+import com.asisge.consultifybackend.usuarios.dominio.modelo.Rol;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
@@ -7,16 +8,22 @@ import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertid
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Long>, RepositorioUsuario {
 
     // Métodos de JPA
     Optional<EntidadUsuario> findByCorreoOrNombreUsuario(String correo, String nombreUsuario);
+
+    @Query("SELECT u FROM EntidadUsuario u WHERE u.rol IN (:roles)")
+    List<EntidadUsuario> findByRoles(@Param("roles") Set<Rol> roles);
 
     // Métodos propios
     @Override
@@ -45,6 +52,12 @@ public interface RepositorioUsuarioJPA extends JpaRepository<EntidadUsuario, Lon
     @Override
     default List<UsuarioAutenticado> buscarTodosUsuariosAutenticados() {
         return this.findAll().stream().map(ConvertidorUsuario::aDominio).toList();
+    }
+
+    @Override
+    default List<UsuarioAutenticado> asesorBuscarTodosUsuariosAutenticados() {
+        List<EntidadUsuario> usuarios = this.findByRoles(Set.of(Rol.ROLE_CLIENTE));
+        return usuarios.stream().map(ConvertidorUsuario::aDominio).toList();
     }
 
     @Override

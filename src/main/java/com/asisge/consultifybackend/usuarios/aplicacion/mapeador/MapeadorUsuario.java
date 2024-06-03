@@ -29,6 +29,7 @@ public class MapeadorUsuario {
                 autenticado.getUltimoInicio());
     }
 
+
     public UsuarioAutenticado aNuevoUsuarioAutenticado(NuevoUsuarioAutenticadoDto nuevoUsuario) {
         UsuarioAutenticado usuarioAutenticado = null;
         if (nuevoUsuario != null) {
@@ -47,9 +48,8 @@ public class MapeadorUsuario {
                     nuevoUsuario.getCreadoPor(),
                     null,
                     Boolean.TRUE,
-                    Boolean.TRUE,
+                    Boolean.FALSE,
                     nuevoUsuario.getRol());
-            // TODO cambiar a Boolean.FALSE cuando se envie correo electronico
         }
         return usuarioAutenticado;
     }
