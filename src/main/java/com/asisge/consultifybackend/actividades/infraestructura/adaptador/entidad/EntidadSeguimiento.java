@@ -1,4 +1,4 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad;
+package com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;

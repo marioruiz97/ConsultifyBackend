@@ -1,9 +1,9 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
+package com.asisge.consultifybackend.actividades.aplicacion.manejador;
 
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.NuevoSeguimientoDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguimientoActividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioSeguimiento;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.NuevoSeguimientoDto;
+import com.asisge.consultifybackend.actividades.aplicacion.servicio.ServicioSeguimientoActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Seguimiento;
+import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioSeguimiento;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;

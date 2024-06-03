@@ -1,12 +1,12 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
+package com.asisge.consultifybackend.actividades.infraestructura.controlador;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.servicio.NotificadorActividad;
-import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.CambioEstadoActividadDto;
+import com.asisge.consultifybackend.actividades.aplicacion.servicio.NotificadorActividad;
+import com.asisge.consultifybackend.actividades.aplicacion.servicio.ServicioActividad;
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

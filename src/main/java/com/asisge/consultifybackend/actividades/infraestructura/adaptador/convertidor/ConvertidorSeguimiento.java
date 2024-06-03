@@ -1,9 +1,9 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor;
+package com.asisge.consultifybackend.actividades.infraestructura.adaptador.convertidor;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadActividad;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadSeguimiento;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Seguimiento;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadSeguimiento;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 

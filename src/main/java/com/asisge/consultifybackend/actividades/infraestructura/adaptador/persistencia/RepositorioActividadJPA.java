@@ -1,10 +1,10 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.persistencia;
+package com.asisge.consultifybackend.actividades.infraestructura.adaptador.persistencia;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioActividad;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor.ConvertidorActividad;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadActividad;
+import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.convertidor.ConvertidorActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

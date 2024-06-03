@@ -1,8 +1,8 @@
 package com.asisge.consultifybackend.informes.infraestructura.adaptador.persistencia;
 
 import com.asisge.consultifybackend.informes.dominio.puerto.RepositorioInformeActividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

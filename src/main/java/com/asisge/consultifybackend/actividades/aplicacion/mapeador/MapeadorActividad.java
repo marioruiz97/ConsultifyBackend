@@ -1,7 +1,7 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.mapeador;
+package com.asisge.consultifybackend.actividades.aplicacion.mapeador;
 
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import org.springframework.stereotype.Component;
 

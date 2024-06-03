@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.dto;
+package com.asisge.consultifybackend.actividades.aplicacion.dto;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

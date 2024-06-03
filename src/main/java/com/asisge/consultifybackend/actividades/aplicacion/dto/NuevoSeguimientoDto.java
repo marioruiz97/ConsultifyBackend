@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.dto;
+package com.asisge.consultifybackend.actividades.aplicacion.dto;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

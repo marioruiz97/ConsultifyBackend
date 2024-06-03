@@ -1,8 +1,8 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.controlador;
+package com.asisge.consultifybackend.actividades.infraestructura.controlador;
 
 import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
-import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.aplicacion.servicio.ServicioActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.proyectos.dominio.puerto;
+package com.asisge.consultifybackend.actividades.dominio.puerto;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Seguimiento;
 
 import java.util.List;
 

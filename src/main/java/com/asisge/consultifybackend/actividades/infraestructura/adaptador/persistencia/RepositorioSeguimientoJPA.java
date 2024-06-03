@@ -1,9 +1,9 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.persistencia;
+package com.asisge.consultifybackend.actividades.infraestructura.adaptador.persistencia;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Seguimiento;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioSeguimiento;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor.ConvertidorSeguimiento;
-import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadSeguimiento;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Seguimiento;
+import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioSeguimiento;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.convertidor.ConvertidorSeguimiento;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadSeguimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

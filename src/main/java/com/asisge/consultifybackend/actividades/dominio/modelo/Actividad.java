@@ -1,5 +1,6 @@
-package com.asisge.consultifybackend.proyectos.dominio.modelo;
+package com.asisge.consultifybackend.actividades.dominio.modelo;
 
+import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

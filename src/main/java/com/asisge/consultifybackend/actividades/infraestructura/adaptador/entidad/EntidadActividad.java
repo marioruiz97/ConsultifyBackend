@@ -1,7 +1,8 @@
-package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad;
+package com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad;
 
 import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

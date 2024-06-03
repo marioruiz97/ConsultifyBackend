@@ -1,6 +1,6 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.dto;
+package com.asisge.consultifybackend.actividades.aplicacion.dto;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;

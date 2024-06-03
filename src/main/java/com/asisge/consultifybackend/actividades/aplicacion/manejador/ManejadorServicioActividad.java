@@ -1,12 +1,12 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
+package com.asisge.consultifybackend.actividades.aplicacion.manejador;
 
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.mapeador.MapeadorActividad;
-import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioActividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.EstadoActividad;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioActividad;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.CambioEstadoActividadDto;
+import com.asisge.consultifybackend.actividades.aplicacion.mapeador.MapeadorActividad;
+import com.asisge.consultifybackend.actividades.aplicacion.servicio.ServicioActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioActividad;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto;
 import com.asisge.consultifybackend.utilidad.aplicacion.servicio.Mensajes;
 import com.asisge.consultifybackend.utilidad.dominio.excepcion.AccionNoPermitidaException;

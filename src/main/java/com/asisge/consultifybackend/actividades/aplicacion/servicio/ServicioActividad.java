@@ -1,8 +1,8 @@
-package com.asisge.consultifybackend.proyectos.aplicacion.servicio;
+package com.asisge.consultifybackend.actividades.aplicacion.servicio;
 
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.ActividadDto;
-import com.asisge.consultifybackend.proyectos.aplicacion.dto.CambioEstadoActividadDto;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.ActividadDto;
+import com.asisge.consultifybackend.actividades.aplicacion.dto.CambioEstadoActividadDto;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 
 import java.util.List;
 
