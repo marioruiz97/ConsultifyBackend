@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.actividades.infraestructura.adaptador.persi
 
 import com.asisge.consultifybackend.actividades.dominio.modelo.TipoActividad;
 import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioTipoActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.convertidor.ConvertidorTipoActividad;
 import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadTipoActividad;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,7 +13,7 @@ public interface RepositorioTipoActividadJPA extends JpaRepository<EntidadTipoAc
     @Override
     default List<TipoActividad> obtenerTodos() {
         List<EntidadTipoActividad> tiposActividad = this.findAll();
-        return tiposActividad.stream().map(EntidadTipoActividad::aDominio).toList();
+        return tiposActividad.stream().map(ConvertidorTipoActividad::aDominio).toList();
     }
 
     @Override
@@ -20,7 +21,7 @@ public interface RepositorioTipoActividadJPA extends JpaRepository<EntidadTipoAc
         EntidadTipoActividad entidad = new EntidadTipoActividad();
         entidad.setNombre(tipoActividad.getNombre());
 
-        return EntidadTipoActividad.aDominio(this.save(entidad));
+        return ConvertidorTipoActividad.aDominio(this.save(entidad));
     }
 
     @Override
@@ -30,7 +31,7 @@ public interface RepositorioTipoActividadJPA extends JpaRepository<EntidadTipoAc
                 tipoActividad.getNombre()
         );
 
-        return EntidadTipoActividad.aDominio(this.save(entidad));
+        return ConvertidorTipoActividad.aDominio(this.save(entidad));
     }
 
     @Override

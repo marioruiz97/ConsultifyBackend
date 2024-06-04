@@ -1,6 +1,7 @@
 package com.asisge.consultifybackend.actividades.aplicacion.dto;
 
 import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.TipoActividad;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,9 @@ public class ActividadDto {
     @Nullable
     @FutureOrPresent(message = "La fecha de cierre esperada debe ser minimo hoy o una fecha futura")
     private LocalDate fechaCierreEsperado;
+
+    @Nullable
+    private TipoActividad tipoActividad;
 
     private Usuario responsable;
 

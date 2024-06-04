@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad;
 
-import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.actividades.dominio.modelo.EstadoActividad;
+import com.asisge.consultifybackend.autenticacion.infraestructura.adaptador.entidad.ModeloAuditoria;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.entidad.EntidadUsuario;
 import jakarta.persistence.*;
@@ -43,6 +43,10 @@ public @Data class EntidadActividad extends ModeloAuditoria {
     private EstadoActividad estado;
 
     private LocalDate fechaCierreEsperado;
+
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = EntidadTipoActividad.class)
+    @JoinColumn(name = "id_tipo_actividad")
+    private EntidadTipoActividad tipoActividad;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = EntidadUsuario.class, optional = false)
     @JoinColumn(name = "id_responsable", nullable = false)

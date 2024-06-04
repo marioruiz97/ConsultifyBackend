@@ -21,6 +21,7 @@ public class Actividad {
     private Proyecto proyecto;
     private @Setter EstadoActividad estado;
     private LocalDate fechaCierreEsperado;
+    private TipoActividad tipoActividad;
     private Usuario responsable;
 
     private LocalDateTime fechaCompletada;

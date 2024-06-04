@@ -1,8 +1,9 @@
 package com.asisge.consultifybackend.actividades.infraestructura.adaptador.convertidor;
 
 import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
+import com.asisge.consultifybackend.actividades.dominio.modelo.TipoActividad;
 import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
+import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
@@ -17,8 +18,11 @@ public final class ConvertidorActividad {
     public static Actividad aDominio(@Valid EntidadActividad entidad) {
         Actividad actividad = null;
         if (entidad != null) {
+
             Proyecto proyecto = new Proyecto(entidad.getProyecto().getIdProyecto());
             Usuario responsable = ConvertidorUsuario.aUsuarioDominio(entidad.getResponsable());
+            TipoActividad tipoActividad = ConvertidorTipoActividad.aDominio(entidad.getTipoActividad());
+
             actividad = new Actividad(
                     entidad.getId(),
                     entidad.getNombre(),
@@ -26,6 +30,7 @@ public final class ConvertidorActividad {
                     proyecto,
                     entidad.getEstado(),
                     entidad.getFechaCierreEsperado(),
+                    tipoActividad,
                     responsable,
                     entidad.getFechaCompletada()
             );
@@ -41,6 +46,7 @@ public final class ConvertidorActividad {
         entidad.setProyecto(new EntidadProyecto(actividad.getProyecto().getIdProyecto()));
         entidad.setEstado(actividad.getEstado());
         entidad.setFechaCierreEsperado(actividad.getFechaCierreEsperado());
+        entidad.setTipoActividad(ConvertidorTipoActividad.aEntidad(actividad.getTipoActividad()));
         entidad.setResponsable(new EntidadUsuario(actividad.getResponsable().getIdUsuario()));
 
         return entidad;
@@ -52,6 +58,7 @@ public final class ConvertidorActividad {
             entidad.setDescripcion(actividad.getDescripcion());
             entidad.setEstado(actividad.getEstado());
             entidad.setFechaCierreEsperado(actividad.getFechaCierreEsperado());
+            entidad.setTipoActividad(ConvertidorTipoActividad.aEntidad(actividad.getTipoActividad()));
             entidad.setResponsable(new EntidadUsuario(actividad.getResponsable().getIdUsuario()));
         }
         return entidad;
