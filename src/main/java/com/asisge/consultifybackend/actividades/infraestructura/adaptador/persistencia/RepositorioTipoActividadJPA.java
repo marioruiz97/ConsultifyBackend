@@ -2,7 +2,40 @@ package com.asisge.consultifybackend.actividades.infraestructura.adaptador.persi
 
 import com.asisge.consultifybackend.actividades.dominio.modelo.TipoActividad;
 import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioTipoActividad;
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadTipoActividad;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RepositorioTipoActividadJPA extends JpaRepository<TipoActividad, Long>, RepositorioTipoActividad {
+import java.util.List;
+
+public interface RepositorioTipoActividadJPA extends JpaRepository<EntidadTipoActividad, Long>, RepositorioTipoActividad {
+
+    @Override
+    default List<TipoActividad> obtenerTodos() {
+        List<EntidadTipoActividad> tiposActividad = this.findAll();
+        return tiposActividad.stream().map(EntidadTipoActividad::aDominio).toList();
+    }
+
+    @Override
+    default TipoActividad crearTipoActividad(TipoActividad tipoActividad) {
+        EntidadTipoActividad entidad = new EntidadTipoActividad();
+        entidad.setNombre(tipoActividad.getNombre());
+
+        return EntidadTipoActividad.aDominio(this.save(entidad));
+    }
+
+    @Override
+    default TipoActividad editarTipoActividad(TipoActividad tipoActividad) {
+        EntidadTipoActividad entidad = new EntidadTipoActividad(
+                tipoActividad.getIdTipo(),
+                tipoActividad.getNombre()
+        );
+
+        return EntidadTipoActividad.aDominio(this.save(entidad));
+    }
+
+    @Override
+    default void eliminarTipoActividad(Long idTipo) {
+        this.deleteById(idTipo);
+    }
+
 }
