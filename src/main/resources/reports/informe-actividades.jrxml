@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informe-actividades" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="31fa76ac-6980-4bf1-8dcb-81555255cf34">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="titulo" mode="Transparent" fontName="Roboto Bold" fontSize="36"/>
+	<style name="Subtitulo" markup="none" fontName="Roboto Bold" fontSize="27"/>
+	<style name="H3"  fontSize="18"/>
+	<style name="Texto"  fontSize="12"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F17722">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#F17722">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFF7EF"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#FFE4C4">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#F17722">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFF8F0"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Miembros" uuid="f0909f49-a293-436a-8e16-b18e39b86679">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<parameter name="ID_PROYECTO" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[$P{ID_PROYECTO}]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select p.id_proyecto, m.id_usuario, u.nombres, u.apellidos, u.correo
+from consultify_db.proyecto p, consultify_db.miembro_proyecto m, consultify_db.usuarios u
+where p.id_proyecto=m.id_proyecto
+and m.id_usuario=u.id_usuario
+AND p.id_proyecto=$P{ID_PROYECTO}]]>
+		</queryString>
+		<field name="id_proyecto" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_proyecto"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_proyecto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="proyecto"/>
+		</field>
+		<field name="nombres" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="apellidos" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="correo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="correo"/>
+			<property name="com.jaspersoft.studio.field.label" value="correo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<group name="nombres">
+			<groupExpression><![CDATA[$F{nombres}]]></groupExpression>
+		</group>
+		<group name="apellidos">
+			<groupExpression><![CDATA[$F{apellidos}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="actividades" uuid="0ac9300c-9b1e-4445-a48d-10ab893a02b9">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<parameter name="ID_PROYECTO" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{ID_PROYECTO}]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select a.id_proyecto, a.id_actividad,  a.id_responsable, u.nombres, u.apellidos,
+a.nombre, a.estado, a.creado_en, a.fecha_cierre_esperado, a.fecha_completada
+from consultify_db.actividad a, consultify_db.usuarios u
+where a.id_responsable=u.id_usuario
+AND a.id_proyecto=$P{ID_PROYECTO}]]>
+		</queryString>
+		<field name="id_proyecto" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_proyecto"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_proyecto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="id_actividad" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_actividad"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_actividad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="id_responsable" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_responsable"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_responsable"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="nombres" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="apellidos" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="estado" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="estado"/>
+			<property name="com.jaspersoft.studio.field.label" value="estado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="creado_en" class="java.time.LocalDateTime">
+			<property name="com.jaspersoft.studio.field.name" value="creado_en"/>
+			<property name="com.jaspersoft.studio.field.label" value="creado_en"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="fecha_cierre_esperado" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.name" value="fecha_cierre_esperado"/>
+			<property name="com.jaspersoft.studio.field.label" value="fecha_cierre_esperado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="fecha_completada" class="java.time.LocalDateTime">
+			<property name="com.jaspersoft.studio.field.name" value="fecha_completada"/>
+			<property name="com.jaspersoft.studio.field.label" value="fecha_completada"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+	</subDataset>
+	<subDataset name="Chart" uuid="bc402966-8fb4-4ec9-8657-cc06b0d86deb">
+		<property name="com.jaspersoft.studio.data.sql.tables">
+			<![CDATA[Y29uc3VsdGlmeV9kYi5hY3RpdmlkYWQgLDE1LDE1LDUxZmY0ZmI1LTc3OWUtNDZiOS05NTAxLTkz
+NTE5YjZmMWZkNjs=]]>
+		</property>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<parameter name="ID_PROYECTO" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[$P{ID_PROYECTO}]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[SELECT count( a.id_actividad) AS cantidad,
+	a.estado,
+	(SELECT count( id_actividad)
+FROM consultify_db.actividad) AS totalActividades
+FROM consultify_db.actividad a
+WHERE a.id_proyecto= $P{ID_PROYECTO}
+GROUP BY a.estado]]>
+		</queryString>
+		<field name="cantidad" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
+			<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		</field>
+		<field name="estado" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="estado"/>
+			<property name="com.jaspersoft.studio.field.label" value="estado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="totalActividades" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="totalActividades"/>
+			<property name="com.jaspersoft.studio.field.label" value="totalActividades"/>
+		</field>
+		<group name="cantidad">
+			<groupExpression><![CDATA[$F{cantidad}]]></groupExpression>
+		</group>
+		<group name="estado">
+			<groupExpression><![CDATA[$F{estado}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="actividadesXVencer" uuid="ba5d9076-1665-471a-8348-dbd09f80feaa">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<parameter name="ID_PROYECTO" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[$P{ID_PROYECTO}]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[select a.id_proyecto, a.id_actividad,  a.id_responsable, u.nombres, u.apellidos,
+a.nombre, a.estado, a.creado_en, a.fecha_cierre_esperado
+from consultify_db.actividad a, consultify_db.usuarios u
+where a.id_responsable=u.id_usuario
+and a.fecha_cierre_esperado < adddate(now() , 7)
+and a.fecha_completada is null
+and a.id_proyecto=$P{ID_PROYECTO}]]>
+		</queryString>
+		<field name="id_actividad" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_actividad"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_actividad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="nombres" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="apellidos" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.label" value="apellidos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="usuarios"/>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="estado" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="estado"/>
+			<property name="com.jaspersoft.studio.field.label" value="estado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="creado_en" class="java.time.LocalDateTime">
+			<property name="com.jaspersoft.studio.field.name" value="creado_en"/>
+			<property name="com.jaspersoft.studio.field.label" value="creado_en"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+		<field name="fecha_cierre_esperado" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.name" value="fecha_cierre_esperado"/>
+			<property name="com.jaspersoft.studio.field.label" value="fecha_cierre_esperado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="actividad"/>
+		</field>
+	</subDataset>
+	<parameter name="IMAGE_DIR" class="java.lang.String" evaluationTime="Early">
+		<defaultValueExpression><![CDATA["repo:images/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ID_PROYECTO" class="java.lang.Long" evaluationTime="Early"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT p.id_proyecto,
+	p.nombre_proyecto,
+	c.nombre_comercial,
+	c.tipo_documento,
+	c.numero_identificacion,
+	(SELECT count( id_actividad)
+FROM consultify_db.actividad) AS totalActividades
+FROM consultify_db.proyecto p,
+	consultify_db.cliente c
+WHERE
+	 p.id_cliente = c.id_cliente
+	 AND p.id_proyecto = $P{ID_PROYECTO}]]>
+	</queryString>
+	<field name="id_proyecto" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_proyecto"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_proyecto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proyecto"/>
+	</field>
+	<field name="nombre_proyecto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_proyecto"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_proyecto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proyecto"/>
+	</field>
+	<field name="nombre_comercial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_comercial"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_comercial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="tipo_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="numero_identificacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_identificacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_identificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="totalActividades" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="totalActividades"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalActividades"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<rectangle>
+				<reportElement x="160" y="0" width="415" height="120" backcolor="#F17722" uuid="1c7fb8fb-8229-4d79-9226-32f9c2ed52e9"/>
+				<graphicElement>
+					<pen lineColor="rgba(0, 0, 0, 0.0)"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="titulo" x="170" y="10" width="390" height="50" forecolor="#FFFFFF" uuid="6fc83ccc-3360-4cb0-983e-b1ff10aeb52f"/>
+				<text><![CDATA[Informe de Actividades]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement style="Subtitulo" x="310" y="60" width="250" height="40" forecolor="#FFFFFF" uuid="2a5024ce-6395-473d-bff7-178d4a0602de"/>
+				<textFieldExpression><![CDATA["Proyecto: " + $F{nombre_proyecto}]]></textFieldExpression>
+			</textField>
+			<image vAlign="Middle">
+				<reportElement x="0" y="25" width="140" height="70" uuid="393f03e0-b0b3-43f1-a58d-ce080153e382"/>
+				<imageExpression><![CDATA[$P{IMAGE_DIR}+"brand-logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="216" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="26" width="380" height="30" uuid="1ff08a62-fcc5-4f8f-9138-12bbb2823057"/>
+				<staticText>
+					<reportElement style="H3" x="33" y="-4" width="347" height="30" uuid="96ca5972-56da-47a3-bd68-0cde14a682d6"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Información del proyecto]]></text>
+				</staticText>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="0" y="-4" width="33" height="30" uuid="2df8ddf4-d497-4395-ba10-42d3ee7f0ecc"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<imageExpression><![CDATA[$P{IMAGE_DIR}+"info_24dp.png"]]></imageExpression>
+				</image>
+			</frame>
+			<frame>
+				<reportElement x="-20" y="66" width="595" height="64" uuid="a1442d21-5b75-4545-bb61-ada787164c4e"/>
+				<rectangle>
+					<reportElement x="0" y="0" width="595" height="64" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#F17722" uuid="56960799-4532-442c-834e-7e84ba2c9545"/>
+				</rectangle>
+				<textField>
+					<reportElement style="Texto" x="25" y="9" width="548" height="19" forecolor="#FFFFFF" backcolor="rgba(255, 255, 255, 0.0)" uuid="0d2dfaaa-bd2a-4eef-aec8-ceb805082f51"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Nombre del proyecto: " + $F{nombre_proyecto}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Texto" x="25" y="35" width="548" height="19" forecolor="#FFFFFF" backcolor="rgba(255, 255, 255, 0.0)" uuid="7cb48c17-4b24-4c00-aab0-64be6419bdbf"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Cliente: " + $F{tipo_documento} + " " + $F{numero_identificacion} + " - " + $F{nombre_comercial}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="1" y="137" width="380" height="63" uuid="3c5983e7-0a1d-4071-95ab-f4805a12dca1"/>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="0" y="0" width="33" height="30" uuid="a5686421-c5ed-42db-8604-77b133688d26"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<imageExpression><![CDATA[$P{IMAGE_DIR}+"people_24dp.png"]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement style="H3" x="33" y="0" width="347" height="30" uuid="1a2be020-4b07-4f2d-97ce-d884afa2717b"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Miembros]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement x="4" y="43" width="376" height="20" uuid="1e324849-c6cf-4e42-9cb6-ae5fabc86f51">
+						<property name="com.jaspersoft.studio.unit.CONTENTS.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="Miembros" uuid="6d861779-12cd-4ab9-a7d3-fdd9c2ffa2d8">
+							<datasetParameter name="ID_PROYECTO">
+								<datasetParameterExpression><![CDATA[$P{ID_PROYECTO}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="20" width="376">
+							<textField textAdjust="ScaleFont">
+								<reportElement style="Texto" x="0" y="0" width="300" height="20" uuid="d313e826-0268-40cc-b094-358caff40366"/>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT} + " - " + $F{nombres} + " " + $F{apellidos} + " ( " + $F{correo} + " )"]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="292" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="380" height="30" uuid="78baf3de-6f65-4d5a-868f-64abd9803b97"/>
+				<staticText>
+					<reportElement style="H3" x="33" y="-4" width="347" height="30" uuid="9938af46-f3ea-4c22-a5af-d4938a6effdc"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Actividades]]></text>
+				</staticText>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="0" y="-4" width="33" height="30" uuid="e7cb9ba2-e87a-4b87-9b30-0c72dcaa7c77"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<imageExpression><![CDATA[$P{IMAGE_DIR}+"bar_chart_24dp.png"]]></imageExpression>
+				</image>
+			</frame>
+			<componentElement>
+				<reportElement x="-13" y="30" width="580" height="248" uuid="a12110f6-b238-4e8e-90a4-04564dbccfc0">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="actividades" uuid="04fa5f17-6f4b-4536-ac38-afc236892bb7">
+						<datasetParameter name="ID_PROYECTO">
+							<datasetParameterExpression><![CDATA[$P{ID_PROYECTO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="52" uuid="6ecd6e7b-a43d-4ff6-a6ca-5311af840aa1">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="52" height="30" uuid="53589e94-f719-49a2-9573-09bc356862bc"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[ID Actividad]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="52" height="30" forecolor="#000000" uuid="d15a21cd-42ac-42a4-a092-0a28b16cc951"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{id_actividad}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="98" uuid="cbca51c0-0d07-46a4-bf33-b928e0f06fb2">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="98" height="30" uuid="283ff70e-ffe0-43be-92f9-c394408643da"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Responsable]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="98" height="30" forecolor="#000000" uuid="4f0f45e7-e34f-4775-992b-2e666ccf1758"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombres} + " " + $F{apellidos}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="91" uuid="c7be876d-56b0-4137-a91a-75b483d0914e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="91" height="30" uuid="e073344b-9e54-45d5-9039-90f313deb841"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="91" height="30" forecolor="#000000" uuid="c0066239-1d51-46b3-a1de-08a539e6ba65"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="76" uuid="983cd573-4812-4611-b9d4-30ec03d241ef">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="76" height="30" uuid="2e0b8f85-9f6b-4535-8ab0-59a6189c7aba"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Estado]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="76" height="30" forecolor="#000000" uuid="62483ccf-0248-40d1-a2fb-6b19646fde9c"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{estado}.replaceAll( "_", " ").toLowerCase()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="83" uuid="52c54a8a-eb46-40ee-9742-d9962b529eae">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="83" height="30" uuid="b40dfc1c-5c56-4595-89da-74189a1b98f9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Fecha Creación]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" pattern="dd/MMM/yyyy hh:mm a" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="83" height="30" forecolor="#000000" uuid="175be32e-c09c-4d2d-bff1-a3a00f28052d"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[java.sql.Timestamp.valueOf($F{creado_en})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="b1fbda25-7076-4185-914e-a3bcc3ab2f78">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:tableFooter style="Table_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement style="Texto" x="0" y="0" width="90" height="30" forecolor="#000000" uuid="66bbff3c-c169-41ce-a040-3b97fe3bab29"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Total Actividades]]></text>
+							</staticText>
+						</jr:tableFooter>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="4d2197fb-402d-4a23-a3b7-013ab73d7d42"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Cierre Esperado]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="90" height="30" forecolor="#000000" uuid="64d50453-25ab-4d5e-9dc5-3ae3d5efd72a"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{fecha_cierre_esperado}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="700caded-a8c3-48d4-b49c-7008d0862e38">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:tableFooter style="Table_TH" height="30" rowSpan="1">
+							<textField>
+								<reportElement style="Texto" x="0" y="0" width="90" height="30" forecolor="#000000" uuid="2e3f4541-9203-4f3c-94ea-d576b3cc0c79"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="07c38f7e-192a-467e-9f76-d8a2bf0946d3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font  isBold="true"/>
+								</textElement>
+								<text><![CDATA[Completada]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="ScaleFont" pattern="dd/MMM/yyyy hh:mm a" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="90" height="30" forecolor="#000000" uuid="1cf95204-beb3-4861-b095-a4cfe2ac55ff"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font />
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[java.sql.Timestamp.valueOf($F{fecha_completada})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="35" splitType="Stretch">
+			<frame>
+				<reportElement style="Texto" mode="Opaque" x="-13" y="4" width="580" height="26" forecolor="#D0B48E" backcolor="#F17722" uuid="f3067489-1e27-4b8e-aa44-43db990b4f67"/>
+				<textField evaluationTime="Report">
+					<reportElement x="529" y="0" width="40" height="26" forecolor="#FFFFFF" uuid="1e484be2-9059-446e-bbbd-70d96a9abf12"/>
+					<textElement verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="449" y="0" width="80" height="26" forecolor="#FFFFFF" uuid="5fcdc019-bea1-48a8-923a-913e9b4f5c65"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="6" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="0033e37f-a0da-43f0-ac87-c8fab3f56bd2"/>
+					<textElement verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="495">
+			<frame>
+				<reportElement x="0" y="11" width="555" height="190" uuid="0837a278-2387-4bae-b80b-abba96a1b05d"/>
+				<componentElement>
+					<reportElement x="0" y="50" width="555" height="140" uuid="b3347502-5382-4333-9406-58b9f33eb5b7">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+						<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+						<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+						<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+						<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+						<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
+					</reportElement>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="actividadesXVencer" uuid="cd0b2434-c4d2-4746-9a51-6f8f5e4a33d6">
+							<datasetParameter name="ID_PROYECTO">
+								<datasetParameterExpression><![CDATA[$P{ID_PROYECTO}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="84" uuid="fe1f0368-277c-490b-bc41-0521d57befb6">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="84" height="30" uuid="e265715a-9e19-41ea-91f3-a92225947f59"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[ID Actividad]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="84" height="30" uuid="53ba78a1-f3b2-4466-9c70-368c5db990f9"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{id_actividad}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="90" uuid="ac27858c-8dad-4195-a31b-d1d426ef06c1">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="90" height="30" uuid="5f886fb1-1161-47f8-b84e-7dde6bbbc2a5"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Responsable]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="90" height="30" uuid="4ca68aad-edc6-42ed-aeab-510a3814e3d1"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{nombres} + " " + $F{apellidos}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="89" uuid="ac79b6d8-74d3-44bd-8fdc-952e025d37b7">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="89" height="30" uuid="603346ff-9ac5-4075-a86d-b80f8166338b"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Nombre]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="89" height="30" uuid="c446a238-407a-4790-9bf5-5292621e6344"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="75" uuid="00622cb7-a409-4af7-917d-124a9e4f274a">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="75" height="30" uuid="8fb0e4ed-9da6-408c-8da3-2e103eb1df97"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Estado]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField>
+									<reportElement x="0" y="0" width="75" height="30" uuid="74a548dc-c7c1-4bf6-a4fd-e199d706497a"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{estado}.replaceAll( "_", " ").toLowerCase()]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="102" uuid="60bd864f-2469-44b4-9ff8-9a8946145940">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="102" height="30" uuid="538845f1-e308-47a8-bb80-8c8068d2fe92"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Fecha Creación]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField pattern="dd/MMM/yyyy hh:mm a">
+									<reportElement x="0" y="0" width="102" height="30" uuid="ea6e5646-bc72-408d-b6f8-6606ed750c06"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[java.sql.Timestamp.valueOf($F{creado_en})]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="115" uuid="44a02729-c332-4e7e-a91c-7cd00bce4076">
+							<jr:columnHeader style="Table 1_CH" height="30">
+								<staticText>
+									<reportElement x="0" y="0" width="115" height="30" uuid="23cfb9af-5aad-4dff-98da-3c6fb183d0c1"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Cierre Esperado]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="Table 1_TD" height="30">
+								<textField pattern="dd/MMM/yyyy">
+									<reportElement x="0" y="0" width="115" height="30" uuid="48f29c2f-e309-4155-8063-8dbb668f54df"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$F{fecha_cierre_esperado}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<staticText>
+					<reportElement style="Subtitulo" x="88" y="0" width="379" height="40" uuid="c6e7f589-2be1-4e62-9eca-2e5a277b1d0b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Actividades por Vencer]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="80" y="214" width="400" height="245" uuid="50f84b43-50b0-48c6-8acb-77968a73728c"/>
+				<pie3DChart>
+					<chart isShowLegend="false" evaluationTime="Report" renderType="image">
+						<reportElement x="0" y="0" width="400" height="245" uuid="7f577d65-b6f8-4e55-a44f-2b2125667def"/>
+						<chartTitle>
+							<font fontName="Roboto Black" size="25" isBold="false"/>
+							<titleExpression><![CDATA["Actividades por estado"]]></titleExpression>
+						</chartTitle>
+						<chartSubtitle>
+							<font fontName="Roboto Thin" size="14"/>
+							<subtitleExpression><![CDATA["Total de actividades: " + $F{totalActividades}]]></subtitleExpression>
+						</chartSubtitle>
+						<chartLegend>
+							<font size="8"/>
+						</chartLegend>
+					</chart>
+					<pieDataset>
+						<dataset>
+							<datasetRun subDataset="Chart" uuid="288a702b-6a2c-435a-8029-361da79dbcf5">
+								<datasetParameter name="ID_PROYECTO">
+									<datasetParameterExpression><![CDATA[$P{ID_PROYECTO}]]></datasetParameterExpression>
+								</datasetParameter>
+								<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+							</datasetRun>
+						</dataset>
+						<keyExpression><![CDATA[$F{estado}]]></keyExpression>
+						<valueExpression><![CDATA[$F{cantidad}]]></valueExpression>
+						<labelExpression><![CDATA[$F{estado}.replace("_"," ") + ": " + $F{cantidad}]]></labelExpression>
+						<otherLabelExpression><![CDATA[]]></otherLabelExpression>
+					</pieDataset>
+					<pie3DPlot isShowLabels="true" isCircular="true" legendLabelFormat="">
+						<plot orientation="Horizontal"/>
+						<itemLabel/>
+					</pie3DPlot>
+				</pie3DChart>
+			</frame>
+			<frame>
+				<reportElement style="Texto" mode="Opaque" x="-13" y="469" width="580" height="26" forecolor="#D0B48E" backcolor="#F17722" uuid="d4457b37-5e13-4988-b1aa-c3a057f02604"/>
+				<textField evaluationTime="Report">
+					<reportElement x="522" y="0" width="40" height="26" forecolor="#FFFFFF" uuid="d498436b-9df1-4379-8b9c-44c5ff3c6be5"/>
+					<textElement verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="442" y="0" width="80" height="26" forecolor="#FFFFFF" uuid="22b98c14-92a7-4579-a93d-884743af5dcc"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="4" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="a9f3fb3a-295e-4d4e-9102-47fff8231ab4"/>
+					<textElement verticalAlignment="Middle">
+						<font  size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>
