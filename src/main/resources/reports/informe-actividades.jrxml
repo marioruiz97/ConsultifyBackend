@@ -272,7 +272,8 @@ and a.id_proyecto=$P{ID_PROYECTO}]]>
 	c.tipo_documento,
 	c.numero_identificacion,
 	(SELECT count( id_actividad)
-FROM consultify_db.actividad) AS totalActividades
+	FROM consultify_db.actividad
+	WHERE id_proyecto=$P{ID_PROYECTO}) AS totalActividades
 FROM consultify_db.proyecto p,
 	consultify_db.cliente c
 WHERE
@@ -664,11 +665,11 @@ WHERE
 					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="6" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="0033e37f-a0da-43f0-ac87-c8fab3f56bd2"/>
+					<reportElement x="9" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="0033e37f-a0da-43f0-ac87-c8fab3f56bd2"/>
 					<textElement verticalAlignment="Middle">
 						<font  size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Tomado el: " + new java.util.Date()]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -863,11 +864,11 @@ WHERE
 					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="4" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="a9f3fb3a-295e-4d4e-9102-47fff8231ab4"/>
+					<reportElement x="9" y="0" width="197" height="26" forecolor="#FFFFFF" uuid="a9f3fb3a-295e-4d4e-9102-47fff8231ab4"/>
 					<textElement verticalAlignment="Middle">
 						<font  size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Tomado el: " +new java.util.Date()]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

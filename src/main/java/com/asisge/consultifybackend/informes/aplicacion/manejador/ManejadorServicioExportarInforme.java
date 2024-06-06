@@ -2,6 +2,10 @@ package com.asisge.consultifybackend.informes.aplicacion.manejador;
 
 import com.asisge.consultifybackend.informes.aplicacion.servicio.ServicioExportarInforme;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,25 @@ public class ManejadorServicioExportarInforme implements ServicioExportarInforme
         this.dataSource = dataSource;
     }
 
+    private static byte[] exportarExcel(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JRXlsxExporter exporter = new JRXlsxExporter();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+        SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+        configuration.setDetectCellType(true);
+        configuration.setOnePagePerSheet(false);
+        exporter.setConfiguration(configuration);
+        exporter.exportReport();
+        return outputStream.toByteArray();
+    }
+
+    private static byte[] exportarPDF(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        return outputStream.toByteArray();
+    }
+
     @Override
     public byte[] exportarReporte(Long idProyecto, String reportFormat) throws JRException {
         // Cargar el archivo .jrxml
@@ -45,11 +68,12 @@ public class ManejadorServicioExportarInforme implements ServicioExportarInforme
 
             // Exportar el reporte al formato deseado
             if (reportFormat.equalsIgnoreCase("pdf")) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-                data = outputStream.toByteArray();
+                data = exportarPDF(jasperPrint);
+
+            } else if (reportFormat.toLowerCase().contains("xls")) {
+                data = exportarExcel(jasperPrint);
             }
-            // Otros formatos pueden ser agregados aquí (HTML, XLS, etc.)
+
 
         } catch (Exception e) {
             logger.error("Error exportando reporte de actividades", e);

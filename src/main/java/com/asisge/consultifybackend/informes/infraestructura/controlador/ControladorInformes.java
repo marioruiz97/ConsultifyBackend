@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -82,9 +83,14 @@ public class ControladorInformes {
                 HttpHeaders headers = new HttpHeaders();
                 headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=informeActividadReporte-" + nombre + "." + format);
 
+                if (format.equalsIgnoreCase("pdf")) {
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                } else if (format.toLowerCase().contains("xls")) {
+                    headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                }
+
                 return ResponseEntity.ok()
                         .headers(headers)
-                        .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
                         .body(data);
 
             } catch (Exception e) {
