@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="Roboto">
+        <normal>fonts/roboto/Roboto-Regular.ttf</normal>
+        <bold>fonts/roboto/Roboto-Bold.ttf</bold>
+        <italic>fonts/roboto/Roboto-Italic.ttf</italic>
+        <boldItalic>fonts/roboto/Roboto-BoldItalic.ttf</boldItalic>
+        <light>fonts/roboto/Roboto-Light.ttf</light>
+        <pdfEmbedded>true</pdfEmbedded>
+    </fontFamily>
+</fontFamilies>
