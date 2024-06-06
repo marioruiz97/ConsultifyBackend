@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.manejador;
 
 import com.asisge.consultifybackend.proyectos.aplicacion.servicio.ServicioSeguridadProyecto;
-import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioActividad;
+import com.asisge.consultifybackend.actividades.dominio.puerto.RepositorioActividad;
 import com.asisge.consultifybackend.proyectos.dominio.puerto.RepositorioProyecto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

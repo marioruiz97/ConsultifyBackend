@@ -1,6 +1,6 @@
 package com.asisge.consultifybackend.proyectos.aplicacion.dto;
 
-import com.asisge.consultifybackend.proyectos.dominio.modelo.Actividad;
+import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
