@@ -50,10 +50,12 @@ public class ControladorInformes {
     public List<InformeProyecto> obtenerEncabezadosInformes() {
 
         if (servicioSeguridad.esAdmin()) {
+            logger.info("Obtener todos los encabezados - Admin");
             return servicioInforme.adminObtenerTodosEncabezados();
 
         } else {
             @Valid String usernameOCorreo = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
+            logger.info("Obtener mis encabezados - {}", usernameOCorreo);
             return servicioInforme.obtenerEncabezadoMisProyectos(usernameOCorreo);
         }
     }
@@ -65,6 +67,7 @@ public class ControladorInformes {
         @Valid String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();
 
         if (servicioSeguridad.esAdmin() || servicioSeguridad.esMiembroProyecto(idProyecto, username)) {
+            logger.info("Obtener informe - {}", idProyecto);
             return servicioInforme.obtenerInformeProyecto(idProyecto);
 
         } else throw new AccionNoPermitidaException("No tienes permiso de obtener esta información");
