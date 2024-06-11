@@ -655,7 +655,7 @@ WHERE
 					<textElement verticalAlignment="Middle">
 						<font  size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="449" y="0" width="80" height="26" forecolor="#FFFFFF" uuid="5fcdc019-bea1-48a8-923a-913e9b4f5c65"/>
@@ -675,7 +675,7 @@ WHERE
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="495">
+		<band height="730" splitType="Stretch">
 			<frame>
 				<reportElement x="0" y="11" width="555" height="190" uuid="0837a278-2387-4bae-b80b-abba96a1b05d"/>
 				<componentElement>
@@ -811,7 +811,7 @@ WHERE
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="80" y="214" width="400" height="245" uuid="50f84b43-50b0-48c6-8acb-77968a73728c"/>
+				<reportElement x="80" y="460" width="400" height="245" uuid="50f84b43-50b0-48c6-8acb-77968a73728c"/>
 				<pie3DChart>
 					<chart isShowLegend="false" evaluationTime="Report" renderType="image">
 						<reportElement x="0" y="0" width="400" height="245" uuid="7f577d65-b6f8-4e55-a44f-2b2125667def"/>
@@ -848,13 +848,13 @@ WHERE
 				</pie3DChart>
 			</frame>
 			<frame>
-				<reportElement style="Texto" mode="Opaque" x="-13" y="469" width="580" height="26" forecolor="#D0B48E" backcolor="#F17722" uuid="d4457b37-5e13-4988-b1aa-c3a057f02604"/>
+				<reportElement style="Texto" mode="Opaque" x="-13" y="704" width="580" height="26" forecolor="#D0B48E" backcolor="#F17722" uuid="d4457b37-5e13-4988-b1aa-c3a057f02604"/>
 				<textField evaluationTime="Report">
 					<reportElement x="522" y="0" width="40" height="26" forecolor="#FFFFFF" uuid="d498436b-9df1-4379-8b9c-44c5ff3c6be5"/>
 					<textElement verticalAlignment="Middle">
 						<font  size="12" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="442" y="0" width="80" height="26" forecolor="#FFFFFF" uuid="22b98c14-92a7-4579-a93d-884743af5dcc"/>
