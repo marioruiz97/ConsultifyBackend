@@ -73,6 +73,7 @@ public class ControladorInformes {
         } else throw new AccionNoPermitidaException("No tienes permiso de obtener esta información");
     }
 
+    @Cacheable(value = "archivoInforme", key = "#idProyecto", condition = "#format.equalsIgnoreCase('pdf')", unless = "#format.contains('xls')")
     @GetMapping("/exportar/{idProyecto}")
     public ResponseEntity<byte[]> getReport(@RequestParam String format, @PathVariable Long idProyecto) {
         @Valid String username = servicioAutenticacion.obtenerNombreUsuarioEnSesion();

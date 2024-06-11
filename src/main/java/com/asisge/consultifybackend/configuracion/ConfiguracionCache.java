@@ -32,7 +32,7 @@ public class ConfiguracionCache implements CachingConfigurer {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(caffeineCacheBuilder());
-        cacheManager.setCacheNames(Arrays.asList("informeProyecto", "informeActividades"));
+        cacheManager.setCacheNames(Arrays.asList("informeProyecto", "informeActividades", "archivoInforme"));
         return cacheManager;
     }
 
@@ -48,15 +48,10 @@ public class ConfiguracionCache implements CachingConfigurer {
         return new SimpleCacheErrorHandler();
     }
 
-    @Bean
-    public KeyGenerator userAwareKeyGenerator() {
-        return (target, method, params) -> {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication != null ? authentication.getName() : "anonymous";
-            return method.getName() + "-" + username + "-" + Arrays.toString(params);
-        };
-    }
-
+    /**
+     * <h4>Clase UserAwareCacheResolver</h2>
+     * <p>Encargada de dar el cache dependiendo del usuario en sesión. el formato es <cacheName>-<nombreUsuario></p>
+     */
     static class UserAwareCacheResolver extends SimpleCacheResolver {
 
         public UserAwareCacheResolver(CacheManager cacheManager) {
@@ -68,7 +63,8 @@ public class ConfiguracionCache implements CachingConfigurer {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication != null ? authentication.getName() : "anonymous";
 
-            String cacheName = context.getOperation().getCacheNames().iterator().next() + "-" + username;
+            String nombreBase = context.getOperation().getCacheNames().iterator().next();
+            String cacheName = nombreBase.equalsIgnoreCase("archivoInforme") ? nombreBase : nombreBase + "-" + username;
 
             Cache cache = getCacheManager().getCache(cacheName);
 

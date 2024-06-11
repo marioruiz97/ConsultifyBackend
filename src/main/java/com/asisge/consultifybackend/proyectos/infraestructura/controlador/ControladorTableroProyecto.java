@@ -46,7 +46,7 @@ public class ControladorTableroProyecto {
 
 
     @PutMapping("/{idProyecto}/miembros")
-    @CacheEvict(value = "informeActividades", key = "#idProyecto")
+    @CacheEvict(value = {"informeActividades", "archivoInforme"}, key = "#idProyecto")
     public UsuarioAutenticado agregarMiembroAlProyecto(@PathVariable Long idProyecto, @Valid @RequestBody MiembroDto miembroDto) {
 
         // notificar proyecto y usuario. enviar correo
@@ -58,7 +58,7 @@ public class ControladorTableroProyecto {
 
 
     @DeleteMapping("/{idProyecto}/miembros/{idMiembro}")
-    @CacheEvict(value = "informeActividades", key = "#idProyecto")
+    @CacheEvict(value = {"informeActividades", "archivoInforme"}, key = "#idProyecto")
     public List<UsuarioAutenticado> quitarMiembroProyecto(@PathVariable Long idProyecto, @PathVariable Long idMiembro) {
         List<UsuarioAutenticado> usuarioAutenticados = servicioTablero.quitarMiembroProyecto(idProyecto, idMiembro);
 
