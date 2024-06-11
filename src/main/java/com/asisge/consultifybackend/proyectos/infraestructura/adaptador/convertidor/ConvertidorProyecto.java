@@ -1,5 +1,6 @@
 package com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor;
 
+import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
 import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import com.asisge.consultifybackend.clientes.infraestructura.adaptador.convertidor.ConvertidorCliente;
 import com.asisge.consultifybackend.clientes.infraestructura.adaptador.entidad.EntidadCliente;
@@ -59,4 +60,17 @@ public final class ConvertidorProyecto {
         }
         return actual;
     }
+
+
+    public static Proyecto construirProyecto(EntidadActividad entidad) {
+        EntidadProyecto proyecto = entidad.getProyecto();
+        return Proyecto.builder()
+                .conIdProyecto(proyecto.getIdProyecto())
+                .conDescripcionProyecto(proyecto.getDescripcionProyecto())
+                .conNombreProyecto(proyecto.getNombreProyecto())
+                .conCreadoEn(proyecto.getCreadoEn())
+                .build();
+    }
+
+
 }

@@ -4,6 +4,7 @@ import com.asisge.consultifybackend.actividades.dominio.modelo.Actividad;
 import com.asisge.consultifybackend.actividades.dominio.modelo.TipoActividad;
 import com.asisge.consultifybackend.actividades.infraestructura.adaptador.entidad.EntidadActividad;
 import com.asisge.consultifybackend.proyectos.dominio.modelo.Proyecto;
+import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.convertidor.ConvertidorProyecto;
 import com.asisge.consultifybackend.proyectos.infraestructura.adaptador.entidad.EntidadProyecto;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.Usuario;
 import com.asisge.consultifybackend.usuarios.infraestructura.adaptador.convertidor.ConvertidorUsuario;
@@ -19,7 +20,7 @@ public final class ConvertidorActividad {
         Actividad actividad = null;
         if (entidad != null) {
 
-            Proyecto proyecto = new Proyecto(entidad.getProyecto().getIdProyecto());
+            Proyecto proyecto = ConvertidorProyecto.construirProyecto(entidad);
             Usuario responsable = ConvertidorUsuario.aUsuarioDominio(entidad.getResponsable());
             TipoActividad tipoActividad = ConvertidorTipoActividad.aDominio(entidad.getTipoActividad());
 

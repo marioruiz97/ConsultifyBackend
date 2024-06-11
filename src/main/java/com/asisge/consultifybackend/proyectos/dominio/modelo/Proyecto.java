@@ -3,6 +3,7 @@ package com.asisge.consultifybackend.proyectos.dominio.modelo;
 import com.asisge.consultifybackend.clientes.dominio.modelo.Cliente;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Builder(setterPrefix = "con")
 @AllArgsConstructor
 @ToString(exclude = "miembros")
 public class Proyecto {
