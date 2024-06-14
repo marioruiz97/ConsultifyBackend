@@ -31,6 +31,7 @@ public final class ConvertidorProyecto {
                     cliente,
                     entidad.getDescripcionProyecto(),
                     entidad.getCreadoEn(),
+                    entidad.getCierreEsperado(),
                     miembros
             );
         }
@@ -42,6 +43,7 @@ public final class ConvertidorProyecto {
         entidad.setIdProyecto(proyecto.getIdProyecto());
         entidad.setNombreProyecto(proyecto.getNombreProyecto());
         entidad.setDescripcionProyecto(proyecto.getDescripcionProyecto());
+        entidad.setCierreEsperado(proyecto.getCierreEsperado());
 
         EntidadCliente cliente = new EntidadCliente(proyecto.getClienteProyecto().getIdCliente());
         entidad.setClienteProyecto(cliente);
@@ -57,6 +59,7 @@ public final class ConvertidorProyecto {
             actual.setIdProyecto(proyecto.getIdProyecto());
             actual.setDescripcionProyecto(proyecto.getDescripcionProyecto());
             actual.setNombreProyecto(proyecto.getNombreProyecto());
+            actual.setCierreEsperado(proyecto.getCierreEsperado());
         }
         return actual;
     }
@@ -69,6 +72,7 @@ public final class ConvertidorProyecto {
                 .conDescripcionProyecto(proyecto.getDescripcionProyecto())
                 .conNombreProyecto(proyecto.getNombreProyecto())
                 .conCreadoEn(proyecto.getCreadoEn())
+                .conCierreEsperado(proyecto.getCierreEsperado())
                 .build();
     }
 

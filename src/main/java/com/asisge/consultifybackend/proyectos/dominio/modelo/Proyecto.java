@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class Proyecto {
     private String descripcionProyecto;
 
     private LocalDateTime creadoEn;
+
+    private LocalDate cierreEsperado;
 
     private List<UsuarioAutenticado> miembros;
 
