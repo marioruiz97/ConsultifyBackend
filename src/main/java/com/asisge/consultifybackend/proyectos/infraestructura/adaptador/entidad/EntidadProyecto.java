@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,8 @@ public @Data class EntidadProyecto extends ModeloAuditoria {
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_cliente")
     private EntidadCliente clienteProyecto;
+
+    private LocalDate cierreEsperado;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = EntidadUsuario.class, cascade = CascadeType.REFRESH)
     @JoinTable(name = "miembro_proyecto",

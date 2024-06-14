@@ -22,6 +22,7 @@ public class MapeadorProyecto {
                     cliente,
                     dto.getDescripcionProyecto(),
                     null,
+                    dto.getCierreEsperado(),
                     new ArrayList<>()
             );
         }

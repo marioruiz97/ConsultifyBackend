@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -13,6 +14,7 @@ public class InformeProyecto {
 
     private Long idProyecto;
     private String nombreProyecto;
+    private LocalDate cierreEsperado;
     private ClienteInforme cliente;
     private Boolean abierto;
     private List<MiembroInforme> miembros;

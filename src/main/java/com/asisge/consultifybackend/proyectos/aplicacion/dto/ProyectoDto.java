@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -26,6 +28,8 @@ public class ProyectoDto implements Dto {
 
     @NotBlank
     private String creadoPor;
+
+    private LocalDate cierreEsperado;
 
     @Override
     public boolean validarDto() {
