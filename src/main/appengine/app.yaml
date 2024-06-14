@@ -1,0 +1,9 @@
+runtime: java21
+
+env_variables:
+  APP_SECRET_KEY: "clave-secreta-api"
+  GCP_CLOUD_SQL_CONNECTION: "google-cloudsql-connection-string"
+  GCP_CLOUD_SQL_USERNAME: "username"
+  GCP_CLOUD_SQL_PASSWORD: "password"
+  GMAIL_APP_ACCOUNT: "cuenta-correo@gmail.com"
+  GMAIL_APP_PASSWORD: "clave-de-16-digitos"
