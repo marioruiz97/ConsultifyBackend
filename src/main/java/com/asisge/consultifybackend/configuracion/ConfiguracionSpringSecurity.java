@@ -48,6 +48,8 @@ public class ConfiguracionSpringSecurity {
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
                         // paginas con acceso publico
+                        .requestMatchers("/status/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/error", "/error/**").permitAll()
@@ -71,7 +73,7 @@ public class ConfiguracionSpringSecurity {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://app-consultify.web.app", "https://app-consultify.firebaseapp.com"));
         config.addAllowedHeader("*");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
