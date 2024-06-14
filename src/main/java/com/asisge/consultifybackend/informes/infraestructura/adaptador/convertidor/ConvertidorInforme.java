@@ -33,6 +33,7 @@ public final class ConvertidorInforme {
             dominio = new InformeProyecto(
                     entidad.getIdProyecto(),
                     entidad.getNombreProyecto(),
+                    entidad.getCierreEsperado(),
                     clienteInforme,
                     false,
                     miembros,
