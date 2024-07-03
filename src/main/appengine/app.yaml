@@ -1,7 +1,16 @@
 runtime: java21
 
+automatic_scaling:
+  min_instances: 1
+  min_idle_instances: 1
+
+inbound_services:
+- warmup
+
 env_variables:
   APP_SECRET_KEY: "clave-secreta-api"
+  PROD_FRONTEND_ENDPOINT: "https://url-frontend.com"
+  PROD_FRONTEND_ENDPOINTS: "https://url-frontend.com,https://url-frontend2.com"
   GCP_CLOUD_SQL_CONNECTION: "google-cloudsql-connection-string"
   GCP_CLOUD_SQL_USERNAME: "username"
   GCP_CLOUD_SQL_PASSWORD: "password"

@@ -23,7 +23,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
     // metodos de JPA
     Optional<EntidadUsuario> findByCorreo(String correo);
 
-    Optional<EntidadUsuario> findByCorreoOrNombreUsuario(String correo, String nombreUsuario);
+    Optional<EntidadUsuario> findByCorreoOrNombreUsuarioIgnoreCase(String correo, String nombreUsuario);
 
     Optional<EntidadUsuario> findByIdUsuarioAndCorreo(Long idUsuario, String correo);
 
@@ -42,7 +42,7 @@ public interface RepositorioAutorizacionJPA extends JpaRepository<EntidadUsuario
 
     @Override
     default UsuarioAutenticado buscarPorNombreUsuarioOCorreo(String correoOUsername) {
-        EntidadUsuario entidad = findByCorreoOrNombreUsuario(correoOUsername, correoOUsername).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario"));
+        EntidadUsuario entidad = findByCorreoOrNombreUsuarioIgnoreCase(correoOUsername, correoOUsername).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario"));
         return ConvertidorUsuario.aDominio(entidad);
     }
 

@@ -2,6 +2,7 @@ package com.asisge.consultifybackend.configuracion;
 
 import com.asisge.consultifybackend.configuracion.filtros.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,10 @@ public class ConfiguracionSpringSecurity {
 
     private final AuthenticationProvider authenticationProvider;
     private final JWTAuthenticationFilter authenticationFilter;
+
+    @Value("${frontend.endpoints}")
+    private String[] frontendEndpoints;
+
 
     @Autowired
     public ConfiguracionSpringSecurity(AuthenticationProvider authenticationProvider, JWTAuthenticationFilter authenticationFilter) {
@@ -73,7 +78,7 @@ public class ConfiguracionSpringSecurity {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://app-consultify.web.app", "https://app-consultify.firebaseapp.com"));
+        config.setAllowedOrigins(Arrays.asList(frontendEndpoints));
         config.addAllowedHeader("*");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
