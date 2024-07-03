@@ -1,7 +1,7 @@
 package com.asisge.consultifybackend.autenticacion.aplicacion.manejador;
 
+import com.asisge.consultifybackend.autenticacion.dominio.puerto.RepositorioAutorizacion;
 import com.asisge.consultifybackend.usuarios.dominio.modelo.UsuarioAutenticado;
-import com.asisge.consultifybackend.usuarios.dominio.puerto.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,16 +17,16 @@ import java.util.List;
 public class ServicioUserDetailsImpl implements UserDetailsService {
 
 
-    private final RepositorioUsuario repositorioUsuario;
+    private final RepositorioAutorizacion repositorioAutorizacion;
 
     @Autowired
-    public ServicioUserDetailsImpl(RepositorioUsuario repositorioUsuario) {
-        this.repositorioUsuario = repositorioUsuario;
+    public ServicioUserDetailsImpl(RepositorioAutorizacion repositorioAutorizacion) {
+        this.repositorioAutorizacion = repositorioAutorizacion;
     }
 
     @Override
     public UserDetails loadUserByUsername(String correoOUsername) throws UsernameNotFoundException {
-        UsuarioAutenticado usuario = repositorioUsuario.buscarPorCorreoOUsername(correoOUsername);
+        UsuarioAutenticado usuario = repositorioAutorizacion.buscarPorNombreUsuarioOCorreo(correoOUsername);
         if (usuario == null) {
             throw new UsernameNotFoundException("no se encontró el usuario " + correoOUsername);
         }
