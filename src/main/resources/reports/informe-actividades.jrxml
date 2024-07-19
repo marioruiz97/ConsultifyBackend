@@ -76,7 +76,7 @@
 		</parameter>
 		<queryString language="SQL">
 			<![CDATA[select p.id_proyecto, m.id_usuario, u.nombres, u.apellidos, u.correo
-from consultify_db.proyecto p, consultify_db.miembro_proyecto m, consultify_db.usuarios u
+from root.proyecto p, root.miembro_proyecto m, root.usuarios u
 where p.id_proyecto=m.id_proyecto
 and m.id_usuario=u.id_usuario
 AND p.id_proyecto=$P{ID_PROYECTO}]]>
@@ -117,7 +117,7 @@ AND p.id_proyecto=$P{ID_PROYECTO}]]>
 		<queryString language="SQL">
 			<![CDATA[select a.id_proyecto, a.id_actividad,  a.id_responsable, u.nombres, u.apellidos,
 a.nombre, a.estado, a.creado_en, a.fecha_cierre_esperado, a.fecha_completada
-from consultify_db.actividad a, consultify_db.usuarios u
+from root.actividad a, root.usuarios u
 where a.id_responsable=u.id_usuario
 AND a.id_proyecto=$P{ID_PROYECTO}]]>
 		</queryString>
@@ -185,8 +185,8 @@ NTE5YjZmMWZkNjs=]]>
 			<![CDATA[SELECT count( a.id_actividad) AS cantidad,
 	a.estado,
 	(SELECT count( id_actividad)
-FROM consultify_db.actividad) AS totalActividades
-FROM consultify_db.actividad a
+FROM root.actividad) AS totalActividades
+FROM root.actividad a
 WHERE a.id_proyecto= $P{ID_PROYECTO}
 GROUP BY a.estado]]>
 		</queryString>
@@ -219,7 +219,7 @@ GROUP BY a.estado]]>
 		<queryString language="SQL">
 			<![CDATA[select a.id_proyecto, a.id_actividad,  a.id_responsable, u.nombres, u.apellidos,
 a.nombre, a.estado, a.creado_en, a.fecha_cierre_esperado
-from consultify_db.actividad a, consultify_db.usuarios u
+from root.actividad a, root.usuarios u
 where a.id_responsable=u.id_usuario
 and a.fecha_cierre_esperado < adddate(now() , 7)
 and a.fecha_completada is null
@@ -272,10 +272,10 @@ and a.id_proyecto=$P{ID_PROYECTO}]]>
 	c.tipo_documento,
 	c.numero_identificacion,
 	(SELECT count( id_actividad)
-	FROM consultify_db.actividad
+	FROM root.actividad
 	WHERE id_proyecto=$P{ID_PROYECTO}) AS totalActividades
-FROM consultify_db.proyecto p,
-	consultify_db.cliente c
+FROM root.proyecto p,
+	root.cliente c
 WHERE
 	 p.id_cliente = c.id_cliente
 	 AND p.id_proyecto = $P{ID_PROYECTO}]]>
