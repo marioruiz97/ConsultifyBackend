@@ -31,7 +31,10 @@ public class ConfiguracionSpringSecurity {
     private final JWTAuthenticationFilter authenticationFilter;
 
     @Value("${frontend.endpoints}")
-    private String[] frontendEndpoints;
+    private String frontendEndpoint;
+
+    @Value("${servicio.correo.frontend.endpoint}")
+    private String correoFrontend;
 
 
     @Autowired
@@ -78,7 +81,7 @@ public class ConfiguracionSpringSecurity {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(frontendEndpoints));
+        config.setAllowedOrigins(Arrays.asList(frontendEndpoint, correoFrontend));
         config.addAllowedHeader("*");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
