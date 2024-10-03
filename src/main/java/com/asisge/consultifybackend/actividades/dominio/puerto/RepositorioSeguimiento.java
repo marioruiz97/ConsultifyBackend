@@ -9,4 +9,10 @@ public interface RepositorioSeguimiento {
     List<Seguimiento> obtenerPorIdActividad(Long idActividad);
 
     Seguimiento crearSeguimiento(Seguimiento seguimiento);
+
+    Seguimiento editarSeguimiento(Seguimiento seguimientoEditado);
+
+    Seguimiento buscarPorIdSeguimiento(Long idSeguimiento);
+
+    void eliminarSeguimiento(Long idSeguimiento);
 }

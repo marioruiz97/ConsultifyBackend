@@ -10,4 +10,8 @@ public interface ServicioSeguimientoActividad {
     List<Seguimiento> obtenerSeguimientos(Long idActividad);
 
     Seguimiento crearSeguimiento(Long idActividad, NuevoSeguimientoDto nuevoSeguimiento);
+
+    Seguimiento editarSeguimiento(Long idActividad, Seguimiento seguimientoEditado);
+
+    void eliminarSeguimiento(String s, Long idSeguimiento);
 }
