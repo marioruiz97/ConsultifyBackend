@@ -1,9 +1,9 @@
 package com.asisge.consultifybackend.actividades.infraestructura.controlador;
 
-import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import com.asisge.consultifybackend.actividades.aplicacion.dto.NuevoSeguimientoDto;
 import com.asisge.consultifybackend.actividades.aplicacion.servicio.ServicioSeguimientoActividad;
 import com.asisge.consultifybackend.actividades.dominio.modelo.Seguimiento;
+import com.asisge.consultifybackend.autenticacion.aplicacion.servicio.ServicioAutenticacion;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +40,17 @@ public class ControladorSeguimiento {
 
 
         return new ResponseEntity<>(seguimiento, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{idSeguimiento}")
+    public ResponseEntity<Seguimiento> editarSeguimientoActividad(@PathVariable Long idActividad, @Valid @RequestBody Seguimiento seguimientoEditado) {
+        Seguimiento seguimiento = servicioSeguimientoActividad.editarSeguimiento(idActividad, seguimientoEditado);
+        return new ResponseEntity<>(seguimiento, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{idSeguimiento}")
+    public void eliminarSeguimientoActividad(@PathVariable Long idSeguimiento) {
+        servicioSeguimientoActividad.eliminarSeguimiento(servicioAutenticacion.obtenerNombreUsuarioEnSesion(), idSeguimiento);
     }
 
 }
