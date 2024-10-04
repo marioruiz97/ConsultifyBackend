@@ -49,6 +49,35 @@ public class ManejadorServicioSeguimientoActividad implements ServicioSeguimient
         return repositorioSeguimiento.crearSeguimiento(seguimiento);
     }
 
+    @Override
+    public Seguimiento editarSeguimiento(Long idActividad, Seguimiento seguimientoEditado) {
+        if (!idActividad.equals(seguimientoEditado.getActividad().getId()))
+            throw new AccionNoPermitidaException(Mensajes.getString("seguimientos.error.id.actividad.no.coincide", idActividad));
+
+        Seguimiento seguimiento = repositorioSeguimiento.editarSeguimiento(seguimientoEditado);
+
+        String mensaje = Mensajes.getString("seguimientos.info.editar.seguimiento", idActividad);
+        logger.info(mensaje, seguimiento);
+
+
+        return seguimiento;
+
+    }
+
+    @Override
+    public void eliminarSeguimiento(String nombreUsuario, Long idSeguimiento) {
+        Usuario usuario = repositorioUsuario.buscarPorCorreoOUsername(nombreUsuario).getUsuario();
+        Seguimiento seguimiento = repositorioSeguimiento.buscarPorIdSeguimiento(idSeguimiento);
+
+        if (!seguimiento.getUsuario().equals(usuario))
+            throw new AccionNoPermitidaException(Mensajes.getString("seguimientos.error.usuario.eliminar.seguimiento", idSeguimiento));
+
+        repositorioSeguimiento.eliminarSeguimiento(idSeguimiento);
+
+        String mensaje = Mensajes.getString("seguimientos.info.eliminar.seguimiento", idSeguimiento);
+        logger.info(mensaje, seguimiento);
+    }
+
     private Seguimiento nuevoSeguimiento(NuevoSeguimientoDto nuevoSeguimiento) {
         Usuario usuario = repositorioUsuario.buscarPorCorreoOUsername(nuevoSeguimiento.getUsername()).getUsuario();
         return new Seguimiento(

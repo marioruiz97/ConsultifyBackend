@@ -2,15 +2,13 @@ package com.asisge.consultifybackend.usuarios.dominio.modelo;
 
 import com.asisge.consultifybackend.utilidad.dominio.modelo.ExpresionRegular;
 import com.asisge.consultifybackend.utilidad.dominio.modelo.TipoDocumento;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @ToString(exclude = {"telefono", "correo"})
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Usuario {
 
     private Long idUsuario;
